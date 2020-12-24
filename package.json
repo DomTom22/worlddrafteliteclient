@@ -1,14 +1,15 @@
 {
-  "name": "pokemon-showdown-client",
+   "name": "pokemon-showdown-client",
   "version": "0.11.2",
   "author": "Guangcong Luo <guangcongluo@gmail.com> (http://guangcongluo.com)",
-  "homepage": "https://pokemonshowdown.com",
+  "homepage": "scoopapa-dh.glitch.me",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Zarel/Pokemon-Showdown-Client.git"
+    "url": "https://github.com/TheScoop2020/Pokemon-Showdown-Client.git"
   },
   "scripts": {
+    "start": "node build full",
     "lint": "eslint --config=.eslintrc.js --cache --cache-file=eslint-cache/base js/ && eslint --config=build-tools/.eslintrc.js --cache --cache-file=eslint-cache/build build-tools/update build-tools/build-indexes && tslint --project .",
     "test": "npm run lint && tsc && node build && mocha test/*.js",
     "fix": "eslint --config=.eslintrc.js --fix js/ && eslint --config=build-tools/.eslintrc.js --fix build-tools/update build-tools/build-indexes",
@@ -16,17 +17,17 @@
     "build-full": "node build full"
   },
   "dependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.3",
-    "@babel/plugin-proposal-class-properties": "^7.3.3",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
-    "@babel/plugin-transform-member-expression-literals": "^7.2.0",
-    "@babel/plugin-transform-property-literals": "^7.2.0",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "@babel/preset-env": "^7.3.1",
-    "@babel/preset-typescript": "^7.3.3",
-    "google-auth-library": "^3.1.0",
-    "image-size": "^0.7.2",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.7",
+    "@babel/plugin-transform-member-expression-literals": "^7.12.1",
+    "@babel/plugin-transform-property-literals": "^7.12.1",
+    "@babel/plugin-transform-react-jsx": "^7.12.12",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.1",
+    "google-auth-library": "^6.1.3",
+    "image-size": "^0.9.3",
     "output-file-sync": "^2.0.1"
   },
   "devDependencies": {
