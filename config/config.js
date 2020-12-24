@@ -18,7 +18,7 @@ Config.whitelist = [
 // `defaultserver` specifies the server to use when the domain name in the
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
-	id: 'showdown',
+	id: 'dragonheaven',
 	host: 'scoopapa-dh.glitch.me',
 	port: 443,
 	httpport: 8000,
