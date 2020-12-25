@@ -27,7 +27,7 @@ const ModConfig = {
 		'megamax': true,
 		'm4av6': true,
 		'perfectgalar': true,
-		'dlcmons': true,
+		'gen7dlcmons': true,
 		'fealpha': true,
 		'viabilities': true,
 		'breedingvariants': true,
