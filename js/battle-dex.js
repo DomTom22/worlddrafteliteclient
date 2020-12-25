@@ -841,7 +841,7 @@ if(this.cache.Moves.hasOwnProperty(id))return this.cache.Moves[id];
 var data=Object.assign({},Dex.getMove(name));
 
 var table=window.BattleTeambuilderTable[this.modid];
-if(id in table.fullMoveName){
+if(table.fullMoveName&&id in table.fullMoveName){
 data.name=table.fullMoveName[id];
 data.exists=true;
 name=table.fullMoveName[id];
@@ -876,7 +876,7 @@ id=toID(name);
 if(this.cache.Items.hasOwnProperty(id))return this.cache.Items[id];
 var table=window.BattleTeambuilderTable[this.modid];
 var data=Object.assign({},Dex.getItem(name));
-if(id in table.fullItemName)data.name=table.fullItemName[id];
+if(table.fullItemName&&id in table.fullItemName)data.name=table.fullItemName[id];
 if(id in table.overrideItemDesc)data.shortDesc=table.overrideItemDesc[id];
 for(var i=this.gen;i<8;i++){
 if(id in window.BattleTeambuilderTable['gen'+i].overrideItemDesc){
@@ -898,7 +898,7 @@ id=toID(name);
 if(this.cache.Abilities.hasOwnProperty(id))return this.cache.Abilities[id];
 var table=BattleTeambuilderTable[this.modid];
 var data=Object.assign({},Dex.getAbility(name));
-if(id in table.fullAbilityName)data.name=table.fullAbilityName[id];
+if(table.fullAbilityName&&id in table.fullAbilityName)data.name=table.fullAbilityName[id];
 if(id in table.overrideAbilityDesc){
 data.shortDesc=table.overrideAbilityDesc[id];
 }else{
