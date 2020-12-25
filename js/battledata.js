@@ -182,15 +182,15 @@ pokeballs=null;this.
 resourcePrefix=function(){var _window$document,_window$document$loca;
 var prefix='';
 if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
-return prefix+"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/";
+return prefix+"//"+'play.pokemonshowdown.com'+"/";
 }();this.
 
 fxPrefix=function(){var _window$document2,_window$document2$loc;
 if(((_window$document2=window.document)==null?void 0:(_window$document2$loc=_window$document2.location)==null?void 0:_window$document2$loc.protocol)==='file:'){
-if(window.Replays)return"https://"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
+if(window.Replays)return"https://"+'play.pokemonshowdown.com'+"/fx/";
 return"fx/";
 }
-return"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
+return"//"+'play.pokemonshowdown.com'+"/fx/";
 }();this.
 
 loadedSpriteData={xy:1,bw:0};this.

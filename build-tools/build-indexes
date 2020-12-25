@@ -4,6 +4,9 @@
 const fs = require("fs");
 const path = require('path');
 const child_process = require("child_process");
+const deepmerge = require("deepmerge");
+const extendhallow = require('extend-shallow');
+const extend = require('extend');
 
 const rootDir = path.resolve(__dirname, '..');
 process.chdir(rootDir);
