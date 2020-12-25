@@ -36,6 +36,7 @@ const ModConfig = {
 		'pkmnyb': true,
 		'twisted': true,
 		'roseredirisblue': true,
+		'prism': true,
 	}
 };
 exports.ModConfig = ModConfig;
