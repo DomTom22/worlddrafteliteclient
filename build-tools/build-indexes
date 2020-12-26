@@ -28,6 +28,7 @@ const ModConfig = require('../config/mod-config').ModConfig;
 const ClientMods = ModConfig.ClientMods;
 process.stdout.write("Loading gen 6 data... ");
 Dex.includeData();
+Dex.includeModData();
 console.log("DONE");
 
 function es3stringify(obj) {
@@ -1185,6 +1186,8 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			BattleTeambuilderTable[modid].overrideMoveDesc = overrideMoveDesc;
 			const overrideMoveType = {};
 			BattleTeambuilderTable[modid].overrideMoveType = overrideMoveType;
+			const overrideMoveCategory = {};
+			BattleTeambuilderTable[modid].overrideMoveCategory = overrideMoveCategory;
 			for (const id in modData.Moves) {
 				const modEntry = modData.Moves[id];
 				const baseEntry = Dex.data.Moves[id];
@@ -1204,6 +1207,9 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				}
 				if (fakeMove || modEntry.shortDesc !== baseEntry.shortDesc) {
 					overrideMoveDesc[id] = modEntry.shortDesc;
+				}
+				if (fakeMove || modEntry.category !== baseEntry.category) {
+					overrideMoveCategory[id] = modEntry.category;
 				}
 			}
 			//abilities

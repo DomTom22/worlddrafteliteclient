@@ -850,6 +850,7 @@ class ModdedDex {
 		if (id in table.overrideBP) data.basePower = table.overrideBP[id];
 		if (id in table.overridePP) data.pp = table.overridePP[id];
 		if (id in table.overrideMoveType) data.type = table.overrideMoveType[id];
+		if (id in table.overrideMoveCategory) data.category = table.overrideMoveCategory[id];
 		if (id in table.overrideMoveDesc) {
 			data.shortDesc = table.overrideMoveDesc[id];
 		} else {
