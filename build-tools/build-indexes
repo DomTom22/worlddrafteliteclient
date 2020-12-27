@@ -28,7 +28,6 @@ const ModConfig = require('../config/mod-config').ModConfig;
 const ClientMods = ModConfig.ClientMods;
 process.stdout.write("Loading gen 6 data... ");
 Dex.includeData();
-Dex.includeModData();
 console.log("DONE");
 
 function es3stringify(obj) {
@@ -84,7 +83,9 @@ function requireNoCache(pathSpec) {
 	index.push('moves article');
 
 	// generate aliases
+	const usedIDs = [];
 	function generateAlias(id, name, type) {
+		usedIDs.push(id);
 		let i = name.lastIndexOf(' ');
 		if (i < 0) i = name.lastIndexOf('-');
 		if (name.endsWith('-Mega-X') || name.endsWith('-Mega-Y')) {
@@ -171,7 +172,6 @@ function requireNoCache(pathSpec) {
 		} else if (name === 'Zen Headbutt') {
 			index.push('zhbutt ' + type + ' ' + id + ' 0');
 		}
-
 		let i2 = name.lastIndexOf(' ', i - 1);
 		if (i2 < 0) i2 = name.lastIndexOf('-', i - 1);
 		if (name === 'Zen Headbutt') i2 = 8;
@@ -194,6 +194,32 @@ function requireNoCache(pathSpec) {
 	for (const id in Dex.data.Abilities) {
 		const name = Dex.data.Abilities[id].name;
 		generateAlias(id, name, 'ability');
+	}
+	for (const modid in ClientMods){
+		for (const id in modDex.data.Pokedex) {
+			if (!usedIDs.includes(id)){
+			index.push(id + ' pokemon');
+				usedIDs.push(id);
+			}
+		}
+		for (const id in modDex.data.Moves) {
+			if (!usedIDs.includes(id)){
+				index.push(id + ' move');
+				usedIDs.push(id);
+			}
+		}
+		for (const id in modDex.data.Items) {
+			if (!usedIDs.includes(id)){
+			index.push(id + ' item');
+				usedIDs.push(id);
+			}
+		}
+		for (const id in modDex.data.Abilities) {
+			if (!usedIDs.includes(id)){
+				index.push(id + ' ability');
+				usedIDs.push(id);
+			}
+		}
 	}
 
 	index.sort();
