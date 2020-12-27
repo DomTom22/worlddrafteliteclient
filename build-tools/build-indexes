@@ -179,6 +179,7 @@ function requireNoCache(pathSpec) {
 			index.push('' + toID(name.slice(i2)) + ' ' + type + ' ' + id + ' ' + toID(name.slice(0, i2)).length);
 		}
 	}
+	
 	for (const id in Dex.data.Pokedex) {
 		const name = Dex.data.Pokedex[id].name;
 		generateAlias(id, name, 'pokemon');
@@ -196,6 +197,7 @@ function requireNoCache(pathSpec) {
 		generateAlias(id, name, 'ability');
 	}
 	for (const modid in ClientMods){
+		const modDex = Dex.mod(modid);
 		for (const id in modDex.data.Pokedex) {
 			if (!usedIDs.includes(id)){
 			index.push(id + ' pokemon');
