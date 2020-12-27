@@ -197,37 +197,29 @@ function requireNoCache(pathSpec) {
 		generateAlias(id, name, 'ability');
 	}
 	for (const modid in ClientMods){
-		const modDex = {};
-		try {
-			const modDex = Dex.mod(modid);
-		} catch(e) {
-			console.log("WARNING: " + modid + " failed to populate the search index due to errors."
-			console.log(e);
+		const modDex = Dex.mod(modid);
+		for (const id in modDex.data.Pokedex) {
+			if (!usedIDs.includes(id)){
+			index.push(id + ' pokemon');
+				usedIDs.push(id);
+			}
 		}
-		if (modDex.data) {
-			for (const id in modDex.data.Pokedex) {
-				if (!usedIDs.includes(id)){
-				index.push(id + ' pokemon');
-					usedIDs.push(id);
-				}
+		for (const id in modDex.data.Moves) {
+			if (!usedIDs.includes(id)){
+				index.push(id + ' move');
+				usedIDs.push(id);
 			}
-			for (const id in modDex.data.Moves) {
-				if (!usedIDs.includes(id)){
-					index.push(id + ' move');
-					usedIDs.push(id);
-				}
+		}
+		for (const id in modDex.data.Items) {
+			if (!usedIDs.includes(id)){
+			index.push(id + ' item');
+				usedIDs.push(id);
 			}
-			for (const id in modDex.data.Items) {
-				if (!usedIDs.includes(id)){
-				index.push(id + ' item');
-					usedIDs.push(id);
-				}
-			}
-			for (const id in modDex.data.Abilities) {
-				if (!usedIDs.includes(id)){
-					index.push(id + ' ability');
-					usedIDs.push(id);
-				}
+		}
+		for (const id in modDex.data.Abilities) {
+			if (!usedIDs.includes(id)){
+				index.push(id + ' ability');
+				usedIDs.push(id);
 			}
 		}
 	}
