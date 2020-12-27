@@ -28,7 +28,9 @@ const ModConfig = {
 		'm4av6': true,
 		'perfectgalar': true,
 		'gen7dlcmons': true,
-		'fealpha': true,
+		'fealpha': {
+			'excludeStandardTiers': true,
+		},
 		'viabilities': true,
 		'breedingvariants': true,
 		'abnormal': true,
