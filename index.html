@@ -1,153 +1,132 @@
 ﻿<!DOCTYPE html>
-<!--
-           .............
-       ,...................
-     ,..................========
-    ....~=##############=======+
-   ...##################=======.
-  ..=######+...,    +##=======,..
-  ..=###### ., .....  +=====+,....
-     ###########~,..  ======
-  .....##############~=====+....., pokemonshowdown.com
-  ..........###########====......
-    ............#######,==......
-  =###.,........+#####+ .......
-  ####################~......,
-  #################+======,
-     ++++++++++++ =======+
-
-Viewing source? We're open source! Check us out on GitHub!
-https://github.com/Zarel/Pokemon-Showdown
-https://github.com/Zarel/Pokemon-Showdown-Client (you are here)
-
-Also visit us in the Dev chatroom:
-https://psim.us/dev
-
--->
-<meta charset="UTF-8" />
-<meta id="viewport" name="viewport" content="width=device-width" />
-<title>Showdown!</title>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-<link rel="shortcut icon" href="//dragonheaven.herokuapp.com/favicon.ico" id="dynamic-favicon" />
-<link rel="icon" sizes="128x128" href="//dragonheaven.herokuapp.com/favicon-128.png" />
-<link rel="stylesheet" href="//dragonheaven.herokuapp.com/style/battle.css?5a4bc79e" />
-<link rel="stylesheet" href="//dragonheaven.herokuapp.com/style/client.css?0e4187fd" />
-<link rel="stylesheet" href="//dragonheaven.herokuapp.com/style/sim-types.css?b35a1b5f" />
-<link rel="stylesheet" href="//dragonheaven.herokuapp.com/style/utilichart.css?dbb7f7f2" />
-<link rel="stylesheet" href="//dragonheaven.herokuapp.com/style/font-awesome.css?95545b00" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<link rel="manifest" href="/manifest.json" />
-<meta name="google-signin-client_id" content="912270888098-jjnre816lsuhc5clj3vbcn4o2q7p4qvk.apps.googleusercontent.com">
-<!--[if lte IE 8]><script>document.location.replace('http://pokemonshowdown.com/autodownload/win');</script><![endif]-->
-<!-- Google Analytics -->
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-if (!(/^(.*)\.psim\.us$/i.test(document.location.hostname))) {
-	ga('create', 'UA-26211653-1', 'pokemonshowdown.com');
-} else {
-	ga('create', 'UA-26211653-2', 'psim.us');
-}
-ga('send', 'pageview');
-
-</script>
-<!-- End Google Analytics -->
-<script>
-	window.onerror = function(err, uri, line) {
-		var msg = uri + ':' + line + ': ' + err;
-		if ('ga' in window) {
-			ga('send', 'event', 'Client error', msg);
-		} else {
-			alert('ERROR: ' + msg);
-		}
-		return false;
-	};
-</script>
-
-<div id="header" class="header">
-	<img class="logo" src="//dragonheaven.herokuapp.com/pokemonshowdownbeta.png" srcset="//play.pokemonshowdown.com/pokemonshowdownbeta@2x.png 2x" alt="Pok&eacute;mon Showdown! (beta)" width="146" height="44" /><div class="maintabbarbottom"></div>
-</div>
-<div class="ps-room scrollable" id="mainmenu"><div class="mainmenuwrapper">
-	<div class="leftmenu">
-		<div class="activitymenu">
-			<div class="pmbox">
-				<div class="pm-window news-embed" data-newsid="<!-- newsid -->">
-					<h3><button class="closebutton" tabindex="-1"><i class="fa fa-times-circle"></i></button><button class="minimizebutton" tabindex="-1"><i class="fa fa-minus-circle"></i></button>News</h3>
-					<div class="pm-log" style="max-height:none">
-						<!-- news -->
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta id="viewport" name="viewport" content="width=device-width" />
+		<title>Showdown!</title>
+		<link rel="shortcut icon" href="favicon.ico" id="dynamic-favicon" />
+		<link rel="stylesheet" href="style/battle.css" />
+		<link rel="stylesheet" href="style/client.css" />
+		<link rel="stylesheet" href="style/sim-types.css" />
+		<link rel="stylesheet" href="style/utilichart.css" />
+		<link rel="stylesheet" href="style/font-awesome.css" />
+		<meta name="robots" content="noindex" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<script src="https://dragonheaven.herokuapp.com/config/config.js"></script>
+		<script>
+			function loadRemoteData(src) {
+				var scriptEl = document.createElement('script');
+				scriptEl.src = src.replace(/.*\/?data\//g, 'https://play.pokemonshowdown.com/data/');
+				document.head.appendChild(scriptEl);
+			}
+			Config.testclient = true;
+			(function() {
+				if (location.search !== '') {
+					var m = /\?~~(([^:\/]*)(:[0-9]*)?)/.exec(location.search);
+					if (m) {
+						Config.server = {
+							id: m[1],
+							host: m[2],
+							port: (m[3] && parseInt(m[3].substr(1))) || 8000
+						};
+					} else {
+						alert('Unrecognised query string syntax: ' + location.search);
+					}
+				}
+			})();
+		</script>
+		<!--[if lte IE 8]><script>
+			Config.oldie = true;
+		</script><![endif]-->
+	</head>
+	<body>
+		<div id="header" class="header">
+			<img class="logo" src="pokemonshowdownbeta.png" alt="Pok&eacute;mon Showdown! (beta)" width="146" height="44" /><div class="maintabbarbottom"></div>
+		</div>
+		<div class="ps-room scrollable" id="mainmenu"><div class="mainmenuwrapper">
+			<div class="leftmenu">
+				<div class="activitymenu">
+					<div class="pmbox">
+						<div class="pm-window news-embed">
+							<h3><button class="closebutton" tabindex="-1" aria-label="Close"><i class="fa fa-times-circle"></i></button><button class="minimizebutton" tabindex="-1" aria-label="Minimize"><i class="fa fa-minus-circle"></i></button>Latest News</h3>
+							<div class="pm-log" style="max-height:none">
+								<div class="newsentry"><h4>Test client</h4><p>Welcome to the test client! You can test client changes here!</p><p>&mdash;<strong>Zarel</strong> <small class="date">on Sep 25, 2015</small></p></div>
+							</div>
+						</div>
 					</div>
 				</div>
+				<div class="mainmenu">
+					<div id="loading-message" class="mainmessage">Initializing... <noscript>FAILED<br /><br />Pok&eacute;mon Showdown requires JavaScript.</noscript></div>
+				</div>
 			</div>
-		</div>
-		<div class="mainmenu">
-			<div id="loading-message" class="mainmessage">Initializing... <noscript>FAILED<br /><br />Pok&eacute;mon Showdown requires JavaScript.</noscript></div>
-		</div>
-	</div>
-	<div class="rightmenu">
-	</div>
-	<div class="mainmenufooter">
-		<div class="bgcredit"></div>
-		<small><a href="//dex.pokemonshowdown.com/" target="_blank">Pok&eacute;dex</a> | <a href="//replay.pokemonshowdown.com/" target="_blank">Replays</a> | <a href="//scoopapa-dh.glitch.me/rules" target="_blank">Rules</a> | <a href="//scoopapa-dh.glitch.me/credits" target="_blank">Credits</a> | <a href="http://smogon.com/forums/" target="_blank">Forum</a></small>
-	</div>
-</div></div>
-<script>
-	var LM = document.getElementById('loading-message');
-	LM.innerHTML += ' DONE<br />Loading libraries...';
-</script>
-<script nomodule src="//dragonheaven.herokuapp.com/js/lib/ps-polyfill.js"></script>
-<script src="//dragonheaven.herokuapp.com/config/config.js?bd032c85"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/jquery-2.1.4.min.js"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/jquery-cookie.js"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/autoresize.jquery.min.js?52413642"></script>
-<script src="//dragonheaven.herokuapp.com/js/battle-sound.js?849f92ef"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/html-css-sanitizer-minified.js?38f3f7d3"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/lodash.core.js?f87de26d"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/backbone.js?6faf9dcf"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/d3.v3.min.js"></script>
+			<div class="rightmenu">
+			</div>
+			<div class="mainmenufooter">
+				<small><a href="//pokemonshowdown.com/" target="_blank"><strong>Pok&eacute;mon Showdown</strong></a> | <a href="http://smogon.com/" target="_blank"><strong>Smogon</strong></a><br><a href="//pokemonshowdown.com/dex/" target="_blank">Pokédex</a> | <a href="//pokemonshowdown.com/replay/" target="_blank">Replays</a> | <a href="//pokemonshowdown.com/rules" target="_blank">Rules</a></small> | <small><a href="//pokemonshowdown.com/forums/" target="_blank">Forum</a></small>
+			</div>
+		</div></div>
+		<script>
+			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading libraries...';
+		</script>
+		<script nomodule src="/js/lib/ps-polyfill.js"></script>
+		<script src="js/lib/jquery-2.1.4.min.js"></script>
+		<script src="js/lib/jquery-cookie.js"></script>
+		<script src="js/lib/autoresize.jquery.min.js"></script>
+		<script src="js/battle-sound.js"></script>
+		<script src="config/testclient-key.js"></script>
+		<script src="js/lib/html-css-sanitizer-minified.js"></script>
+		<script src="js/lib/lodash.core.js"></script>
+		<script src="js/lib/backbone.js"></script>
+		<script src="js/lib/d3.v3.min.js"></script>
 
-<script>
-	LM.innerHTML += ' DONE<br />Loading data...';
-</script>
+		<script>
+			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading data...';
+			window.exports = window;
+		</script>
 
-<script src="//dragonheaven.herokuapp.com/js/battledata.js?c368651d"></script>
-<script src="//dragonheaven.herokuapp.com/js/storage.js?35058b73"></script>
-<script src="//dragonheaven.herokuapp.com/data/pokedex-mini.js?df48166f"></script>
-<script src="//dragonheaven.herokuapp.com/data/typechart.js?72ddddb8"></script>
-<script src="//dragonheaven.herokuapp.com/js/battle.js?4692dd90"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/sockjs-1.4.0-nwjsfix.min.js"></script>
-<script src="//dragonheaven.herokuapp.com/js/lib/color-thief.min.js"></script>
+		<script src="js/battledata.js" onerror="alert('You must build the client with `node build` before using testclient.html')"></script>
+		<script src="data/text.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/pokedex-mini.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/pokedex-mini-bw.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/typechart.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="js/battle.js"></script>
+		<script src="js/lib/sockjs-1.4.0-nwjsfix.min.js"></script>
+		<script src="js/lib/color-thief.min.js"></script>
 
-<script>
-	LM.innerHTML += ' DONE<br />Loading client...';
-</script>
+		<script>
+			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading client...';
+		</script>
 
-<script src="//dragonheaven.herokuapp.com/js/client.js?3f58656d"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-topbar.js?10a8f8c5"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-mainmenu.js?600eb23b"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-teambuilder.js?b21b6eef"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-ladder.js?1ce65d4e"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-chat.js?5a7de9ff"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-chat-tournament.js?2ee649e9"></script>
-<script src="//dragonheaven.herokuapp.com/js/battle-tooltips.js?1b317156"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-battle.js?b58cb29a"></script>
-<script src="//dragonheaven.herokuapp.com/js/client-rooms.js?d1678612"></script>
-<script src="//dragonheaven.herokuapp.com/data/graphics.js?b0c906fa"></script>
+		<script src="js/client.js"></script>
+		<script src="js/client-topbar.js"></script>
+		<script src="js/client-mainmenu.js"></script>
+		<script src="js/client-teambuilder.js"></script>
+		<script src="js/client-ladder.js"></script>
+		<script src="js/client-chat.js"></script>
+		<script src="js/client-chat-tournament.js"></script>
+		<script src="js/battle-tooltips.js"></script>
+		<script src="js/client-battle.js"></script>
+		<script src="js/client-rooms.js"></script>
+		<script src="js/storage.js"></script>
+		<script src="data/graphics.js" onerror="loadRemoteData(this.src)"></script>
 
-<script>
-	var app = new App();
-</script>
+		<script src="data/pokedex.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/moves.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/items.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/abilities.js" onerror="loadRemoteData(this.src)"></script>
 
-<script src="//dragonheaven.herokuapp.com/data/pokedex.js?670059fb"></script>
-<script src="//dragonheaven.herokuapp.com/data/moves.js?6fced077"></script>
-<script src="//dragonheaven.herokuapp.com/data/items.js?1b7f2b2d"></script>
-<script src="//dragonheaven.herokuapp.com/data/abilities.js?46d840be"></script>
+		<script src="data/search-index.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/teambuilder-tables.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="js/battle-dex-search.js"></script>
+		<script src="js/search.js"></script>
 
-<script src="//dragonheaven.herokuapp.com/data/search-index.js?1235e29d"></script>
-<script src="//dragonheaven.herokuapp.com/data/teambuilder-tables.js?d7b9a779"></script>
-<script src="//dragonheaven.herokuapp.com/js/battle-dex-search.js?7f91eeef"></script>
-<script src="//dragonheaven.herokuapp.com/js/search.js?6f322462"></script>
+		<script src="data/aliases.js" async="async" onerror="loadRemoteData(this.src)"></script>
 
-<script src="//dragonheaven.herokuapp.com/data/aliases.js?c76764ce" async="async"></script>
+		<script>
+			window.onload = () => {
+				window.app = new App();
+			}
+		</script>
+
+	</body>
+</html>
