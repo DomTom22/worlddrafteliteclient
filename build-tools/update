@@ -135,7 +135,7 @@ function updateURL(a, b, c, d) {
 
 function writeFiles(indexContents, preactIndexContents, crossprotocolContents, replayEmbedContents) {
 	process.stdout.write("Writing new HTML files... ");
-	fs.writeFileSync('index.html', indexContents);
+	// fs.writeFileSync('index.html', indexContents);
 	fs.writeFileSync('preactalpha.html', preactIndexContents);
 	fs.writeFileSync('crossprotocol.html', crossprotocolContents);
 	console.log("DONE");
