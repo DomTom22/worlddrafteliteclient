@@ -722,7 +722,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (lsetSpecies.id === 'pumpkaboosuper') return 'pumpkaboo' as ID;
 
 		const next = lsetSpecies.battleOnly || lsetSpecies.changesFrom || lsetSpecies.prevo;
-		return toID(next);
+		if (next) return toID(next);
 
 		return '' as ID;
 	}

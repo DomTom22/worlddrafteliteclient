@@ -722,7 +722,7 @@ if(lsetSpecies.id==='gastrodoneast')return'gastrodon';
 if(lsetSpecies.id==='pumpkaboosuper')return'pumpkaboo';
 
 var next=lsetSpecies.battleOnly||lsetSpecies.changesFrom||lsetSpecies.prevo;
-return toID(next);
+if(next)return toID(next);
 
 return'';
 };_proto2.
