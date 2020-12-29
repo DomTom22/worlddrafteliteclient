@@ -926,17 +926,14 @@ id=toID(name);
 if(this.cache.Species.hasOwnProperty(id))return this.cache.Species[id];
 var table=window.BattleTeambuilderTable[this.modid];
 var data=Object.assign({},Dex.getSpecies(name));
-if(table.fullFakemonData&&id in table.fullFakemonData)data=table.fullFakemonData[id];else
-{
+if(table.overrideDexInfo){
+for(var key in table.overrideDexInfo[id]){
+data[key]=table.overrideDexInfo[id][key];
+}
+}else{
 var abilities=Object.assign({},data.abilities);
 if(id in table.overrideAbility){
 abilities['0']=table.overrideAbility[id];
-}
-if(typeof table.overrideSecondAbility!=='undefined'&&id in table.overrideSecondAbility){
-abilities['1']=table.overrideSecondAbility[id];
-}
-if(typeof table.requiredItem!=='undefined'&&id in table.requiredItem){
-data.requiredItem=table.requiredItem[id];
 }
 if(id in table.removeSecondAbility){
 delete abilities['1'];
@@ -946,16 +943,16 @@ abilities['H']=table.overrideHiddenAbility[id];
 }
 if(this.gen<5)delete abilities['H'];
 if(this.gen<7)delete abilities['S'];
-
+if(id in table.overrideStats){
+data.baseStats=Object.assign({},data.baseStats,table.overrideStats[id]);
+}
+if(id in table.overrideType)data.types=table.overrideType[id].split('/');
 data.abilities=abilities;
 }
 if(this.gen<3){
 data.abilities={0:"None"};
 }
-if(id in table.overrideStats){
-data.baseStats=Object.assign({},data.baseStats,table.overrideStats[id]);
-}
-if(id in table.overrideType)data.types=table.overrideType[id].split('/');
+
 if(id in table.overrideTier)data.tier=table.overrideTier[id];
 if(!data.tier&&id.slice(-5)==='totem'){
 data.tier=this.getSpecies(id.slice(0,-5)).tier;

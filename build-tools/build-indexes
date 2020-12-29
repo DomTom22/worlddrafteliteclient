@@ -1122,50 +1122,21 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				tiers.push(...tierTable[tier]);
 			}
 			//pokemon stats
-			const overrideStats = {};
-			BattleTeambuilderTable[modid].overrideStats = overrideStats;
-			const overrideType = {};
-			BattleTeambuilderTable[modid].overrideType = overrideType;
-			const overrideAbility = {};
-			BattleTeambuilderTable[modid].overrideAbility = overrideAbility;
-			const overrideSecondAbility = {};
-			BattleTeambuilderTable[modid].overrideSecondAbility = overrideSecondAbility;
-			const overrideHiddenAbility = {};
-			BattleTeambuilderTable[modid].overrideHiddenAbility = overrideHiddenAbility;
-			const removeSecondAbility = {};
-			BattleTeambuilderTable[modid].removeSecondAbility = removeSecondAbility;
-			const requiredItem = {};
-			BattleTeambuilderTable[modid].requiredItem = requiredItem;
-			const fullFakemonData = {};
-			BattleTeambuilderTable[modid].fullFakemonData = fullFakemonData;
+			const overrideDexInfo = {};
+			BattleTeambuilderTable[modid].overrideDexInfo = overrideDexInfo;
 			for (const id in modData.Pokedex) {
 				const modEntry = modData.Pokedex[id];
 				const baseEntry = Dex.data.Pokedex[id];
-				const baseType = () => {
-					if (typeof baseEntry !== 'undefined') return baseEntry.types.join('/');
-				};
-				const fakeMon = (typeof baseEntry === 'undefined');
-				if (fakeMon) {
-					fullFakemonData[id] = modEntry;
-				} else {
-					for (const stat in modEntry.baseStats) {
-						if (modEntry.baseStats[stat] !== baseEntry.baseStats[stat]) {
-							if (!overrideStats[id]) overrideStats[id] = {};
-							overrideStats[id][stat] = modEntry.baseStats[stat];
-						}
-					}
-					if (modEntry.types.join('/') !== baseType) {
-						overrideType[id] = modEntry.types.join('/');
-					}
-					const abilityOverrideTables = [overrideAbility, overrideSecondAbility, overrideHiddenAbility];
-					const abilityKeys = ['0', '1', 'H'];
-					for (const i in abilityKeys) {
-						if (modEntry.abilities[abilityKeys[i]] !== baseEntry.abilities[abilityKeys[i]]) {
-							abilityOverrideTables[i][id] = modEntry.abilities[abilityKeys[i]];
-						}
-					}
-					if (modEntry.requiredItem && !baseEntry.requiredItem) {
-						requiredItem[id] = modEntry.requiredItem;
+				overrideDexInfo[id] = {};
+				if (typeof baseEntry === 'undefined') {
+					overrideDexInfo[id] = modEntry;
+					continue;
+				}
+				for (const key in modEntry){
+					const modString = JSON.stringify(modEntry[key])
+					const baseString = JSON.stringify(baseEntry[key])
+					if (modString !== baseString){
+						overrideDexInfo[id][key] = JSON.parse(modString);
 					}
 				}
 			}
