@@ -578,6 +578,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			}
 			if (mod) {
 				this.dex = Dex.mod(mod as ID);
+				this.dex.setGen(gen);
 				this.mod = mod;
 			} else {
 				this.dex = Dex.forGen(gen);
@@ -721,7 +722,9 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (lsetSpecies.id === 'pumpkaboosuper') return 'pumpkaboo' as ID;
 
 		const next = lsetSpecies.battleOnly || lsetSpecies.changesFrom || lsetSpecies.prevo;
-		if (next) return toID(next);
+		if (next) {
+            if (this.format.charAt(3) === this.dex.gen) return toID(next);
+        }
 
 		return '' as ID;
 	}
