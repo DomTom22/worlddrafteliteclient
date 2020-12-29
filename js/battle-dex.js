@@ -830,6 +830,9 @@ this.gen=8;
 this.gen=parseInt(modid.slice(3),10);
 }
 }var _proto3=ModdedDex.prototype;_proto3.
+setGen=function setGen(gen){
+this.gen=gen;
+};_proto3.
 getMove=function getMove(name){
 var id=toID(name);
 if(window.BattleAliases&&id in BattleAliases){

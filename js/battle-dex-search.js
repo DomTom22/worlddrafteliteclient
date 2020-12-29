@@ -578,6 +578,7 @@ if(toID(formatName)===format)mod=modid;
 }
 if(mod){
 this.dex=Dex.mod(mod);
+this.dex.setGen(gen);
 this.mod=mod;
 }else{
 this.dex=Dex.forGen(gen);
@@ -721,7 +722,7 @@ if(lsetSpecies.id==='gastrodoneast')return'gastrodon';
 if(lsetSpecies.id==='pumpkaboosuper')return'pumpkaboo';
 
 var next=lsetSpecies.battleOnly||lsetSpecies.changesFrom||lsetSpecies.prevo;
-if(next)return toID(next);
+return toID(next);
 
 return'';
 };_proto2.
