@@ -571,9 +571,16 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (format.slice(0, 3) === 'gen') {
 			gen = (Number(format.charAt(3)) || 6);
 			let mod = '';
+			let overrideFormat = '';
 			for (const modid in (ClientMods)) {
-				for (const formatName of ClientMods[modid].formats) {
-					if (toID(formatName) === format) mod = modid;
+				for (const i in ClientMods[modid].formats) {
+					let formatName = ClientMods[modid].formats[i];
+					if (toID(formatName) === format) {
+						mod = modid;
+						if (mod && ClientMods[modid].teambuilderFormats[i]){
+							overrideFormat = toID(ClientMods[modid].teambuilderFormats[i]);
+						}
+					}
 				}
 			}
 			if (mod) {
@@ -583,7 +590,8 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			} else {
 				this.dex = Dex.forGen(gen);
 			}
-			format = (format.slice(4) || 'customgame') as ID;
+			if (overrideFormat) format = overrideFormat;
+			else format = (format.slice(4) || 'customgame') as ID;
 		} else if (!format) {
 			this.dex = Dex;
 		}
@@ -888,7 +896,6 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		}
 		let tierSet: SearchRow[] = table.tierSet;
 		let slices: {[k: string]: number} = table.formatSlices;
-		// console.log(slices);
 		if (format === 'ubers' || format === 'uber') tierSet = tierSet.slice(slices.Uber);
 		else if (format === 'vgc2017') tierSet = tierSet.slice(slices.Regular);
 		else if (format === 'vgc2018') tierSet = tierSet.slice(slices.Regular);
@@ -913,27 +920,6 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		else if (format === 'doublesnu') tierSet = tierSet.slice(slices.DNU || slices.DUU);
 		else if (this.formatType === 'letsgo') tierSet = tierSet.slice(slices.Uber);
 		// else if (isDoublesOrBS) tierSet = tierSet;
-		else if (this.mod) {
-			newTierSet = [];
-			console.log(tierSet);
-			if (BattleTeambuilderTable.ClientMods[this.mod].customTiers[0]) {
-				for (const i in BattleTeambuilderTable.ClientMods[this.mod].customTiers) {
-					const tier = BattleTeambuilderTable.ClientMods[this.mod].customTiers[i]
-					newTierSet.push(...tierSet.slice(slices[tier]));
-					console.log(tier);
-				}
-			} else if (BattleTeambuilderTable.ClientMods[this.mod].baseTier) {
-				newTierSet.push(...tierSet.slice(slices[BattleTeambuilderTable.ClientMods[this.mod].baseTier]));
-				console.log(BattleTeambuilderTable.ClientMods[this.mod].baseTier);
-			} else {
-				console.log('all tiers');
-				newTierSet.push(...tierSet.slice(slices.OU, slices.UU));
-				if (dex.gen !== 8) newTierSet.push(tierSet.slice(slices.AG, slices.Uber));
-				newTierSet.push(...tierSet.slice(slices.Uber, slices.OU));
-				newTierSet.push(...tierSet.slice(slices.UU));
-			}
-			tierSet = newTierSet;
-		}
 		else if (!isDoublesOrBS) {
 			tierSet = [
 				...tierSet.slice(slices.OU, slices.UU),
@@ -948,7 +934,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 				...tierSet.slice(slices.DUU),
 			];
 		}
-
+		
 		if (format === 'zu' && dex.gen >= 7) {
 			tierSet = tierSet.filter(function (r) {
 				if (r[1] in table.zuBans) return false;
@@ -962,6 +948,17 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 				];
 				return !(banned.includes(id) || id.startsWith('arceus'));
 			});
+		}
+		if (this.mod && !table.customTierSet) {
+			table.customTierSet = table.customTiers.map((r: any) => {
+				if (typeof r === 'string') return ['pokemon', r];
+				return [r[0], r[1]];
+			});
+			table.customTiers = null;
+		}
+		let customTierSet: SearchRow[] = table.customTierSet;
+		if (customTierSet) {
+			tierSet = customTierSet.concat(tierSet);
 		}
 		return tierSet;
 	}

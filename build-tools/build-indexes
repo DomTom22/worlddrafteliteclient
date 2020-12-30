@@ -1059,12 +1059,15 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			const modData = modDex.data;
 			let modGen = 0;
 			BattleTeambuilderTable.ClientMods[modid].formats = [];
+			BattleTeambuilderTable.ClientMods[modid].teambuilderFormats = [];
 			// Find formats using this mod
 			for (const formatid in Dex.data.Formats) {
 				const format = Dex.getFormat(formatid);
 				if (format.mod === modid) {
 					if (formatid.startsWith('gen') && formatid.charAt(3) !== '8') modGen = formatid.slice(0, 4);
 					BattleTeambuilderTable.ClientMods[modid].formats.push(format.fullname);
+					if (format.teambuilderFormat) BattleTeambuilderTable.ClientMods[modid].teambuilderFormats.push(format.teambuilderFormat);
+					else BattleTeambuilderTable.ClientMods[modid].teambuilderFormats.push('');
 				}
 			}
 			const standardTiers = ['uber', 'ou', 'uubl', 'uu', 'rubl', 'ru', 'nubl', 'nu', 'publ',
@@ -1074,9 +1077,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				BattleTeambuilderTable.ClientMods[modid].customTiers = ClientMods[modid].customTiers;
 			} else {
 				BattleTeambuilderTable.ClientMods[modid].customTiers = [];
-			}
-			if (ClientMods[modid].baseTier) {
-				BattleTeambuilderTable.ClientMods[modid].baseTier = ClientMods[modid].baseTier;
 			}
 			// Find any nonstandard tiers used by this mod
 			for (const speciesid in modData.FormatsData) {
@@ -1102,23 +1102,15 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				tierTable[tier].push(id);
 			}
 			const tiers = [];
-			const formatSlices = {};
 			BattleTeambuilderTable[modid].tiers = tiers;
+			const customTiers = [];
+			BattleTeambuilderTable[modid].customTiers = customTiers;
+			const formatSlices = {};
 			BattleTeambuilderTable[modid].formatSlices = formatSlices;
-			const modTiers = BattleTeambuilderTable.ClientMods[modid].customTiers;
-			const baseTier = BattleTeambuilderTable.ClientMods[modid].baseTier;
-			const tierOrder = [];
-			const baseOrder = ["AG", "Uber", "(Uber)", "OU", "(OU)", "UUBL", "UU", "RUBL", "RU", "NUBL", "NU", "PUBL", "PU", "(PU)", "New", "NFE", "LC Uber", "LC", "Unreleased"];
+			const tierOrder = ["OU", "AG", "Uber", "(Uber)", "OU", "(OU)", "UUBL", "UU", "RUBL", "RU", "NUBL", "NU", "PUBL", "PU", "(PU)", "New", "NFE", "LC Uber", "LC", "Unreleased"];
 			const sliceTiers = ["OU", "AG", "Uber", "UU", "(UU)", "RU", "NU", "(NU)", "PU", "(PU)", "NFE", "LC", "DOU", "DUU", "(DUU)", "New", "Legal", "Regular", "Restricted Legendary", "CAP LC"];
-			let tierIndex = 0;
-			if (baseTier) tierIndex = baseOrder.indexOf(baseTier);
-			tierOrder.push(...baseOrder.slice(0, tierIndex));
-			if (typeof modTiers !== "undefined") {
-				tierOrder.push(...modTiers);
-				sliceTiers.push(...modTiers);
-			}
-			if (!ClientMods[modid].excludeStandardTiers) tierOrder.push(...baseOrder.slice(tierIndex));
 			for (const tier of tierOrder) {
+				if (ClientMods[modid].excludeStandardTiers) break;
 				if (sliceTiers.includes(tier)) {
 					let usedTier = tier;
 					if (usedTier === "(UU)") usedTier = "RU";
@@ -1130,6 +1122,11 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				if (!tierTable[tier]) continue;
 				tiers.push(['header', tier]);
 				tiers.push(...tierTable[tier]);
+			}
+			for (const tier of BattleTeambuilderTable.ClientMods[modid].customTiers) {
+				if (!tierTable[tier]) continue;
+				customTiers.push(['header', tier]);
+				customTiers.push(...tierTable[tier]);
 			}
 			//pokemon stats
 			const overrideDexInfo = {};
