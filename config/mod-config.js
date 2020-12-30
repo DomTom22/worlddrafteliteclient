@@ -34,7 +34,7 @@ const ModConfig = {
 		'viabilities': true,
 		'breedingvariants': true,
 		'abnormal': true,
-		// 'crossoverchaos': true,
+		'crossoverchaos': true,
 		'pkmnyb': true,
 		'twisted': true,
 		'roseredirisblue': true,

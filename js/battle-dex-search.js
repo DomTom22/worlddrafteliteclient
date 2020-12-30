@@ -888,6 +888,7 @@ table.tiers=null;
 }
 var tierSet=table.tierSet;
 var slices=table.formatSlices;
+
 if(format==='ubers'||format==='uber')tierSet=tierSet.slice(slices.Uber);else
 if(format==='vgc2017')tierSet=tierSet.slice(slices.Regular);else
 if(format==='vgc2018')tierSet=tierSet.slice(slices.Regular);else
@@ -912,6 +913,21 @@ if(format==='doublesuu')tierSet=tierSet.slice(slices.DUU);else
 if(format==='doublesnu')tierSet=tierSet.slice(slices.DNU||slices.DUU);else
 if(this.formatType==='letsgo')tierSet=tierSet.slice(slices.Uber);else
 
+if(this.mod){
+newTierSet=[];
+if(BattleTeambuilderTable.ClientMods[this.mod].customTiers){
+for(var tier in BattleTeambuilderTable.ClientMods[this.mod].customTiers){var _newTierSet;
+(_newTierSet=newTierSet).push.apply(_newTierSet,tierSet.slice(slices[tier]));
+}
+}
+if(tierSet.OU){var _newTierSet2,_newTierSet3,_newTierSet4;
+(_newTierSet2=newTierSet).push.apply(_newTierSet2,tierSet.slice(slices.OU,slices.UU));
+if(dex.gen!==8)newTierSet.push(tierSet.slice(slices.AG,slices.Uber));
+(_newTierSet3=newTierSet).push.apply(_newTierSet3,tierSet.slice(slices.Uber,slices.OU));
+(_newTierSet4=newTierSet).push.apply(_newTierSet4,tierSet.slice(slices.UU));
+}
+tierSet=newTierSet;
+}else
 if(!isDoublesOrBS){
 tierSet=[].concat(
 tierSet.slice(slices.OU,slices.UU),

@@ -888,6 +888,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		}
 		let tierSet: SearchRow[] = table.tierSet;
 		let slices: {[k: string]: number} = table.formatSlices;
+		// console.log(slices);
 		if (format === 'ubers' || format === 'uber') tierSet = tierSet.slice(slices.Uber);
 		else if (format === 'vgc2017') tierSet = tierSet.slice(slices.Regular);
 		else if (format === 'vgc2018') tierSet = tierSet.slice(slices.Regular);
@@ -912,6 +913,21 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		else if (format === 'doublesnu') tierSet = tierSet.slice(slices.DNU || slices.DUU);
 		else if (this.formatType === 'letsgo') tierSet = tierSet.slice(slices.Uber);
 		// else if (isDoublesOrBS) tierSet = tierSet;
+		else if (this.mod) {
+			newTierSet = [];
+			if (BattleTeambuilderTable.ClientMods[this.mod].customTiers) {
+				for (const tier in BattleTeambuilderTable.ClientMods[this.mod].customTiers) {
+					newTierSet.push(...tierSet.slice(slices[tier]));
+				}
+			}
+			if (tierSet.OU) {
+				newTierSet.push(...tierSet.slice(slices.OU, slices.UU));
+				if (dex.gen !== 8) newTierSet.push(tierSet.slice(slices.AG, slices.Uber));
+				newTierSet.push(...tierSet.slice(slices.Uber, slices.OU));
+				newTierSet.push(...tierSet.slice(slices.UU));
+			}
+			tierSet = newTierSet;
+		}
 		else if (!isDoublesOrBS) {
 			tierSet = [
 				...tierSet.slice(slices.OU, slices.UU),
