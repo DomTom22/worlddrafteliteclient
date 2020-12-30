@@ -1075,6 +1075,9 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			} else {
 				BattleTeambuilderTable.ClientMods[modid].customTiers = [];
 			}
+			if (ClientMods[modid].baseTier) {
+				BattleTeambuilderTable.ClientMods[modid].baseTier = ClientMods[modid].baseTier;
+			}
 			// Find any nonstandard tiers used by this mod
 			for (const speciesid in modData.FormatsData) {
 				const tier = modData.FormatsData[speciesid].tier;
@@ -1103,18 +1106,18 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			BattleTeambuilderTable[modid].tiers = tiers;
 			BattleTeambuilderTable[modid].formatSlices = formatSlices;
 			const modTiers = BattleTeambuilderTable.ClientMods[modid].customTiers;
+			const baseTier = BattleTeambuilderTable.ClientMods[modid].baseTier;
 			const tierOrder = [];
-			const baseOrder = ["OU", "AG", "Uber", "(Uber)", "OU", "(OU)", "UUBL", "UU", "RUBL", "RU", "NUBL", "NU", "PUBL", "PU", "(PU)", "New", "NFE", "LC Uber", "LC", "Unreleased"];
+			const baseOrder = ["AG", "Uber", "(Uber)", "OU", "(OU)", "UUBL", "UU", "RUBL", "RU", "NUBL", "NU", "PUBL", "PU", "(PU)", "New", "NFE", "LC Uber", "LC", "Unreleased"];
 			const sliceTiers = ["OU", "AG", "Uber", "UU", "(UU)", "RU", "NU", "(NU)", "PU", "(PU)", "NFE", "LC", "DOU", "DUU", "(DUU)", "New", "Legal", "Regular", "Restricted Legendary", "CAP LC"];
-			;
-			let isModTiers = typeof modTiers !== "undefined";
-			if (isModTiers){
-				if (ClientMods[modid].excludeStandardTiers) tierOrder.push(...modTiers);
-				else {
-					tierOrder.push(...modTiers.concat(...baseOrder));
-					sliceTiers.push(...modTiers.concat(...sliceTiers));
-				}
+			let tierIndex = 0;
+			if (baseTier) tierIndex = baseOrder.indexOf(baseTier);
+			tierOrder.push(...baseOrder.slice(0, tierIndex));
+			if (typeof modTiers !== "undefined") {
+				tierOrder.push(...modTiers);
+				sliceTiers.push(...modTiers);
 			}
+			if (!ClientMods[modid].excludeStandardTiers) tierOrder.push(...baseOrder.slice(tierIndex));
 			for (const tier of tierOrder) {
 				if (sliceTiers.includes(tier)) {
 					let usedTier = tier;
@@ -1271,8 +1274,8 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			delete BattleTeambuilderTable.ClientMods[modid];
 			delete BattleTeambuilderTable[modid];
 			console.log("WARNING: Failed to load " + modid);
-			// console.log("This was the error:");
-			// console.log(err);
+			console.log("This was the error:");
+			console.log(err);
 		}
 	}
 	// console.log( BattleTeambuilderTable.ClientMods );

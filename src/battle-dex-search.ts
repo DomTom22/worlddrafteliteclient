@@ -915,12 +915,18 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		// else if (isDoublesOrBS) tierSet = tierSet;
 		else if (this.mod) {
 			newTierSet = [];
-			if (BattleTeambuilderTable.ClientMods[this.mod].customTiers) {
-				for (const tier in BattleTeambuilderTable.ClientMods[this.mod].customTiers) {
+			console.log(tierSet);
+			if (BattleTeambuilderTable.ClientMods[this.mod].customTiers[0]) {
+				for (const i in BattleTeambuilderTable.ClientMods[this.mod].customTiers) {
+					const tier = BattleTeambuilderTable.ClientMods[this.mod].customTiers[i]
 					newTierSet.push(...tierSet.slice(slices[tier]));
+					console.log(tier);
 				}
-			}
-			if (tierSet.OU) {
+			} else if (BattleTeambuilderTable.ClientMods[this.mod].baseTier) {
+				newTierSet.push(...tierSet.slice(slices[BattleTeambuilderTable.ClientMods[this.mod].baseTier]));
+				console.log(BattleTeambuilderTable.ClientMods[this.mod].baseTier);
+			} else {
+				console.log('all tiers');
 				newTierSet.push(...tierSet.slice(slices.OU, slices.UU));
 				if (dex.gen !== 8) newTierSet.push(tierSet.slice(slices.AG, slices.Uber));
 				newTierSet.push(...tierSet.slice(slices.Uber, slices.OU));

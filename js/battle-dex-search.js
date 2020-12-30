@@ -915,16 +915,22 @@ if(this.formatType==='letsgo')tierSet=tierSet.slice(slices.Uber);else
 
 if(this.mod){
 newTierSet=[];
-if(BattleTeambuilderTable.ClientMods[this.mod].customTiers){
-for(var tier in BattleTeambuilderTable.ClientMods[this.mod].customTiers){var _newTierSet;
+console.log(tierSet);
+if(BattleTeambuilderTable.ClientMods[this.mod].customTiers[0]){
+for(var i in BattleTeambuilderTable.ClientMods[this.mod].customTiers){var _newTierSet;
+var tier=BattleTeambuilderTable.ClientMods[this.mod].customTiers[i];
 (_newTierSet=newTierSet).push.apply(_newTierSet,tierSet.slice(slices[tier]));
+console.log(tier);
 }
-}
-if(tierSet.OU){var _newTierSet2,_newTierSet3,_newTierSet4;
-(_newTierSet2=newTierSet).push.apply(_newTierSet2,tierSet.slice(slices.OU,slices.UU));
+}else if(BattleTeambuilderTable.ClientMods[this.mod].baseTier){var _newTierSet2;
+(_newTierSet2=newTierSet).push.apply(_newTierSet2,tierSet.slice(slices[BattleTeambuilderTable.ClientMods[this.mod].baseTier]));
+console.log(BattleTeambuilderTable.ClientMods[this.mod].baseTier);
+}else{var _newTierSet3,_newTierSet4,_newTierSet5;
+console.log('all tiers');
+(_newTierSet3=newTierSet).push.apply(_newTierSet3,tierSet.slice(slices.OU,slices.UU));
 if(dex.gen!==8)newTierSet.push(tierSet.slice(slices.AG,slices.Uber));
-(_newTierSet3=newTierSet).push.apply(_newTierSet3,tierSet.slice(slices.Uber,slices.OU));
-(_newTierSet4=newTierSet).push.apply(_newTierSet4,tierSet.slice(slices.UU));
+(_newTierSet4=newTierSet).push.apply(_newTierSet4,tierSet.slice(slices.Uber,slices.OU));
+(_newTierSet5=newTierSet).push.apply(_newTierSet5,tierSet.slice(slices.UU));
 }
 tierSet=newTierSet;
 }else

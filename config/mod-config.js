@@ -21,7 +21,9 @@ const ModConfig = {
 		'roulettemons': {
 			'excludeStandardTiers': true,
 		},
-		'sylvemonstest': true,
+		'sylvemonstest': {
+			'baseTier': 'OU',
+		},
 		'ccapm2020': true,
 		'optimons': true,
 		'megamax': true,
