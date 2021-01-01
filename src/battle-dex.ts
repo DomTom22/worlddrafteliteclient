@@ -182,15 +182,15 @@ const Dex = new class implements ModdedDex {
 	resourcePrefix = (() => {
 		let prefix = '';
 		if (window.document?.location?.protocol !== 'http:') prefix = 'https:';
-		return `${prefix}//${'play.pokemonshowdown.com'}/`;
+		return `${prefix}//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/`;
 	})();
 
 	fxPrefix = (() => {
 		if (window.document?.location?.protocol === 'file:') {
-			if (window.Replays) return `https://${'play.pokemonshowdown.com'}/fx/`;
+			if (window.Replays) return `https://${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
 			return `fx/`;
 		}
-		return `//${'play.pokemonshowdown.com'}/fx/`;
+		return `//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
 	})();
 
 	loadedSpriteData = {xy: 1, bw: 0};
@@ -830,7 +830,7 @@ class ModdedDex {
 			this.gen = parseInt(modid.slice(3), 10);
 		}
 	}
-	setGen(gen: number){
+	setGen(gen: number) {
 		this.gen = gen;
 	}
 	getMove(name: string): Move {
@@ -927,7 +927,7 @@ class ModdedDex {
 		const table = window.BattleTeambuilderTable[this.modid];
 		let data = {...Dex.getSpecies(name)};
 		if (table.overrideDexInfo) {
-			for (const key in table.overrideDexInfo[id]){
+			for (const key in table.overrideDexInfo[id]) {
 				data[key] = (table.overrideDexInfo[id][key]);
 			}
 		} else {
@@ -952,7 +952,7 @@ class ModdedDex {
 		if (this.gen < 3) {
 			data.abilities = {0: "None"};
 		}
-		
+
 		if (id in table.overrideTier) data.tier = table.overrideTier[id];
 		if (!data.tier && id.slice(-5) === 'totem') {
 			data.tier = this.getSpecies(id.slice(0, -5)).tier;
