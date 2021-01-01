@@ -1347,6 +1347,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		const format = this.format;
 		const isHackmons = (format.includes('hackmons') || format.endsWith('bh'));
 		const isSTABmons = (format.includes('stabmons') || format === 'staaabmons');
+		const isFranticFusions = (format.includes('fronticfusions') || format === 'franticfusions');
 		const galarBornLegality = (format.includes('battlestadium') || format.startsWith('vgc') && this.dex.gen === 8);
 
 		const abilityid = this.set ? toID(this.set.ability) : '' as ID;
@@ -1430,6 +1431,22 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 				if (move.gen > dex.gen) continue;
 				if (move.isZ || move.isMax || move.isNonstandard) continue;
 				moves.push(id);
+			}
+		}
+		if (isFranticFusions) {
+			const set = this.set;
+			const fuseTemplate = this.dex.getSpecies(set.name);
+			if (fuseTemplate !== undefined) {
+				let fuseSpecies = fuseTemplate.name;
+				let baseSpecies = species.name;
+				let stats = species.baseStats;
+				/* for (i in stats) {
+					stats[i] = Math.floor((fuseTemplate.baseStats[i] + stats[i]) / 2);
+				} */
+				for (let id in BattleMovedex) {
+					let learnset = BattleTeambuilderTable.learnsets[toID(fuseSpecies)];
+					if (id in learnset) moves.push(id);
+				}
 			}
 		}
 
