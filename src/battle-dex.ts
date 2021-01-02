@@ -500,7 +500,7 @@ const Dex = new class implements ModdedDex {
 		const species = Dex.getSpecies(pokemon);
 		// Gmax sprites are already extremely large, so we don't need to double.
 		if (species.name.endsWith('-Gmax')) isDynamax = false;
-		let spriteResource = 'https://raw.githubusercontent.com/petuuuhhh/Pokemon-Showdown/m4a/data/mods/m4av6/sprites/';
+		let spriteResource = 'https://raw.githubusercontent.com/scoopapa/DH/master/data/mods/m4av6/sprites/';
 		let speciesid = species.id;
 		let spriteData = {
 			gen: mechanicsGen,
