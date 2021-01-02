@@ -501,12 +501,25 @@ const Dex = new class implements ModdedDex {
 		// Gmax sprites are already extremely large, so we don't need to double.
 		if (species.name.endsWith('-Gmax')) isDynamax = false;
 		let spriteResource = 'https://raw.githubusercontent.com/petuuuhhh/Pokemon-Showdown/m4a/data/mods/m4av6/sprites/';
+		const ClientMods = BattleTeambuilderTable.ClientMods;
+		let tier = window.room.battle.tier;
+		for (const modid in (ClientMods)) {
+			for (const i in ClientMods[modid].formats) {
+				let formatName = ClientMods[modid].formats[i];
+				if (toID(formatName) === toID(tier)) {
+					this.modid = modid;
+				}
+			}
+		}
+		let speciesid = species.id;
+		console.log(BattleTeambuilderTable[this.modid].overrideDexInfo[speciesid].name);
+		console.log(species.name);
 		let spriteData = {
 			gen: mechanicsGen,
 			w: 96,
 			h: 96,
 			y: 0,
-			url: (toID(window.room.battle.tier) === 'gen8megasforall') ? spriteResource : Dex.resourcePrefix + 'sprites/',
+			url: (BattleTeambuilderTable[this.modid].overrideDexInfo[speciesid].name === species.name) ? spriteResource : Dex.resourcePrefix + 'sprites/',
 			pixelated: true,
 			isFrontSprite: false,
 			cryurl: '',
@@ -543,7 +556,6 @@ const Dex = new class implements ModdedDex {
 
 		let animationData = null;
 		let miscData = null;
-		let speciesid = species.id;
 		if (species.isTotem) speciesid = toID(name);
 		if (baseDir === '' && window.BattlePokemonSprites) {
 			animationData = BattlePokemonSprites[speciesid];
@@ -625,7 +637,6 @@ const Dex = new class implements ModdedDex {
 			if (spriteData.gen >= 4 && miscData['frontf'] && options.gender === 'F') {
 				name += '-f';
 			}
-
 			spriteData.url += dir + '/' + name + '.png';
 		}
 
@@ -824,6 +835,7 @@ class ModdedDex {
 	};
 	pokeballs: string[] | null = null;
 	constructor(modid: ID) {
+		this.modid = modid;
 		if (!modid.startsWith('gen')) {
 			this.gen = 8;
 		} else {

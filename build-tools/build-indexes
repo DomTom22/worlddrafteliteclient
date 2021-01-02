@@ -194,7 +194,6 @@ function requireNoCache(pathSpec) {
 		generateAlias(id, name, 'ability');
 	}
 	for (const modid in ClientMods) {
-		console.log(modid);
 		const modDex = Dex.mod(modid);
 		for (const id in modDex.data.Pokedex) {
 			if (!usedIDs.includes(id)) {
