@@ -519,7 +519,7 @@ const Dex = new class implements ModdedDex {
 			w: 96,
 			h: 96,
 			y: 0,
-			url: (BattleTeambuilderTable[this.modid].overrideDexInfo[speciesid].name === species.name) ? spriteResource : Dex.resourcePrefix + 'sprites/',
+			url: (this.modid === 'm4av6' && (BattleTeambuilderTable[this.modid].overrideDexInfo[speciesid].name === species.name)) ? spriteResource : Dex.resourcePrefix + 'sprites/',
 			pixelated: true,
 			isFrontSprite: false,
 			cryurl: '',
