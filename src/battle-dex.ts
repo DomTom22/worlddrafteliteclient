@@ -501,25 +501,13 @@ const Dex = new class implements ModdedDex {
 		// Gmax sprites are already extremely large, so we don't need to double.
 		if (species.name.endsWith('-Gmax')) isDynamax = false;
 		let spriteResource = 'https://raw.githubusercontent.com/petuuuhhh/Pokemon-Showdown/m4a/data/mods/m4av6/sprites/';
-		const ClientMods = BattleTeambuilderTable.ClientMods;
-		let tier = window.room.battle.tier;
-		for (const modid in (ClientMods)) {
-			for (const i in ClientMods[modid].formats) {
-				let formatName = ClientMods[modid].formats[i];
-				if (toID(formatName) === toID(tier)) {
-					this.modid = modid;
-				}
-			}
-		}
 		let speciesid = species.id;
-		console.log(BattleTeambuilderTable[this.modid].overrideDexInfo[speciesid].name);
-		console.log(species.name);
 		let spriteData = {
 			gen: mechanicsGen,
 			w: 96,
 			h: 96,
 			y: 0,
-			url: (this.modid === 'm4av6' && (BattleTeambuilderTable[this.modid].overrideDexInfo[speciesid].name === species.name)) ? spriteResource : Dex.resourcePrefix + 'sprites/',
+			url: (BattleTeambuilderTable['m4av6'].overrideDexInfo[speciesid].name === species.name) ? spriteResource : Dex.resourcePrefix + 'sprites/',
 			pixelated: true,
 			isFrontSprite: false,
 			cryurl: '',
