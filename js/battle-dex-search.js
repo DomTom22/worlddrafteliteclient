@@ -708,7 +708,6 @@ return results;
 };_proto2.
 firstLearnsetid=function firstLearnsetid(speciesid){
 var learnsets=BattleTeambuilderTable.learnsets;
-if(this.mod&&BattleTeambuilderTable.ClientMods[this.mod])learnsets=BattleTeambuilderTable[this.mod].learnsets;
 if(speciesid in learnsets)return speciesid;
 var species=this.dex.getSpecies(speciesid);
 if(!species.exists)return'';
@@ -739,7 +738,9 @@ if(!this.mod&&this.dex.gen>=8&&this.dex.getMove(moveid).isNonstandard==='Past'&&
 return false;
 }
 var genChar=""+this.dex.gen;
-if(
+if(this.mod){
+genChar=BattleTeambuilderTable[this.mod].lsetStr;
+}else if(
 this.format.startsWith('vgc')||
 this.format.startsWith('battlespot')||
 this.format.startsWith('battlestadium'))
@@ -755,7 +756,6 @@ genChar='p';
 var learnsetid=this.firstLearnsetid(speciesid);
 while(learnsetid){
 var learnset=BattleTeambuilderTable.learnsets[learnsetid];
-if(this.mod)learnset=BattleTeambuilderTable[this.mod].learnsets[learnsetid];
 if(learnset&&moveid in learnset&&learnset[moveid].includes(genChar)){
 return true;
 }
@@ -1394,7 +1394,6 @@ while(learnsetid){var _this$formatType2;
 var learnset=BattleTeambuilderTable.learnsets[learnsetid];
 if(this.formatType==='letsgo')learnset=BattleTeambuilderTable['letsgo'].learnsets[learnsetid];
 if((_this$formatType2=this.formatType)!=null&&_this$formatType2.startsWith('dlc1'))learnset=BattleTeambuilderTable['gen8dlc1'].learnsets[learnsetid];
-if(this.mod&&BattleTeambuilderTable.ClientMods[this.mod])learnset=BattleTeambuilderTable[this.mod].learnsets[learnsetid];
 if(learnset){
 for(var moveid in learnset){var _this$formatType3,_BattleTeambuilderTab;
 var learnsetEntry=learnset[moveid];
@@ -1403,7 +1402,9 @@ var learnsetEntry=learnset[moveid];
 
 if(galarBornLegality&&!learnsetEntry.includes('g')){
 continue;
-}else if(!learnsetEntry.includes(gen)){
+}else if(!this.mod&&!learnsetEntry.includes(gen)){
+continue;
+}else if(this.mod&&!learnsetEntry.includes(BattleTeambuilderTable[this.mod].lsetStr)){
 continue;
 }
 if(!this.mod&&this.dex.gen>=8&&BattleMovedex[moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;

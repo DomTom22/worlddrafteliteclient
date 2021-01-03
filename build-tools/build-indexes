@@ -1049,6 +1049,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		}
 	}
 	BattleTeambuilderTable.ClientMods = {};
+	let modIndex = 0;
 	for (const modid of Object.keys(ClientMods)) {
 		try { // catch loading errors so the whole thing doesn't break if one mod does
 			// Gather data about formats
@@ -1147,46 +1148,25 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				}
 			}
 			//learnsets
-			const learnsets = {};
-			BattleTeambuilderTable[modid].learnsets = learnsets;
+			const str = modIndex.toString(); //create a unique string for this mod's learnset data
+			const pad = "!!";
+			let lsetStr = "m" + pad.substring(0, pad.length - str.length) + str;
+			const symArr = ['!', '@', '#', '[', ']', '^', '&', '*', '(', ')']; //can't use numbers for the mods			
+			for (let i = 0; i < symArr.length; i++) lsetStr = lsetStr.replace(i.toString(), symArr[i]);
+			BattleTeambuilderTable[modid].lsetStr = lsetStr;
+			modIndex++;
 			for (const id in modDex.data.Learnsets) {
 				const learnset = modDex.data.Learnsets[id].learnset;
 				if (!learnset) continue;
-				learnsets[id] = {};
+				if(!learnsets[id]) learnsets[id] = {};
 				for (const moveid in learnset) {
 					const gens = learnset[moveid].map(x => Number(x[0]));
 					const minGen = Math.min(...gens);
-					const vcOnly = (minGen === 7 && learnset[moveid].every(x => x[0] !== '7' || x === '7V') ||
-						minGen === 8 && learnset[moveid].every(x => x[0] !== '8' || x === '8V'));
-
-					if (minGen <= 4 && (gen3HMs.has(moveid) || gen4HMs.has(moveid))) {
-						let legalGens = '';
-						let available = false;
-
-						if (minGen === 3) {
-							legalGens += '3';
-							available = true;
-						}
-						if (available) available = !gen3HMs.has(moveid);
-
-						if (available || gens.includes(4)) {
-							legalGens += '4';
-							available = true;
-						}
-						if (available) available = !gen4HMs.has(moveid);
-
-						let minUpperGen = available ? 5 : Math.min(
-							...gens.filter(gen => gen > 4)
-						);
-						legalGens += '012345678'.slice(minUpperGen);
-						learnsets[id][moveid] = legalGens;
-					} else {
-						learnsets[id][moveid] = '012345678'.slice(minGen);
+					if (!modGen || Number(modGen.charAt(3)) >= minGen) {
+						if (!learnsets[id][moveid]) learnsets[id][moveid] = '';
+						learnsets[id][moveid] += lsetStr;
+						if (moveid === 'cactusattack') console.log(minGen + ' ' + id + ' ' + moveid);
 					}
-
-					if (gens.indexOf(6) >= 0) learnsets[id][moveid] += 'p';
-					if (gens.indexOf(7) >= 0 && !vcOnly) learnsets[id][moveid] += 'q';
-					if (gens.indexOf(8) >= 0 && !vcOnly) learnsets[id][moveid] += 'g';
 				}
 			}
 			//items
