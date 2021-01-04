@@ -504,7 +504,7 @@ const Dex = new class implements ModdedDex {
 		const format = window.room.battle.tier;
 		let thisMod = '';
 		if (toID(format).includes("prism")) thisMod = 'prism';
-		console.log(species);
+		console.log(options);
 		let spriteData = {
 			gen: mechanicsGen,
 			w: 96,

@@ -504,7 +504,7 @@ var speciesid=species.id;
 var format=window.room.battle.tier;
 var thisMod='';
 if(toID(format).includes("prism"))thisMod='prism';
-console.log(species);
+console.log(options);
 var spriteData={
 gen:mechanicsGen,
 w:96,
