@@ -1828,7 +1828,7 @@
 			if (this.curTeam.gen > 2 && supportsEVs) buf += '<div><em>Remaining:</em></div>';
 			this.$chart.find('.graphcol').html(buf);
 
-			if (this.curTeam.gen <= 2) return;
+			if (this.curTeam.gen <= 2 || this.curTeam.format.includes('prism')) return;
 			if (supportsEVs) {
 				var maxEv = 510;
 				if (totalev <= maxEv) {
@@ -2043,7 +2043,7 @@
 
 			var supportsEVs = !this.curTeam.format.includes('letsgo');
 			// var supportsAVs = !supportsEVs && this.curTeam.format.endsWith('norestrictions');
-			var defaultEV = this.curTeam.gen <= 2 ? 252 : 0;
+			var defaultEV = (this.curTeam.format.includes('prism') || this.curTeam.gen <= 2) ? 252 : 0;
 			var maxEV = supportsEVs ? 252 : 200;
 			var stepEV = supportsEVs ? 4 : 1;
 
