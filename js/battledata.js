@@ -532,7 +532,7 @@ facing='front';
 dir='-back';
 facing='back';
 }
-if(fakeSprite)dir=isFront?'front':'gen5-back';
+if(fakeSprite)dir=isFront?'front':'back';
 
 
 
