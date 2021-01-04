@@ -726,7 +726,7 @@ const Dex = new class implements ModdedDex {
 		}
 		console.log(species);
 		if (species.exists === false) {
-			if (mod) return { spriteDir: 'sprites/${mod}/front', spriteid: spriteid, x: 10, y: 5 };
+			if (mod) return { spriteDir: `sprites/${mod}/front`, spriteid: spriteid, x: 10, y: 5 };
 			return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
 		}
 		const spriteData: TeambuilderSpriteData = {
@@ -772,7 +772,7 @@ const Dex = new class implements ModdedDex {
 		const data = this.getTeambuilderSpriteData(pokemon, gen, mod);
 		const shiny = (data.shiny ? '-shiny' : '');
 		let resourcePrefix = Dex.resourcePrefix;
-		if (mod && data.spriteDir === 'sprites/${mod}/front') resourcePrefix = 'https://dragonheaven.herokuapp.com/';
+		if (mod && data.spriteDir === `sprites/${mod}/front`) resourcePrefix = 'https://dragonheaven.herokuapp.com/';
 		console.log( data.spriteDir );
 		return 'background-image:url(' + resourcePrefix + data.spriteDir + shiny + '/' + data.spriteid + '.png);background-position:' + data.x + 'px ' + data.y + 'px;background-repeat:no-repeat';
 	}
