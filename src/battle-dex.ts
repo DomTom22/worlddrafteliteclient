@@ -178,7 +178,8 @@ const Dex = new class implements ModdedDex {
 	readonly statNamesExceptHP: ReadonlyArray<StatNameExceptHP> = ['atk', 'def', 'spa', 'spd', 'spe'];
 
 	pokeballs: string[] | null = null;
-
+	
+	readonly modResourcePrefix = 'https://dragonheaven.herokuapp.com/';
 	resourcePrefix = (() => {
 		let prefix = '';
 		if (window.document?.location?.protocol !== 'http:') prefix = 'https:';
@@ -498,24 +499,28 @@ const Dex = new class implements ModdedDex {
 			pokemon = pokemon.getSpeciesForme();
 		}
 		const species = Dex.getSpecies(pokemon);
+		let resourcePrefix = Dex.resourcePrefix;
+		let spriteDir = 'sprites/'
+		let fakeSprite = false;
+		if (options.mod && species.exists === false) {
+			resourcePrefix = Dex.modResourcePrefix;
+			spriteDir = `sprites/${options.mod}/`;
+			fakeSprite = true;
+		}
 		// Gmax sprites are already extremely large, so we don't need to double.
 		if (species.name.endsWith('-Gmax')) isDynamax = false;
-		let speciesid = species.id;
-		const format = window.room.battle.tier;
-		let thisMod = '';
-		if (toID(format).includes("prism")) thisMod = 'prism';
-		// console.log(options);
 		let spriteData = {
 			gen: mechanicsGen,
 			w: 96,
 			h: 96,
 			y: 0,
-			url: (!isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? 'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/backs/' : (isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? 'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/fronts/' : Dex.resourcePrefix + 'sprites/',
+			url: resourcePrefix + spriteDir,
 			pixelated: true,
 			isFrontSprite: false,
 			cryurl: '',
 			shiny: options.shiny,
 		};
+		console.log(spriteData.url);
 		let name = species.spriteid;
 		let dir;
 		let facing;
@@ -524,10 +529,10 @@ const Dex = new class implements ModdedDex {
 			dir = '';
 			facing = 'front';
 		} else {
-			dir = (!isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? '' : '-back';
+			dir = '-back';
 			facing = 'back';
 		}
-
+		if (fakeSprite) dir = isFront ? 'front' : 'back';
 		// Decide which gen sprites to use.
 		//
 		// There are several different generations we care about here:
@@ -547,6 +552,7 @@ const Dex = new class implements ModdedDex {
 
 		let animationData = null;
 		let miscData = null;
+		let speciesid = species.id;
 		if (species.isTotem) speciesid = toID(name);
 		if (baseDir === '' && window.BattlePokemonSprites) {
 			animationData = BattlePokemonSprites[speciesid];
@@ -603,13 +609,13 @@ const Dex = new class implements ModdedDex {
 		}
 
 		// Mod Cries
-		if (options.mod) {
+		if (options.mod === 'digimon') {
 			spriteData.cryurl = `sprites/${options.mod}/audio/${toID(species.baseSpecies)}`;
 			spriteData.cryurl += '.mp3';
 		}
-
+		
 		if (animationData[facing + 'f'] && options.gender === 'F') facing += 'f';
-		let allowAnim = !Dex.prefs('noanim') && !Dex.prefs('nogif');
+		let allowAnim = !fakeSprite && !Dex.prefs('noanim') && !Dex.prefs('nogif');
 		if (allowAnim && spriteData.gen >= 6) spriteData.pixelated = false;
 		if (allowAnim && animationData[facing] && spriteData.gen >= 5) {
 			if (facing.slice(-1) === 'f') name += '-f';
@@ -621,7 +627,7 @@ const Dex = new class implements ModdedDex {
 		} else {
 			// There is no entry or enough data in pokedex-mini.js
 			// Handle these in case-by-case basis; either using BW sprites or matching the played gen.
-			dir = (thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? dir : (thisMod === 'prism' && (species.gen < 3 && species.gen !== 0)) ? 'gen2' + dir : (baseDir || 'gen5') + dir;
+			if (!fakeSprite) dir = (baseDir || 'gen5') + dir;
 
 			// Gender differences don't exist prior to Gen 4,
 			// so there are no sprites for it
@@ -629,7 +635,7 @@ const Dex = new class implements ModdedDex {
 				name += '-f';
 			}
 
-			spriteData.url += (!isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? dir + speciesid + '/back.png' : dir + '/' + name + '.png';
+			spriteData.url += dir + '/' + name + '.png';
 		}
 
 		if (!options.noScale) {
@@ -656,7 +662,6 @@ const Dex = new class implements ModdedDex {
 			spriteData.h *= 1.5;
 			spriteData.y += -11;
 		}
-		console.log(spriteData);
 		return spriteData;
 	}
 
@@ -771,7 +776,7 @@ const Dex = new class implements ModdedDex {
 		const data = this.getTeambuilderSpriteData(pokemon, gen, mod);
 		const shiny = (data.shiny ? '-shiny' : '');
 		let resourcePrefix = Dex.resourcePrefix;
-		if (mod && data.spriteDir === `sprites/${mod}/front`) resourcePrefix = 'https://dragonheaven.herokuapp.com/';
+		if (mod && data.spriteDir === `sprites/${mod}/front`) resourcePrefix = Dex.modResourcePrefix;
 		return 'background-image:url(' + resourcePrefix + data.spriteDir + shiny + '/' + data.spriteid + '.png);background-position:' + data.x + 'px ' + data.y + 'px;background-repeat:no-repeat';
 	}
 

@@ -179,6 +179,7 @@ statNamesExceptHP=['atk','def','spa','spd','spe'];this.
 
 pokeballs=null;this.
 
+modResourcePrefix='https://dragonheaven.herokuapp.com/';this.
 resourcePrefix=function(){var _window$document,_window$document$loca;
 var prefix='';
 if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
@@ -498,24 +499,28 @@ if(pokemon.volatiles.dynamax)isDynamax=true;
 pokemon=pokemon.getSpeciesForme();
 }
 var species=Dex.getSpecies(pokemon);
+var resourcePrefix=Dex.resourcePrefix;
+var spriteDir='sprites/';
+var fakeSprite=false;
+if(options.mod&&species.exists===false){
+resourcePrefix=Dex.modResourcePrefix;
+spriteDir="sprites/"+options.mod+"/";
+fakeSprite=true;
+}
 
 if(species.name.endsWith('-Gmax'))isDynamax=false;
-var speciesid=species.id;
-var format=window.room.battle.tier;
-var thisMod='';
-if(toID(format).includes("prism"))thisMod='prism';
-
 var spriteData={
 gen:mechanicsGen,
 w:96,
 h:96,
 y:0,
-url:!isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/backs/':isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/fronts/':Dex.resourcePrefix+'sprites/',
+url:resourcePrefix+spriteDir,
 pixelated:true,
 isFrontSprite:false,
 cryurl:'',
 shiny:options.shiny};
 
+console.log(spriteData.url);
 var name=species.spriteid;
 var dir;
 var facing;
@@ -524,10 +529,10 @@ spriteData.isFrontSprite=true;
 dir='';
 facing='front';
 }else{
-dir=!isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?'':'-back';
+dir='-back';
 facing='back';
 }
-
+if(fakeSprite)dir=isFront?'front':'back';
 
 
 
@@ -547,6 +552,7 @@ var baseDir=['','gen1','gen2','gen3','gen4','gen5','','',''][spriteData.gen];
 
 var animationData=null;
 var miscData=null;
+var speciesid=species.id;
 if(species.isTotem)speciesid=toID(name);
 if(baseDir===''&&window.BattlePokemonSprites){
 animationData=BattlePokemonSprites[speciesid];
@@ -603,13 +609,13 @@ return spriteData;
 }
 
 
-if(options.mod){
+if(options.mod==='digimon'){
 spriteData.cryurl="sprites/"+options.mod+"/audio/"+toID(species.baseSpecies);
 spriteData.cryurl+='.mp3';
 }
 
 if(animationData[facing+'f']&&options.gender==='F')facing+='f';
-var allowAnim=!Dex.prefs('noanim')&&!Dex.prefs('nogif');
+var allowAnim=!fakeSprite&&!Dex.prefs('noanim')&&!Dex.prefs('nogif');
 if(allowAnim&&spriteData.gen>=6)spriteData.pixelated=false;
 if(allowAnim&&animationData[facing]&&spriteData.gen>=5){
 if(facing.slice(-1)==='f')name+='-f';
@@ -621,7 +627,7 @@ spriteData.url+=dir+'/'+name+'.gif';
 }else{
 
 
-dir=thisMod==='prism'&&(species.gen>2||species.gen===0)?dir:thisMod==='prism'&&species.gen<3&&species.gen!==0?'gen2'+dir:(baseDir||'gen5')+dir;
+if(!fakeSprite)dir=(baseDir||'gen5')+dir;
 
 
 
@@ -629,7 +635,7 @@ if(spriteData.gen>=4&&miscData['frontf']&&options.gender==='F'){
 name+='-f';
 }
 
-spriteData.url+=!isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?dir+speciesid+'/back.png':dir+'/'+name+'.png';
+spriteData.url+=dir+'/'+name+'.png';
 }
 
 if(!options.noScale){
@@ -656,7 +662,6 @@ spriteData.w*=1.5;
 spriteData.h*=1.5;
 spriteData.y+=-11;
 }
-console.log(spriteData);
 return spriteData;
 };_proto2.
 

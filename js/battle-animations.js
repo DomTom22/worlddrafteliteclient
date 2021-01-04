@@ -90,7 +90,6 @@ BattleScene=function(){
 
 function BattleScene(battle,$frame,$logFrame){this.animating=true;this.acceleration=1;this.gen=7;this.mod='';this.activeCount=1;this.numericId=0;this.$battle=null;this.$options=null;this.$terrain=null;this.$weather=null;this.$bgEffect=null;this.$bg=null;this.$sprite=null;this.$sprites=[null,null];this.$spritesFront=[null,null];this.$stat=null;this.$fx=null;this.$leftbar=null;this.$rightbar=null;this.$turn=null;this.$messagebar=null;this.$delay=null;this.$hiddenMessage=null;this.$tooltips=null;this.sideConditions=[{},{}];this.preloadDone=0;this.preloadNeeded=0;this.bgm=null;this.backdropImage='';this.bgmNum=0;this.preloadCache={};this.messagebarOpen=false;this.customControls=false;this.interruptionCount=1;this.curWeather='';this.curTerrain='';this.timeOffset=0;this.pokemonTimeOffset=0;this.minDelay=0;this.activeAnimations=$();
 this.battle=battle;
-
 $frame.addClass('battle');
 this.$frame=$frame;
 this.log=new BattleLog($logFrame[0],this);
@@ -107,8 +106,20 @@ return'???pokemon:'+pokemonId+'???';
 };
 
 var numericId=0;
+var formatid='';
 if(battle.id){
+formatid=battle.id.slice(battle.id.indexOf('-')+1,battle.id.lastIndexOf('-'));
 numericId=parseInt(battle.id.slice(battle.id.lastIndexOf('-')+1),10);
+for(var mod in BattleTeambuilderTable.ClientMods){
+for(var i in BattleTeambuilderTable.ClientMods[mod].formats){
+var format=toID(BattleTeambuilderTable.ClientMods[mod].formats[i]);
+if(format===formatid){
+this.mod=mod;
+break;
+}
+}
+if(this.mod)break;
+}
 if(this.battle.id.includes('digimon'))this.mod='digimon';
 }
 if(!numericId){
@@ -117,7 +128,6 @@ numericId=Math.floor(Math.random()*1000000);
 this.numericId=numericId;
 this.tooltips=new BattleTooltips(battle);
 this.tooltips.listen($frame[0]);
-
 this.preloadEffects();
 
 }var _proto=BattleScene.prototype;_proto.

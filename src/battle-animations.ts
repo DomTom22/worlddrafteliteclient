@@ -90,7 +90,6 @@ class BattleScene {
 
 	constructor(battle: Battle, $frame: JQuery, $logFrame: JQuery) {
 		this.battle = battle;
-
 		$frame.addClass('battle');
 		this.$frame = $frame;
 		this.log = new BattleLog($logFrame[0] as HTMLDivElement, this);
@@ -107,8 +106,20 @@ class BattleScene {
 		};
 
 		let numericId = 0;
+		let formatid = '';
 		if (battle.id) {
+			formatid = battle.id.slice(battle.id.indexOf('-') + 1, battle.id.lastIndexOf('-'));
 			numericId = parseInt(battle.id.slice(battle.id.lastIndexOf('-') + 1), 10);
+			for (const mod in BattleTeambuilderTable.ClientMods) {
+				for (const i in BattleTeambuilderTable.ClientMods[mod].formats) {
+					const format = toID(BattleTeambuilderTable.ClientMods[mod].formats[i]);
+					if (format === formatid) {
+						this.mod = mod;
+						break;
+					}
+				}
+				if (this.mod) break;
+			}
 			if (this.battle.id.includes('digimon')) this.mod = 'digimon';
 		}
 		if (!numericId) {
@@ -117,7 +128,6 @@ class BattleScene {
 		this.numericId = numericId;
 		this.tooltips = new BattleTooltips(battle);
 		this.tooltips.listen($frame[0]);
-
 		this.preloadEffects();
 		// reset() is called during battle initialization, so it doesn't need to be called here
 	}
