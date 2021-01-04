@@ -652,7 +652,7 @@ const Dex = new class implements ModdedDex {
 			spriteData.h *= 1.5;
 			spriteData.y += -11;
 		}
-
+		console.log(spriteData);
 		return spriteData;
 	}
 
@@ -713,14 +713,18 @@ const Dex = new class implements ModdedDex {
 		return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-sheet.png?v4) no-repeat scroll -${left}px -${top}px${fainted}`;
 	}
 
-	getTeambuilderSpriteData(pokemon: any, gen: number = 0): TeambuilderSpriteData {
+	getTeambuilderSpriteData(pokemon: any, gen: number = 0, mod: string = ''): TeambuilderSpriteData {
 		let id = toID(pokemon.species);
 		let spriteid = pokemon.spriteid;
 		let species = Dex.getSpecies(pokemon.species);
 		if (pokemon.species && !spriteid) {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
-		if (species.exists === false) return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
+		console.log(species);
+		if (species.exists === false) {
+			if (mod) return { spriteDir: 'sprites/${mod}/front', spriteid: spriteid, x: 10, y: 5 };
+			return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
+		}
 		const spriteData: TeambuilderSpriteData = {
 			spriteid,
 			spriteDir: 'sprites/dex',
@@ -759,11 +763,14 @@ const Dex = new class implements ModdedDex {
 		return spriteData;
 	}
 
-	getTeambuilderSprite(pokemon: any, gen: number = 0) {
+	getTeambuilderSprite(pokemon: any, gen: number = 0, mod: string = '') {
 		if (!pokemon) return '';
-		const data = this.getTeambuilderSpriteData(pokemon, gen);
+		const data = this.getTeambuilderSpriteData(pokemon, gen, mod);
 		const shiny = (data.shiny ? '-shiny' : '');
-		return 'background-image:url(' + Dex.resourcePrefix + data.spriteDir + shiny + '/' + data.spriteid + '.png);background-position:' + data.x + 'px ' + data.y + 'px;background-repeat:no-repeat';
+		let resourcePrefix = Dex.resourcePrefix;
+		if (mod && data.spriteDir === 'sprites/${mod}/front') resourcePrefix = 'https://dragonheaven.herokuapp.com/';
+		console.log( data.spriteDir );
+		return 'background-image:url(' + resourcePrefix + data.spriteDir + shiny + '/' + data.spriteid + '.png);background-position:' + data.x + 'px ' + data.y + 'px;background-repeat:no-repeat';
 	}
 
 	getItemIcon(item: any) {

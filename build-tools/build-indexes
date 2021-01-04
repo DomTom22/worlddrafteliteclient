@@ -196,42 +196,18 @@ function requireNoCache(pathSpec) {
 		const name = Dex.data.Abilities[id].name;
 		generateAlias(id, name, 'ability');
 	}
+	const infoTable = {Pokedex: 'pokemon', Moves: 'move', Items: 'item', Abilities: 'ability'};
 	for (const modid in ClientMods) {
-		const modDex = Dex.mod(modid);
-		for (const id in modDex.data.Pokedex) {
-			if (!modDex.data.Pokedex[id]) continue;
-			if (!usedIDs.includes(id)) {
-				index.push(id + ' pokemon');
-				usedIDs.push(id);
-				const name = modDex.data.Pokedex[id].name
-				if (name) generateAlias(id, name, 'pokemon');
-			}
-		}
-		for (const id in modDex.data.Moves) {
-			if (!modDex.data.Moves[id]) continue;
-			if (!usedIDs.includes(id)) {
-				index.push(id + ' move');
-				usedIDs.push(id);
-				const name = modDex.data.Moves[id].name
-				if (name) generateAlias(id, name, 'move');
-			}
-		}
-		for (const id in modDex.data.Items) {
-			if (!modDex.data.Items[id]) continue;
-			if (!usedIDs.includes(id)) {
-				index.push(id + ' item');
-				usedIDs.push(id);
-				const name = modDex.data.Items[id].name
-				if (name) generateAlias(id, name, 'item');
-			}
-		}
-		for (const id in modDex.data.Abilities) {
-			if (!modDex.data.Abilities[id]) continue;
-			if (!usedIDs.includes(id)) {
-				index.push(id + ' ability');
-				usedIDs.push(id);
-				const name = modDex.data.Abilities[id].name
-				if (name) generateAlias(id, name, 'ability');
+		for (const key in infoTable) {
+			const modDex = Dex.mod(modid);
+			for (const id in modDex.data[key]) {
+				if (!modDex.data[key][id]) continue;
+				if (!usedIDs.includes(id)) {
+					index.push(id + ' ' + infoTable[key]);
+					usedIDs.push(id);
+					const name = modDex.data[key][id].name;
+					if (name) generateAlias(id, name, infoTable[key]);
+				}
 			}
 		}
 	}

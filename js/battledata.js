@@ -652,7 +652,7 @@ spriteData.w*=1.5;
 spriteData.h*=1.5;
 spriteData.y+=-11;
 }
-
+console.log(spriteData);
 return spriteData;
 };_proto2.
 
@@ -713,14 +713,18 @@ var fainted=(_pokemon5=pokemon)!=null&&_pokemon5.fainted?";opacity:.3;filter:gra
 return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v4) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
 };_proto2.
 
-getTeambuilderSpriteData=function getTeambuilderSpriteData(pokemon){var gen=arguments.length>1&&arguments[1]!==undefined?arguments[1]:0;
+getTeambuilderSpriteData=function getTeambuilderSpriteData(pokemon){var gen=arguments.length>1&&arguments[1]!==undefined?arguments[1]:0;var mod=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';
 var id=toID(pokemon.species);
 var spriteid=pokemon.spriteid;
 var species=Dex.getSpecies(pokemon.species);
 if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
-if(species.exists===false)return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
+console.log(species);
+if(species.exists===false){
+if(mod)return{spriteDir:'sprites/${mod}/front',spriteid:spriteid,x:10,y:5};
+return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
+}
 var spriteData={
 spriteid:spriteid,
 spriteDir:'sprites/dex',
@@ -759,11 +763,14 @@ spriteData.y=5;
 return spriteData;
 };_proto2.
 
-getTeambuilderSprite=function getTeambuilderSprite(pokemon){var gen=arguments.length>1&&arguments[1]!==undefined?arguments[1]:0;
+getTeambuilderSprite=function getTeambuilderSprite(pokemon){var gen=arguments.length>1&&arguments[1]!==undefined?arguments[1]:0;var mod=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';
 if(!pokemon)return'';
-var data=this.getTeambuilderSpriteData(pokemon,gen);
+var data=this.getTeambuilderSpriteData(pokemon,gen,mod);
 var shiny=data.shiny?'-shiny':'';
-return'background-image:url('+Dex.resourcePrefix+data.spriteDir+shiny+'/'+data.spriteid+'.png);background-position:'+data.x+'px '+data.y+'px;background-repeat:no-repeat';
+var resourcePrefix=Dex.resourcePrefix;
+if(mod&&data.spriteDir==='sprites/${mod}/front')resourcePrefix='https://dragonheaven.herokuapp.com/';
+console.log(data.spriteDir);
+return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.spriteid+'.png);background-position:'+data.x+'px '+data.y+'px;background-repeat:no-repeat';
 };_proto2.
 
 getItemIcon=function getItemIcon(item){var _item;

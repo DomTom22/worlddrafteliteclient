@@ -1172,7 +1172,7 @@
 			buf += '<div class="setchart-nickname">';
 			buf += '<label>Nickname</label><input type="text" name="nickname" class="textbox" value="' + BattleLog.escapeHTML(set.name || '') + '" placeholder="' + BattleLog.escapeHTML(species.baseSpecies) + '" />';
 			buf += '</div>';
-			buf += '<div class="setchart" style="' + Dex.getTeambuilderSprite(set, this.curTeam.gen) + ';">';
+			buf += '<div class="setchart" style="' + Dex.getTeambuilderSprite(set, this.curTeam.gen, this.curTeam.mod) + ';">';
 
 			// icon
 			buf += '<div class="setcol setcol-icon">';
@@ -1760,8 +1760,7 @@
 		updatePokemonSprite: function () {
 			var set = this.curSet;
 			if (!set) return;
-
-			this.$('.setchart').attr('style', Dex.getTeambuilderSprite(set, this.curTeam.gen));
+			this.$('.setchart').attr('style', Dex.getTeambuilderSprite(set, this.curTeam.gen, this.curTeam.mod));
 
 			this.$('.pokemonicon-' + this.curSetLoc).css('background', Dex.getPokemonIcon(set).substr(11));
 
