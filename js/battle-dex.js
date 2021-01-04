@@ -504,7 +504,7 @@ var speciesid=species.id;
 var format=window.room.battle.tier;
 var thisMod='';
 if(toID(format).includes("prism"))thisMod='prism';
-console.log(options);
+
 var spriteData={
 gen:mechanicsGen,
 w:96,
@@ -724,7 +724,6 @@ var species=Dex.getSpecies(pokemon.species);
 if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
-console.log(species);
 if(species.exists===false){
 if(mod)return{spriteDir:"sprites/"+mod+"/front",spriteid:spriteid,x:10,y:5};
 return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
@@ -773,7 +772,6 @@ var data=this.getTeambuilderSpriteData(pokemon,gen,mod);
 var shiny=data.shiny?'-shiny':'';
 var resourcePrefix=Dex.resourcePrefix;
 if(mod&&data.spriteDir==="sprites/"+mod+"/front")resourcePrefix='https://dragonheaven.herokuapp.com/';
-console.log(data.spriteDir);
 return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.spriteid+'.png);background-position:'+data.x+'px '+data.y+'px;background-repeat:no-repeat';
 };_proto2.
 
@@ -793,7 +791,7 @@ getTypeIcon=function getTypeIcon(type,b){
 type=this.getType(type).name;
 if(!type)type='???';
 var sanitizedType=type.replace(/\?/g,'%3f');
-console.log(sanitizedType);
+
 if(sanitizedType==='Gas')
 return"<img src=\"https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/gas.png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";else
 

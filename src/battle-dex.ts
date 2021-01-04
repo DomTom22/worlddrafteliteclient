@@ -504,7 +504,7 @@ const Dex = new class implements ModdedDex {
 		const format = window.room.battle.tier;
 		let thisMod = '';
 		if (toID(format).includes("prism")) thisMod = 'prism';
-		console.log(options);
+		// console.log(options);
 		let spriteData = {
 			gen: mechanicsGen,
 			w: 96,
@@ -724,7 +724,6 @@ const Dex = new class implements ModdedDex {
 		if (pokemon.species && !spriteid) {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
-		console.log(species);
 		if (species.exists === false) {
 			if (mod) return { spriteDir: `sprites/${mod}/front`, spriteid: spriteid, x: 10, y: 5 };
 			return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
@@ -773,7 +772,6 @@ const Dex = new class implements ModdedDex {
 		const shiny = (data.shiny ? '-shiny' : '');
 		let resourcePrefix = Dex.resourcePrefix;
 		if (mod && data.spriteDir === `sprites/${mod}/front`) resourcePrefix = 'https://dragonheaven.herokuapp.com/';
-		console.log( data.spriteDir );
 		return 'background-image:url(' + resourcePrefix + data.spriteDir + shiny + '/' + data.spriteid + '.png);background-position:' + data.x + 'px ' + data.y + 'px;background-repeat:no-repeat';
 	}
 
@@ -793,7 +791,7 @@ const Dex = new class implements ModdedDex {
 		type = this.getType(type).name;
 		if (!type) type = '???';
 		let sanitizedType = type.replace(/\?/g, '%3f');
-		console.log(sanitizedType);
+		// console.log(sanitizedType);
 		if (sanitizedType === 'Gas')
 			return `<img src="https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/gas.png" alt="${type}" class="pixelated${b ? ' b' : ''}" />`;
 		else 
