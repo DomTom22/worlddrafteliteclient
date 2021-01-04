@@ -532,7 +532,7 @@ const Dex = new class implements ModdedDex {
 			dir = '-back';
 			facing = 'back';
 		}
-		if (fakeSprite) dir = isFront ? 'front' : 'back';
+		if (fakeSprite) dir = isFront ? 'front' : 'gen5-back';
 		// Decide which gen sprites to use.
 		//
 		// There are several different generations we care about here:

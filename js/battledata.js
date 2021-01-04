@@ -532,7 +532,7 @@ facing='front';
 dir='-back';
 facing='back';
 }
-if(fakeSprite)dir=isFront?'front':'back';
+if(fakeSprite)dir=isFront?'front':'gen5-back';
 
 
 
@@ -776,7 +776,7 @@ if(!pokemon)return'';
 var data=this.getTeambuilderSpriteData(pokemon,gen,mod);
 var shiny=data.shiny?'-shiny':'';
 var resourcePrefix=Dex.resourcePrefix;
-if(mod&&data.spriteDir==="sprites/"+mod+"/front")resourcePrefix='https://dragonheaven.herokuapp.com/';
+if(mod&&data.spriteDir==="sprites/"+mod+"/front")resourcePrefix=Dex.modResourcePrefix;
 return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.spriteid+'.png);background-position:'+data.x+'px '+data.y+'px;background-repeat:no-repeat';
 };_proto2.
 
