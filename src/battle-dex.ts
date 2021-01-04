@@ -500,12 +500,17 @@ const Dex = new class implements ModdedDex {
 		const species = Dex.getSpecies(pokemon);
 		// Gmax sprites are already extremely large, so we don't need to double.
 		if (species.name.endsWith('-Gmax')) isDynamax = false;
+		let speciesid = species.id;
+		const format = window.room.battle.tier;
+		let thisMod = '';
+		if (toID(format).includes("prism")) thisMod = 'prism';
+		console.log(options);
 		let spriteData = {
 			gen: mechanicsGen,
 			w: 96,
 			h: 96,
 			y: 0,
-			url: Dex.resourcePrefix + 'sprites/',
+			url: (!isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? 'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/backs/' : (isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? 'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/fronts/' : Dex.resourcePrefix + 'sprites/',
 			pixelated: true,
 			isFrontSprite: false,
 			cryurl: '',
@@ -519,7 +524,7 @@ const Dex = new class implements ModdedDex {
 			dir = '';
 			facing = 'front';
 		} else {
-			dir = '-back';
+			dir = (!isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? '' : '-back';
 			facing = 'back';
 		}
 
@@ -542,7 +547,6 @@ const Dex = new class implements ModdedDex {
 
 		let animationData = null;
 		let miscData = null;
-		let speciesid = species.id;
 		if (species.isTotem) speciesid = toID(name);
 		if (baseDir === '' && window.BattlePokemonSprites) {
 			animationData = BattlePokemonSprites[speciesid];
@@ -617,7 +621,7 @@ const Dex = new class implements ModdedDex {
 		} else {
 			// There is no entry or enough data in pokedex-mini.js
 			// Handle these in case-by-case basis; either using BW sprites or matching the played gen.
-			dir = (baseDir || 'gen5') + dir;
+			dir = (thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? dir : (thisMod === 'prism' && (species.gen < 3 && species.gen !== 0)) ? 'gen2' + dir : (baseDir || 'gen5') + dir;
 
 			// Gender differences don't exist prior to Gen 4,
 			// so there are no sprites for it
@@ -625,7 +629,7 @@ const Dex = new class implements ModdedDex {
 				name += '-f';
 			}
 
-			spriteData.url += dir + '/' + name + '.png';
+			spriteData.url += (!isFront && thisMod === 'prism' && (species.gen > 2 || species.gen === 0)) ? dir + speciesid + '/back.png' : dir + '/' + name + '.png';
 		}
 
 		if (!options.noScale) {
@@ -776,6 +780,8 @@ const Dex = new class implements ModdedDex {
 	getItemIcon(item: any) {
 		let num = 0;
 		if (typeof item === 'string' && exports.BattleItems) item = exports.BattleItems[toID(item)];
+		if (item.id === 'waterring')
+			return 'background:transparent url(https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/waterring.png) no-repeat'
 		if (item?.spritenum) num = item.spritenum;
 
 		let top = Math.floor(num / 16) * 24;
@@ -787,7 +793,11 @@ const Dex = new class implements ModdedDex {
 		type = this.getType(type).name;
 		if (!type) type = '???';
 		let sanitizedType = type.replace(/\?/g, '%3f');
-		return `<img src="${Dex.resourcePrefix}sprites/types/${sanitizedType}.png" alt="${type}" height="14" width="32" class="pixelated${b ? ' b' : ''}" />`;
+		console.log(sanitizedType);
+		if (sanitizedType === 'Gas')
+			return `<img src="https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/gas.png" alt="${type}" class="pixelated${b ? ' b' : ''}" />`;
+		else 
+			return `<img src="${Dex.resourcePrefix}sprites/types/${sanitizedType}.png" alt="${type}" height="14" width="32" class="pixelated${b ? ' b' : ''}" />`;
 	}
 
 	getCategoryIcon(category: string | null) {

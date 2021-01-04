@@ -500,12 +500,17 @@ pokemon=pokemon.getSpeciesForme();
 var species=Dex.getSpecies(pokemon);
 
 if(species.name.endsWith('-Gmax'))isDynamax=false;
+var speciesid=species.id;
+var format=window.room.battle.tier;
+var thisMod='';
+if(toID(format).includes("prism"))thisMod='prism';
+console.log(options);
 var spriteData={
 gen:mechanicsGen,
 w:96,
 h:96,
 y:0,
-url:Dex.resourcePrefix+'sprites/',
+url:!isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/backs/':isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?'https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/fronts/':Dex.resourcePrefix+'sprites/',
 pixelated:true,
 isFrontSprite:false,
 cryurl:'',
@@ -519,7 +524,7 @@ spriteData.isFrontSprite=true;
 dir='';
 facing='front';
 }else{
-dir='-back';
+dir=!isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?'':'-back';
 facing='back';
 }
 
@@ -542,7 +547,6 @@ var baseDir=['','gen1','gen2','gen3','gen4','gen5','','',''][spriteData.gen];
 
 var animationData=null;
 var miscData=null;
-var speciesid=species.id;
 if(species.isTotem)speciesid=toID(name);
 if(baseDir===''&&window.BattlePokemonSprites){
 animationData=BattlePokemonSprites[speciesid];
@@ -617,7 +621,7 @@ spriteData.url+=dir+'/'+name+'.gif';
 }else{
 
 
-dir=(baseDir||'gen5')+dir;
+dir=thisMod==='prism'&&(species.gen>2||species.gen===0)?dir:thisMod==='prism'&&species.gen<3&&species.gen!==0?'gen2'+dir:(baseDir||'gen5')+dir;
 
 
 
@@ -625,7 +629,7 @@ if(spriteData.gen>=4&&miscData['frontf']&&options.gender==='F'){
 name+='-f';
 }
 
-spriteData.url+=dir+'/'+name+'.png';
+spriteData.url+=!isFront&&thisMod==='prism'&&(species.gen>2||species.gen===0)?dir+speciesid+'/back.png':dir+'/'+name+'.png';
 }
 
 if(!options.noScale){
@@ -776,6 +780,8 @@ return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.sprit
 getItemIcon=function getItemIcon(item){var _item;
 var num=0;
 if(typeof item==='string'&&exports.BattleItems)item=exports.BattleItems[toID(item)];
+if(item.id==='waterring')
+return'background:transparent url(https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/waterring.png) no-repeat';
 if((_item=item)!=null&&_item.spritenum)num=item.spritenum;
 
 var top=Math.floor(num/16)*24;
@@ -787,6 +793,10 @@ getTypeIcon=function getTypeIcon(type,b){
 type=this.getType(type).name;
 if(!type)type='???';
 var sanitizedType=type.replace(/\?/g,'%3f');
+console.log(sanitizedType);
+if(sanitizedType==='Gas')
+return"<img src=\"https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/gas.png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";else
+
 return"<img src=\""+Dex.resourcePrefix+"sprites/types/"+sanitizedType+".png\" alt=\""+type+"\" height=\"14\" width=\"32\" class=\"pixelated"+(b?' b':'')+"\" />";
 };_proto2.
 

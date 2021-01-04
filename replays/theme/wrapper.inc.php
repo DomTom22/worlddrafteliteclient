@@ -24,6 +24,7 @@ function ThemeHeaderTemplate() {
 <?php } ?>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+	
 	<link rel="stylesheet" href="//dragonheaven.herokuapp.com/style/font-awesome.css?0.35607600750643065" />
 	<link rel="stylesheet" href="//scoopapa-dh.glitch.me/theme/panels.css?0.9576132578236278" />
 	<link rel="stylesheet" href="//scoopapa-dh.glitch.me/theme/main.css?0.7478869042610898" />
