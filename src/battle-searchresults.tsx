@@ -57,7 +57,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 				<span class="col numcol">{search.getTier(pokemon)}</span>
 
 				<span class="col iconcol">
-					<span style={Dex.getPokemonIcon(pokemon.id, false, this.dex.modid)}></span>
+					<span style={Dex.getPokemonIcon(pokemon.id)}></span>
 				</span>
 
 				<span class="col pokemonnamecol">{this.renderName(pokemon.name, matchStart, matchEnd, tagStart)}</span>
@@ -70,7 +70,7 @@ class PSSearchResults extends preact.Component<{search: DexSearch}> {
 			<span class="col numcol">{search.getTier(pokemon)}</span>
 
 			<span class="col iconcol">
-				<span style={Dex.getPokemonIcon(pokemon.id, false, this.dex.modid)}></span>
+				<span style={Dex.getPokemonIcon(pokemon.id)}></span>
 			</span>
 
 			<span class="col pokemonnamecol">{this.renderName(pokemon.name, matchStart, matchEnd, tagStart)}</span>

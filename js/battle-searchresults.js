@@ -57,7 +57,7 @@ return preact.h("li",{"class":"result"},preact.h("a",{href:this.URL_ROOT+"pokemo
 preact.h("span",{"class":"col numcol"},search.getTier(pokemon)),
 
 preact.h("span",{"class":"col iconcol"},
-preact.h("span",{style:Dex.getPokemonIcon(pokemon.id,false,this.dex.modid)})),
+preact.h("span",{style:Dex.getPokemonIcon(pokemon.id)})),
 
 
 preact.h("span",{"class":"col pokemonnamecol"},this.renderName(pokemon.name,matchStart,matchEnd,tagStart)),
@@ -70,7 +70,7 @@ return preact.h("li",{"class":"result"},preact.h("a",{href:this.URL_ROOT+"pokemo
 preact.h("span",{"class":"col numcol"},search.getTier(pokemon)),
 
 preact.h("span",{"class":"col iconcol"},
-preact.h("span",{style:Dex.getPokemonIcon(pokemon.id,false,this.dex.modid)})),
+preact.h("span",{style:Dex.getPokemonIcon(pokemon.id)})),
 
 
 preact.h("span",{"class":"col pokemonnamecol"},this.renderName(pokemon.name,matchStart,matchEnd,tagStart)),
