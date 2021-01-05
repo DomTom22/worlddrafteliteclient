@@ -199,7 +199,7 @@ function PokemonButton(props: {
 		name="cmd" value={props.cmd} class={`${props.disabled ? 'disabled ' : ''}has-tooltip`}
 		style={{opacity: props.disabled === 'fade' ? 0.5 : 1}} data-tooltip={props.tooltip}
 	>
-		<span class="picon" style={Dex.getPokemonIcon(pokemon)}></span>
+		<span class="picon" style={Dex.getPokemonIcon(pokemon, false, BattleScene.mod)}></span>
 		{pokemon.name}
 		{
 			!props.noHPBar && !pokemon.fainted &&

@@ -689,10 +689,10 @@ pokemonhtml+="<span class=\"picon\" style=\""+Dex.getPokemonIcon('pokeball')+"\"
 
 
 var details=this.getDetailsText(poke);
-pokemonhtml+="<span"+tooltipCode+" style=\""+Dex.getPokemonIcon(poke,!side.isFar)+(";opacity:0.6\" aria-label=\""+details+"\"></span>");
+pokemonhtml+="<span"+tooltipCode+" style=\""+Dex.getPokemonIcon(poke,!side.isFar,this.mod)+(";opacity:0.6\" aria-label=\""+details+"\"></span>");
 }else{
 var _details=this.getDetailsText(poke);
-pokemonhtml+="<span"+tooltipCode+" style=\""+Dex.getPokemonIcon(poke,!side.isFar)+("\" aria-label=\""+_details+"\"></span>");
+pokemonhtml+="<span"+tooltipCode+" style=\""+Dex.getPokemonIcon(poke,!side.isFar,this.mod)+("\" aria-label=\""+_details+"\"></span>");
 }
 if(_i5%3===2)pokemonhtml+="</div><div class=\"teamicons\">";
 }

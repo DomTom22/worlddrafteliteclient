@@ -199,7 +199,7 @@ return preact.h("button",{
 name:"cmd",value:props.cmd,"class":(props.disabled?'disabled ':'')+"has-tooltip",
 style:{opacity:props.disabled==='fade'?0.5:1},"data-tooltip":props.tooltip},
 
-preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(pokemon)}),
+preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(pokemon,false,BattleScene.mod)}),
 pokemon.name,
 
 !props.noHPBar&&!pokemon.fainted&&

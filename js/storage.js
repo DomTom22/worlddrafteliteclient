@@ -900,6 +900,7 @@ Storage.unpackTeam = function (buf) {
 		var teamData = this.teams[teamid];
 		if (teamData.team === buf && teamData.mod) {
 			thisDex = Dex.mod(teamData.mod);
+			break;
 		}
 	}
 	var team = [];
@@ -1042,9 +1043,16 @@ Storage.packedTeamNames = function (buf) {
 
 Storage.packedTeamIcons = function (buf) {
 	if (!buf) return '<em>(empty team)</em>';
-
+	var mod = '';
+	for (var teamid in this.teams) {
+		var teamData = this.teams[teamid];
+		if (teamData.team === buf && teamData.mod) {
+			mod = teamData.mod;
+			break;
+		}
+	}
 	return this.packedTeamNames(buf).map(function (species) {
-		return '<span class="picon" style="' + Dex.getPokemonIcon(species) + ';float:left;overflow:visible"><span style="font-size:0px">' + toID(species) + '</span></span>';
+		return '<span class="picon" style="' + Dex.getPokemonIcon(species, false, mod) + ';float:left;overflow:visible"><span style="font-size:0px">' + toID(species) + '</span></span>';
 	}).join('');
 };
 
