@@ -738,7 +738,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			return false;
 		}
 		let genChar = `${this.dex.gen}`;
-		if (this.mod) {
+		if (this.mod && BattleTeambuilderTable[this.mod].learnsetOverride[speciesid]) {
 			genChar = BattleTeambuilderTable[this.mod].lsetStr;
 		} else if (
 			this.format.startsWith('vgc') ||
@@ -1404,7 +1404,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 						continue;
 					} else if (!this.mod && !learnsetEntry.includes(gen)) {
 						continue;
-					} else if (this.mod && !learnsetEntry.includes(BattleTeambuilderTable[this.mod].lsetStr)) {
+					} else if (this.mod && BattleTeambuilderTable[this.mod].learnsetOverride[learnsetid] && !learnsetEntry.includes(BattleTeambuilderTable[this.mod].lsetStr)) {
 						continue;
 					}
 					if (!this.mod && this.dex.gen >= 8 && BattleMovedex[moveid].isNonstandard === "Past" && this.formatType !== 'natdex') continue;

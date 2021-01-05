@@ -1087,6 +1087,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				overrideTier[species.id] = tier;
 				if (!tierTable[tier]) tierTable[tier] = [];
 				tierTable[tier].push(id);
+				// if ( modid === 'perfectgalar') console.log( tier + ' ' + id );
 			}
 			const tiers = [];
 			BattleTeambuilderTable[modid].tiers = tiers;
@@ -1142,9 +1143,13 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			const symArr = ['!', '@', '#', '[', ']', '^', '&', '*', '(', ')'];//can't use numbers for the mods
 			for (let i = 0; i < symArr.length; i++) lsetStr = lsetStr.replace(i.toString(), symArr[i]);
 			BattleTeambuilderTable[modid].lsetStr = lsetStr;
+			let learnsetOverride = {}
+			BattleTeambuilderTable[modid].learnsetOverride = learnsetOverride;
 			modIndex++;
 			for (const id in modDex.data.Learnsets) {
 				const learnset = modDex.data.Learnsets[id].learnset;
+				if (!Dex.data.Learnsets[id] || JSON.stringify(learnset) !== JSON.stringify(Dex.data.Learnsets[id].learnset)) learnsetOverride[id] = 1;
+				else continue;
 				if (!learnset) continue;
 				if (!learnsets[id]) learnsets[id] = {};
 				for (const moveid in learnset) {

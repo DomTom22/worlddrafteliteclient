@@ -692,7 +692,7 @@ num=BattlePokemonIconIndexesLeft[id];
 return num;
 };_proto2.
 
-getPokemonIcon=function getPokemonIcon(pokemon,facingLeft){var _pokemon,_pokemon2,_pokemon3,_pokemon3$volatiles,_pokemon4,_pokemon5;
+getPokemonIcon=function getPokemonIcon(pokemon,facingLeft){var _pokemon,_pokemon2,_pokemon3,_pokemon3$volatiles,_pokemon4,_pokemon5;var mod=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';
 if(pokemon==='pokeball'){
 return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -0px 4px";
 }else if(pokemon==='pokeball-statused'){
@@ -715,6 +715,11 @@ if((_pokemon3=pokemon)!=null&&(_pokemon3$volatiles=_pokemon3.volatiles)!=null&&_
 id=toID(pokemon.volatiles.formechange[1]);
 }
 var num=this.getPokemonIconNum(id,((_pokemon4=pokemon)==null?void 0:_pokemon4.gender)==='F',facingLeft);
+
+var species=Dex.getSpecies(id);
+if(species.exists===false&&mod){
+return"background:transparent url("+this.modResourcePrefix+mod+"/sprites/icons/"+id+".png) no-repeat scroll -0px -$0px"+fainted;
+}
 
 var top=Math.floor(num/12)*30;
 var left=num%12*40;
@@ -873,7 +878,7 @@ if(id in table.overrideAcc)data.accuracy=table.overrideAcc[id];
 if(id in table.overrideBP)data.basePower=table.overrideBP[id];
 if(id in table.overridePP)data.pp=table.overridePP[id];
 if(id in table.overrideMoveType)data.type=table.overrideMoveType[id];
-if(id in table.overrideMoveCategory)data.category=table.overrideMoveCategory[id];
+if(table.overrideMoveCategory&&id in table.overrideMoveCategory)data.category=table.overrideMoveCategory[id];
 if(id in table.overrideMoveDesc){
 data.shortDesc=table.overrideMoveDesc[id];
 }else{
