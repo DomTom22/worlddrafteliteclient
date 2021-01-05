@@ -179,7 +179,7 @@ statNamesExceptHP=['atk','def','spa','spd','spe'];this.
 
 pokeballs=null;this.
 
-modResourcePrefix='https://scoopapa-dh.glitch.me/';this.
+modResourcePrefix='https://dragonheaven.herokuapp.com/';this.
 resourcePrefix=function(){var _window$document,_window$document$loca;
 var prefix='';
 if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
@@ -504,7 +504,7 @@ var spriteDir='sprites/';
 var fakeSprite=false;
 if(options.mod&&species.exists===false){
 resourcePrefix=Dex.modResourcePrefix;
-spriteDir="data/mods/"+options.mod+"/sprites/";
+spriteDir="sprites/"+options.mod+"/";
 fakeSprite=true;
 }
 
@@ -730,7 +730,7 @@ if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
 if(species.exists===false){
-if(mod)return{spriteDir:"data/mods/"+mod+"/sprites/front",spriteid:spriteid,x:10,y:5};
+if(mod)return{spriteDir:"sprites/"+mod+"/front",spriteid:spriteid,x:10,y:5};
 return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
 }
 var spriteData={

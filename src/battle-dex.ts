@@ -179,7 +179,7 @@ const Dex = new class implements ModdedDex {
 
 	pokeballs: string[] | null = null;
 	
-	readonly modResourcePrefix = 'https://scoopapa-dh.glitch.me/';
+	readonly modResourcePrefix = 'https://dragonheaven.herokuapp.com/';
 	resourcePrefix = (() => {
 		let prefix = '';
 		if (window.document?.location?.protocol !== 'http:') prefix = 'https:';
@@ -504,7 +504,7 @@ const Dex = new class implements ModdedDex {
 		let fakeSprite = false;
 		if (options.mod && species.exists === false) {
 			resourcePrefix = Dex.modResourcePrefix;
-			spriteDir = `data/mods/${options.mod}/sprites/`;
+			spriteDir = `sprites/${options.mod}/`;
 			fakeSprite = true;
 		}
 		// Gmax sprites are already extremely large, so we don't need to double.
@@ -730,7 +730,7 @@ const Dex = new class implements ModdedDex {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
 		if (species.exists === false) {
-			if (mod) return { spriteDir: `data/mods/${mod}/sprites/front`, spriteid: spriteid, x: 10, y: 5 };
+			if (mod) return { spriteDir: `sprites/${mod}/front`, spriteid: spriteid, x: 10, y: 5 };
 			return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
 		}
 		const spriteData: TeambuilderSpriteData = {
