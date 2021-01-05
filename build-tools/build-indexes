@@ -1050,12 +1050,14 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			// Find formats using this mod
 			for (const formatid in Dex.data.Formats) {
 				const format = Dex.getFormat(formatid);
+				let maxGen = 0;
 				if (format.mod === modid) {
-					if (formatid.startsWith('gen') && formatid.charAt(3) !== '8') modGen = formatid.slice(0, 4);
+					if (formatid.startsWith('gen') && maxGen < Number(formatid.charAt(3))) maxGen = Number(formatid.charAt(3));
 					BattleTeambuilderTable.ClientMods[modid].formats.push(format.fullname);
 					if (format.teambuilderFormat) BattleTeambuilderTable.ClientMods[modid].teambuilderFormats.push(format.teambuilderFormat);
 					else BattleTeambuilderTable.ClientMods[modid].teambuilderFormats.push('');
 				}
+				if (maxGen !== 8) modGen = maxGen;
 			}
 			const standardTiers = ['uber', 'ou', 'uubl', 'uu', 'rubl', 'ru', 'nubl', 'nu', 'publ',
 				'pu', 'zu', 'nfe', 'lcuber', 'lc', 'cap', 'caplc', 'capnfe', 'ag', 'duber', 'dou',
@@ -1087,7 +1089,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				overrideTier[species.id] = tier;
 				if (!tierTable[tier]) tierTable[tier] = [];
 				tierTable[tier].push(id);
-				// if ( modid === 'perfectgalar') console.log( tier + ' ' + id );
 			}
 			const tiers = [];
 			BattleTeambuilderTable[modid].tiers = tiers;

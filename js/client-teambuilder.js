@@ -1453,7 +1453,7 @@
 				var species = Dex.getSpecies(res.species);
 
 				buf += '<div class="result" data-id="' + i + '">';
-				buf += '<div class="section"><span class="icon" style="' + Dex.getPokemonIcon(species.name) + '"></span>';
+				buf += '<div class="section"><span class="icon" style="' + Dex.getPokemonIcon(set, false, this.curTeam.mod) + '"></span>';
 				buf += '<span class="species">' + (species.name === species.baseSpecies ? BattleLog.escapeHTML(species.name) : (BattleLog.escapeHTML(species.baseSpecies) + '-<small>' + BattleLog.escapeHTML(species.name.substr(species.baseSpecies.length + 1)) + '</small>')) + '</span></div>';
 				buf += '<div class="section"><span class="ability-item">' + (BattleLog.escapeHTML(res.ability) || '<i>No ability</i>') + '<br />' + (BattleLog.escapeHTML(res.item) || '<i>No item</i>') + '</span></div>';
 				buf += '<div class="section no-border">';
@@ -1742,7 +1742,7 @@
 			}
 			for (var i = start; i < end; i++) {
 				var set = this.curSetList[i];
-				var pokemonicon = '<span class="picon pokemonicon-' + i + '" style="' + Dex.getPokemonIcon(set) + '"></span>';
+				var pokemonicon = '<span class="picon pokemonicon-' + i + '" style="' + Dex.getPokemonIcon(set, false, this.curTeam.mod) + '"></span>';
 				if (!set.species) {
 					buf += '<button disabled="disabled" class="addpokemon" aria-label="Add Pok&eacute;mon"><i class="fa fa-plus"></i></button> ';
 					isAdd = true;
@@ -1762,7 +1762,7 @@
 			if (!set) return;
 			this.$('.setchart').attr('style', Dex.getTeambuilderSprite(set, this.curTeam.gen, this.curTeam.mod));
 
-			this.$('.pokemonicon-' + this.curSetLoc).css('background', Dex.getPokemonIcon(set).substr(11));
+			this.$('.pokemonicon-' + this.curSetLoc).css('background', Dex.getPokemonIcon(set, false, this.curTeam.mod).substr(11));
 
 			var item = Dex.getItem(set.item);
 			if (item.id) {
@@ -3240,7 +3240,7 @@
 				if (i !== data.i && i !== data.i + 1) {
 					buf += '<li><button name="moveHere" value="' + i + '"><i class="fa fa-arrow-right"></i> Move here</button></li>';
 				}
-				buf += '<li' + (i === data.i ? ' style="opacity:.3"' : ' style="opacity:.6"') + '><span class="picon" style="display:inline-block;vertical-align:middle;' + Dex.getPokemonIcon(set) + '"></span> ' + BattleLog.escapeHTML(set.name || set.species) + '</li>';
+				buf += '<li' + (i === data.i ? ' style="opacity:.3"' : ' style="opacity:.6"') + '><span class="picon" style="display:inline-block;vertical-align:middle;' + Dex.getPokemonIcon(set, false, this.curTeam.mod) + '"></span> ' + BattleLog.escapeHTML(set.name || set.species) + '</li>';
 			}
 			if (i !== data.i && i !== data.i + 1) {
 				buf += '<li><button name="moveHere" value="' + i + '"><i class="fa fa-arrow-right"></i> Move here</button></li>';

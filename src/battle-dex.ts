@@ -693,6 +693,7 @@ const Dex = new class implements ModdedDex {
 	}
 
 	getPokemonIcon(pokemon: string | Pokemon | ServerPokemon | PokemonSet | null, facingLeft?: boolean, mod : string = '') {
+		console.log( mod );
 		if (pokemon === 'pokeball') {
 			return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -0px 4px`;
 		} else if (pokemon === 'pokeball-statused') {
@@ -718,6 +719,7 @@ const Dex = new class implements ModdedDex {
 		
 		let species = Dex.getSpecies(id);
 		if (species.exists === false && mod) {
+			console.log(`${this.modResourcePrefix}${mod}/sprites/icons/${id}.png`);
 			return `background:transparent url(${this.modResourcePrefix}${mod}/sprites/icons/${id}.png) no-repeat scroll -0px -$0px${fainted}`;
 		}
 		

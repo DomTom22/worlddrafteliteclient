@@ -693,6 +693,7 @@ return num;
 };_proto2.
 
 getPokemonIcon=function getPokemonIcon(pokemon,facingLeft){var _pokemon,_pokemon2,_pokemon3,_pokemon3$volatiles,_pokemon4,_pokemon5;var mod=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';
+console.log(mod);
 if(pokemon==='pokeball'){
 return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -0px 4px";
 }else if(pokemon==='pokeball-statused'){
@@ -718,6 +719,7 @@ var num=this.getPokemonIconNum(id,((_pokemon4=pokemon)==null?void 0:_pokemon4.ge
 
 var species=Dex.getSpecies(id);
 if(species.exists===false&&mod){
+console.log(""+this.modResourcePrefix+mod+"/sprites/icons/"+id+".png");
 return"background:transparent url("+this.modResourcePrefix+mod+"/sprites/icons/"+id+".png) no-repeat scroll -0px -$0px"+fainted;
 }
 
