@@ -179,7 +179,7 @@ statNamesExceptHP=['atk','def','spa','spd','spe'];this.
 
 pokeballs=null;this.
 
-modResourcePrefix='https://dragonheaven.herokuapp.com/';this.
+modResourcePrefix='https://raw.githubusercontent.com/scoopapa/dh/master/data/mods/';this.
 resourcePrefix=function(){var _window$document,_window$document$loca;
 var prefix='';
 if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
@@ -504,7 +504,7 @@ var spriteDir='sprites/';
 var fakeSprite=false;
 if(options.mod&&species.exists===false){
 resourcePrefix=Dex.modResourcePrefix;
-spriteDir="sprites/"+options.mod+"/";
+spriteDir=options.mod+"/sprites/";
 fakeSprite=true;
 }
 
@@ -730,7 +730,7 @@ if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
 if(species.exists===false){
-if(mod)return{spriteDir:"sprites/"+mod+"/front",spriteid:spriteid,x:10,y:5};
+if(mod)return{spriteDir:mod+"/sprites/front",spriteid:spriteid,x:10,y:5};
 return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
 }
 var spriteData={
@@ -776,7 +776,7 @@ if(!pokemon)return'';
 var data=this.getTeambuilderSpriteData(pokemon,gen,mod);
 var shiny=data.shiny?'-shiny':'';
 var resourcePrefix=Dex.resourcePrefix;
-if(mod&&data.spriteDir==="sprites/"+mod+"/front")resourcePrefix=Dex.modResourcePrefix;
+if(mod&&data.spriteDir===mod+"/sprites/front")resourcePrefix=Dex.modResourcePrefix;
 return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.spriteid+'.png);background-position:'+data.x+'px '+data.y+'px;background-repeat:no-repeat';
 };_proto2.
 
