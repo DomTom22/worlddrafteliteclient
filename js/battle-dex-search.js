@@ -417,11 +417,10 @@ bufs[typeIndex]=[['header',DexSearch.typeName[type]]];
 var curBufLength=passType==='alias'&&bufs[typeIndex].length;
 if(curBufLength&&bufs[typeIndex][curBufLength-1][1]===_id)continue;
 
-console.log(_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase()));
 var table=BattleTeambuilderTable[window.room.curTeam.mod];
 if(
-_id in BattleItems||_id in BattleAbilities||
-_id in BattleMovedex||_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart)
+_id in BattleItems||_id in BattleAbilities||_id in BattleMovedex||
+_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart)
 {
 bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
 }else if(
