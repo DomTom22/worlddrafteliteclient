@@ -424,9 +424,10 @@ str[i]=str[i].charAt(0).toUpperCase()+str[i].slice(1);
 }
 return str.join(' ');
 }
-if(_id in BattleItems||_id in BattleAbilities||_id in BattleMovedex||titleCase(_id)in BattleTypeChart)bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
 var table=BattleTeambuilderTable[window.room.curTeam.mod];
-if(_id in table.overrideDexInfo||_id in table.overrideAbilityDesc||_id in table.overrideMoveDesc||_id in table.overrideItemDesc&&(!_id in BattleItems||!_id in BattleAbilities||!_id in BattleMovedex))bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
+if(_id in BattleItems||_id in BattleAbilities||_id in BattleMovedex||titleCase(_id)in BattleTypeChart)bufs[typeIndex].push([type,_id,matchStart,matchEnd]);else
+if(table&&(table.overrideDexInfo&&_id in table.overrideDexInfo||table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
+_id in table.overrideMoveDesc||_id in table.overrideItemDesc))bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
 
 count++;
 }

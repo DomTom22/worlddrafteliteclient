@@ -424,9 +424,10 @@ class DexSearch {
 			  }
 			  return str.join(' ');
 			}
-			if (id in BattleItems || id in BattleAbilities || id in BattleMovedex || titleCase(id) in BattleTypeChart) bufs[typeIndex].push([type, id, matchStart, matchEnd])
 			const table = BattleTeambuilderTable[window.room.curTeam.mod];
-			if (id in table.overrideDexInfo || id in table.overrideAbilityDesc || id in table.overrideMoveDesc || id in table.overrideItemDesc && (!id in BattleItems || !id in BattleAbilities || !id in BattleMovedex)) bufs[typeIndex].push([type, id, matchStart, matchEnd]);
+			if (id in BattleItems || id in BattleAbilities || id in BattleMovedex || titleCase(id) in BattleTypeChart) bufs[typeIndex].push([type, id, matchStart, matchEnd]);
+			else if (table && ((table.overrideDexInfo && id in table.overrideDexInfo) || (table.overrideAbilityDesc && id in table.overrideAbilityDesc) ||
+				id in table.overrideMoveDesc || id in table.overrideItemDesc)) bufs[typeIndex].push([type, id, matchStart, matchEnd]);
 
 			count++;
 		}
