@@ -852,7 +852,7 @@ class BattleLog {
 
 					if (iconType === 'pokemon') {
 						setAttrib('class', 'picon' + (className ? ' ' + className : ''));
-						setAttrib('style', Dex.getPokemonIcon(iconValue, false, this.scene.mod) + (style ? '; ' + style : ''));
+						setAttrib('style', Dex.getPokemonIcon(iconValue) + (style ? '; ' + style : ''));
 					} else if (iconType === 'item') {
 						setAttrib('class', 'itemicon' + (className ? ' ' + className : ''));
 						setAttrib('style', Dex.getItemIcon(iconValue) + (style ? '; ' + style : ''));

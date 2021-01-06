@@ -852,7 +852,7 @@ var _style=getAttrib('style');
 
 if(iconType==='pokemon'){
 setAttrib('class','picon'+(className?' '+className:''));
-setAttrib('style',Dex.getPokemonIcon(iconValue,false,_this2.scene.mod)+(_style?'; '+_style:''));
+setAttrib('style',Dex.getPokemonIcon(iconValue)+(_style?'; '+_style:''));
 }else if(iconType==='item'){
 setAttrib('class','itemicon'+(className?' '+className:''));
 setAttrib('style',Dex.getItemIcon(iconValue)+(_style?'; '+_style:''));

@@ -502,11 +502,22 @@ const Dex = new class implements ModdedDex {
 		let resourcePrefix = Dex.resourcePrefix;
 		let spriteDir = 'sprites/'
 		let fakeSprite = false;
-		if (options.mod && species.exists === false) {
-			resourcePrefix = Dex.modResourcePrefix;
-			spriteDir = `${options.mod}/sprites/`;
-			fakeSprite = true;
+		let name = species.spriteid;
+		let id = toID(name);
+		if ((species.exists === false || options.mod) && ModSprites[id]) {
+			if (!options.mod) {
+				for (const modName in ModSprites[id]) {
+					options.mod = modName;
+					break;
+				}
+			}
+			if (mod && (ModSprites[id][options.mod].includes('front') && isFront) || (ModSprites[id][options.mod].includes('back') && !isFront)) {
+				resourcePrefix = Dex.modResourcePrefix;
+				spriteDir = `${options.mod}/sprites/`;
+				fakeSprite = true;
+			}
 		}
+		
 		// Gmax sprites are already extremely large, so we don't need to double.
 		if (species.name.endsWith('-Gmax')) isDynamax = false;
 		let spriteData = {
@@ -520,8 +531,8 @@ const Dex = new class implements ModdedDex {
 			cryurl: '',
 			shiny: options.shiny,
 		};
-		console.log(spriteData.url);
-		let name = species.spriteid;
+		// console.log(spriteData.url);
+		
 		let dir;
 		let facing;
 		if (isFront) {
@@ -693,6 +704,7 @@ const Dex = new class implements ModdedDex {
 	}
 
 	getPokemonIcon(pokemon: string | Pokemon | ServerPokemon | PokemonSet | null, facingLeft?: boolean, mod : string = '') {
+		
 		if (pokemon === 'pokeball') {
 			return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -0px 4px`;
 		} else if (pokemon === 'pokeball-statused') {
@@ -715,14 +727,17 @@ const Dex = new class implements ModdedDex {
 			id = toID(pokemon.volatiles.formechange[1]);
 		}
 		let num = this.getPokemonIconNum(id, pokemon?.gender === 'F', facingLeft);
-		
-		
 		let top = Math.floor(num / 12) * 30;
 		let left = (num % 12) * 40;
 		let fainted = ((pokemon as Pokemon | ServerPokemon)?.fainted ? `;opacity:.3;filter:grayscale(100%) brightness(.5)` : ``);
 		let species = Dex.getSpecies(id);
-		if (species.exists === false && mod) {
-			return `background:transparent url(${this.modResourcePrefix}${mod}/sprites/icons/${id}.png) no-repeat scroll -0px -0px${fainted}`;
+		if ((species.exists === false || mod) && ModSprites[id]) {
+			if (!mod) {
+				for (const modName in ModSprites[id]) {
+					if (ModSprites[id][modName].includes('icons')) mod = modName;
+				}
+			}
+			if (mod && ModSprites[id][mod].includes('icons')) return `background:transparent url(${this.modResourcePrefix}${mod}/sprites/icons/${id}.png) no-repeat scroll -0px -0px${fainted}`;
 		}
 		return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-sheet.png?v4) no-repeat scroll -${left}px -${top}px${fainted}`;
 	}
@@ -734,10 +749,15 @@ const Dex = new class implements ModdedDex {
 		if (pokemon.species && !spriteid) {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
-		if (species.exists === false) {
-			if (mod) return { spriteDir: `${mod}/sprites/front`, spriteid: spriteid, x: 10, y: 5 };
-			return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
+		if ((species.exists === false || mod) && ModSprites[id]) {
+			if (!mod) {
+				for (const modName in ModSprites[id]) {
+					if (ModSprites[id][modName].includes('front')) mod = modName;
+				}
+			}
+			if (mod && ModSprites[id][mod].includes('front')) return { spriteDir: `${mod}/sprites/front`, spriteid: spriteid, shiny: pokemon.shiny, x: 10, y: 5 };
 		}
+		if (species.exists === false) return {spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5};
 		const spriteData: TeambuilderSpriteData = {
 			spriteid,
 			spriteDir: 'sprites/dex',
