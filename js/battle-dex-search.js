@@ -582,14 +582,14 @@ if(format.slice(0,3)==='gen'){
 gen=Number(format.charAt(3))||6;
 var mod='';
 var overrideFormat='';
+var modFormatType='';
 for(var modid in ClientMods){
 for(var i in ClientMods[modid].formats){
 var formatName=ClientMods[modid].formats[i];
 if(toID(formatName)===format){
 mod=modid;
-if(mod&&ClientMods[modid].teambuilderFormats[i]){
-overrideFormat=toID(ClientMods[modid].teambuilderFormats[i]);
-}
+if(mod&&ClientMods[modid].teambuilderFormats[i])overrideFormat=toID(ClientMods[modid].teambuilderFormats[i]);
+if(mod&&ClientMods[modid].formatTypes[i])modFormatType=toID(ClientMods[modid].formatTypes[i]);
 }
 }
 }
@@ -602,6 +602,7 @@ this.dex=Dex.forGen(gen);
 }
 if(overrideFormat)format=overrideFormat;else
 format=format.slice(4)||'customgame';
+if(modFormatType)this.formatType=modFormatType;
 }else if(!format){
 this.dex=Dex;
 }
@@ -640,7 +641,6 @@ if(speciesOrSet)this.species=speciesOrSet;
 this.set=speciesOrSet;
 this.species=toID(this.set.species);
 }
-
 if(!searchType||!this.set)return;
 }var _proto2=BattleTypedSearch.prototype;_proto2.
 getResults=function getResults(filters,sortCol){var _this=this;
@@ -748,9 +748,7 @@ if(!this.mod&&this.dex.gen>=8&&this.dex.getMove(moveid).isNonstandard==='Past'&&
 return false;
 }
 var genChar=""+this.dex.gen;
-if(this.mod&&BattleTeambuilderTable[this.mod].learnsetOverride[speciesid]){
-genChar=BattleTeambuilderTable[this.mod].lsetStr;
-}else if(
+if(
 this.format.startsWith('vgc')||
 this.format.startsWith('battlespot')||
 this.format.startsWith('battlestadium'))
@@ -763,11 +761,17 @@ genChar='q';
 genChar='p';
 }
 }
+var lsetStr=this.mod?BattleTeambuilderTable[this.mod].lsetStr:'';
 var learnsetid=this.firstLearnsetid(speciesid);
 while(learnsetid){
 var learnset=BattleTeambuilderTable.learnsets[learnsetid];
-if(learnset&&moveid in learnset&&learnset[moveid].includes(genChar)){
+if(learnset&&moveid in learnset){
+if(lsetStr&&learnset[moveid].includes('m'+lsetStr)){
 return true;
+}else if(lsetStr&&learnset[moveid].includes('n'+lsetStr)){
+}else if(learnset[moveid].includes(genChar)){
+return true;
+}
 }
 learnsetid=this.nextLearnsetid(learnsetid,speciesid);
 }
@@ -1405,20 +1409,26 @@ var learnset=BattleTeambuilderTable.learnsets[learnsetid];
 if(this.formatType==='letsgo')learnset=BattleTeambuilderTable['letsgo'].learnsets[learnsetid];
 if((_this$formatType2=this.formatType)!=null&&_this$formatType2.startsWith('dlc1'))learnset=BattleTeambuilderTable['gen8dlc1'].learnsets[learnsetid];
 if(learnset){
-for(var moveid in learnset){var _this$formatType3,_BattleTeambuilderTab;
+for(var moveid in learnset){
 var learnsetEntry=learnset[moveid];
 
 
 
+var addByMod=false;
+if(this.mod){
+var lsetStr=BattleTeambuilderTable[this.mod].lsetStr;
+if(learnsetEntry.includes('m'+lsetStr))addByMod=true;else
+if(learnsetEntry.includes('n'+lsetStr))continue;
+}
+if(!addByMod){var _this$formatType3,_BattleTeambuilderTab;
 if(galarBornLegality&&!learnsetEntry.includes('g')){
 continue;
-}else if(!this.mod&&!learnsetEntry.includes(gen)){
-continue;
-}else if(this.mod&&BattleTeambuilderTable[this.mod].learnsetOverride[learnsetid]&&!learnsetEntry.includes(BattleTeambuilderTable[this.mod].lsetStr)){
+}else if(!learnsetEntry.includes(gen)){
 continue;
 }
-if(!this.mod&&this.dex.gen>=8&&BattleMovedex[moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;
+if(this.dex.gen>=8&&BattleMovedex[moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;
 if((_this$formatType3=this.formatType)!=null&&_this$formatType3.startsWith('dlc1')&&(_BattleTeambuilderTab=BattleTeambuilderTable['gen8dlc1'])!=null&&_BattleTeambuilderTab.nonstandardMoves.includes(moveid))continue;
+}
 if(moves.includes(moveid))continue;
 moves.push(moveid);
 if(moveid==='sketch')sketch=true;

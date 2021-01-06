@@ -582,14 +582,14 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			gen = (Number(format.charAt(3)) || 6);
 			let mod = '';
 			let overrideFormat = '';
+			let modFormatType = '';
 			for (const modid in (ClientMods)) {
 				for (const i in ClientMods[modid].formats) {
 					let formatName = ClientMods[modid].formats[i];
 					if (toID(formatName) === format) {
 						mod = modid;
-						if (mod && ClientMods[modid].teambuilderFormats[i]) {
-							overrideFormat = toID(ClientMods[modid].teambuilderFormats[i]);
-						}
+						if (mod && ClientMods[modid].teambuilderFormats[i]) overrideFormat = toID(ClientMods[modid].teambuilderFormats[i]);
+						if (mod && ClientMods[modid].formatTypes[i]) modFormatType = toID(ClientMods[modid].formatTypes[i]);	
 					}
 				}
 			}
@@ -602,6 +602,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			}
 			if (overrideFormat) format = overrideFormat;
 			else format = (format.slice(4) || 'customgame') as ID;
+			if (modFormatType) this.formatType = modFormatType;
 		} else if (!format) {
 			this.dex = Dex;
 		}
@@ -640,7 +641,6 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			this.set = speciesOrSet as PokemonSet;
 			this.species = toID(this.set.species);
 		}
-
 		if (!searchType || !this.set) return;
 	}
 	getResults(filters?: SearchFilter[] | null, sortCol?: string | null): SearchRow[] {
@@ -748,9 +748,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			return false;
 		}
 		let genChar = `${this.dex.gen}`;
-		if (this.mod && BattleTeambuilderTable[this.mod].learnsetOverride[speciesid]) {
-			genChar = BattleTeambuilderTable[this.mod].lsetStr;
-		} else if (
+		if (
 			this.format.startsWith('vgc') ||
 			this.format.startsWith('battlespot') ||
 			this.format.startsWith('battlestadium')
@@ -763,11 +761,17 @@ abstract class BattleTypedSearch<T extends SearchType> {
 				genChar = 'p';
 			}
 		}
+		const lsetStr = this.mod ? BattleTeambuilderTable[this.mod].lsetStr : '';
 		let learnsetid = this.firstLearnsetid(speciesid);
 		while (learnsetid) {
 			let learnset = BattleTeambuilderTable.learnsets[learnsetid];
-			if (learnset && (moveid in learnset) && learnset[moveid].includes(genChar)) {
-				return true;
+			if (learnset && (moveid in learnset)) {
+				if (lsetStr && learnset[moveid].includes('m' + lsetStr)) {
+					return true
+				} else if (lsetStr && learnset[moveid].includes('n' + lsetStr)) {
+				} else if (learnset[moveid].includes(genChar)) {
+					return true;
+				}
 			}
 			learnsetid = this.nextLearnsetid(learnsetid, speciesid);
 		}
@@ -1410,15 +1414,21 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 					/* if (requirePentagon && learnsetEntry.indexOf('p') < 0) {
 						continue;
 					} */
-					if (galarBornLegality && !learnsetEntry.includes('g')) {
-						continue;
-					} else if (!this.mod && !learnsetEntry.includes(gen)) {
-						continue;
-					} else if (this.mod && BattleTeambuilderTable[this.mod].learnsetOverride[learnsetid] && !learnsetEntry.includes(BattleTeambuilderTable[this.mod].lsetStr)) {
-						continue;
+					let addByMod = false;
+					if (this.mod) {
+						const lsetStr = BattleTeambuilderTable[this.mod].lsetStr;
+						if (learnsetEntry.includes('m' + lsetStr)) addByMod = true;
+						else if (learnsetEntry.includes('n' + lsetStr)) continue;
 					}
-					if (!this.mod && this.dex.gen >= 8 && BattleMovedex[moveid].isNonstandard === "Past" && this.formatType !== 'natdex') continue;
-					if (this.formatType?.startsWith('dlc1') && BattleTeambuilderTable['gen8dlc1']?.nonstandardMoves.includes(moveid)) continue;
+					if (!addByMod) {
+						if (galarBornLegality && !learnsetEntry.includes('g')) {
+							continue;
+						} else if (!learnsetEntry.includes(gen)) {
+							continue;
+						}
+						if (this.dex.gen >= 8 && BattleMovedex[moveid].isNonstandard === "Past" && this.formatType !== 'natdex') continue;
+						if (this.formatType?.startsWith('dlc1') && BattleTeambuilderTable['gen8dlc1']?.nonstandardMoves.includes(moveid)) continue;
+					}
 					if (moves.includes(moveid)) continue;
 					moves.push(moveid);
 					if (moveid === 'sketch') sketch = true;
