@@ -417,7 +417,16 @@ class DexSearch {
 			let curBufLength = (passType === 'alias' && bufs[typeIndex].length);
 			if (curBufLength && bufs[typeIndex][curBufLength - 1][1] === id) continue;
 
-			bufs[typeIndex].push([type, id, matchStart, matchEnd]);
+			function titleCase(str) {
+			  str = str.toLowerCase().split(' ');
+			  for (var i = 0; i < str.length; i++) {
+				str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+			  }
+			  return str.join(' ');
+			}
+			if (id in BattleItems || id in BattleAbilities || id in BattleMovedex || titleCase(id) in BattleTypeChart) bufs[typeIndex].push([type, id, matchStart, matchEnd])
+			const table = BattleTeambuilderTable[window.room.curTeam.mod];
+			if (id in table.overrideDexInfo || id in table.overrideAbilityDesc || id in table.overrideMoveDesc || id in table.overrideItemDesc && (!id in BattleItems || !id in BattleAbilities || !id in BattleMovedex)) bufs[typeIndex].push([type, id, matchStart, matchEnd]);
 
 			count++;
 		}
