@@ -12,7 +12,7 @@ const rootDir = path.resolve(__dirname, '..');
 process.chdir(rootDir);
 
 if (!fs.existsSync('data/pokemon-showdown')) {
-	child_process.execSync('git clone https://github.com/petuuuhhh/DH.git pokemon-showdown', {
+	child_process.execSync('git clone https://github.com/scoopapa/DH.git pokemon-showdown', {
 		cwd: 'data',
 	});
 }
@@ -1374,6 +1374,34 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 	const Learnsets = requireNoCache('../data/pokemon-showdown/.data-dist/learnsets.js').Learnsets;
 	const buf = 'exports.BattleLearnsets = ' + es3stringify(Learnsets) + ';';
 	fs.writeFileSync('data/learnsets.js', buf);
+}
+
+/*********************************************************
+ * Build mod-sprites.js
+ *********************************************************/
+
+ {
+    const modDir = fs.readdirSync('data/pokemon-showdown/data/mods/');
+	const modSprites = {};
+    for (const i in modDir) {
+        const modName = modDir[i];
+		const subFolders = ['front', 'front-shiny', 'back', 'back-shiny', 'icons', 'types'];
+        for (const j in subFolders) 
+		{
+			const subF = subFolders[j];
+			const spritePath = 'data/pokemon-showdown/data/mods/' + modName + '/sprites/' + subF;
+            const spriteDir = fs.existsSync(spritePath) ? fs.readdirSync(spritePath) : '';
+			for (const sprI in spriteDir) {
+				let id = spriteDir[sprI];
+				id = id.slice(0, id.length - 4);
+				if (!modSprites[id]) modSprites[id] = {};
+				if (!modSprites[id][modName]) modSprites[id][modName] = [];
+				modSprites[id][modName].push(subF);
+			}
+        }
+    }
+    const buf = 'exports.ModSprites = ' + es3stringify(modSprites) + ';';
+    fs.writeFileSync('data/mod-sprites.js', buf);
 }
 
 /*********************************************************
