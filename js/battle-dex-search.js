@@ -422,12 +422,22 @@ str=str.toLowerCase().split(' ');
 for(var i=0;i<str.length;i++){
 str[i]=str[i].charAt(0).toUpperCase()+str[i].slice(1);
 }
+
 return str.join(' ');
 }
 var table=BattleTeambuilderTable[window.room.curTeam.mod];
-if(_id in BattleItems||_id in BattleAbilities||_id in BattleMovedex||titleCase(_id)in BattleTypeChart)bufs[typeIndex].push([type,_id,matchStart,matchEnd]);else
-if(table&&(table.overrideDexInfo&&_id in table.overrideDexInfo||table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
-_id in table.overrideMoveDesc||_id in table.overrideItemDesc))bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
+if(
+typeIndex===5&&_id in BattleItems||typeIndex===6&&_id in BattleAbilities||
+typeIndex===4&&_id in BattleMovedex||typeIndex===2&&titleCase(_id)in BattleTypeChart)
+{
+bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
+}if(
+table&&(table.overrideDexInfo&&_id in table.overrideDexInfo||
+typeIndex===6&&table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
+typeIndex===4&&_id in table.overrideMoveDesc||typeIndex===5&&_id in table.overrideItemDesc))
+{
+bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
+}
 
 count++;
 }

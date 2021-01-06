@@ -422,12 +422,22 @@ class DexSearch {
 			  for (var i = 0; i < str.length; i++) {
 				str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
 			  }
+			  
 			  return str.join(' ');
 			}
 			const table = BattleTeambuilderTable[window.room.curTeam.mod];
-			if (id in BattleItems || id in BattleAbilities || id in BattleMovedex || titleCase(id) in BattleTypeChart) bufs[typeIndex].push([type, id, matchStart, matchEnd]);
-			else if (table && ((table.overrideDexInfo && id in table.overrideDexInfo) || (table.overrideAbilityDesc && id in table.overrideAbilityDesc) ||
-				id in table.overrideMoveDesc || id in table.overrideItemDesc)) bufs[typeIndex].push([type, id, matchStart, matchEnd]);
+			if (
+				(typeIndex === 5 && id in BattleItems) || (typeIndex === 6 && id in BattleAbilities) ||
+				(typeIndex === 4 && id in BattleMovedex) || (typeIndex === 2 && titleCase(id) in BattleTypeChart)
+			) {
+				bufs[typeIndex].push([type, id, matchStart, matchEnd]);
+			} else if (
+				table && ((table.overrideDexInfo && id in table.overrideDexInfo) ||
+				(typeIndex === 6 && table.overrideAbilityDesc && id in table.overrideAbilityDesc) ||
+				(typeIndex === 4 && id in table.overrideMoveDesc) || (typeIndex === 5 && id in table.overrideItemDesc))
+			) {
+				bufs[typeIndex].push([type, id, matchStart, matchEnd]);
+			}
 
 			count++;
 		}
