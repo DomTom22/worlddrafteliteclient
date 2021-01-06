@@ -511,7 +511,7 @@ options.mod=modName;
 break;
 }
 }
-if(mod&&ModSprites[id][options.mod].includes('front')&&isFront||ModSprites[id][options.mod].includes('back')&&!isFront){
+if(options.mod&&ModSprites[id][options.mod].includes('front')&&isFront||ModSprites[id][options.mod].includes('back')&&!isFront){
 resourcePrefix=Dex.modResourcePrefix;
 spriteDir=options.mod+"/sprites/";
 fakeSprite=true;
