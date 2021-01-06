@@ -417,24 +417,17 @@ bufs[typeIndex]=[['header',DexSearch.typeName[type]]];
 var curBufLength=passType==='alias'&&bufs[typeIndex].length;
 if(curBufLength&&bufs[typeIndex][curBufLength-1][1]===_id)continue;
 
-function titleCase(str){
-str=str.toLowerCase().split(' ');
-for(var i=0;i<str.length;i++){
-str[i]=str[i].charAt(0).toUpperCase()+str[i].slice(1);
-}
-
-return str.join(' ');
-}
+console.log(_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase()));
 var table=BattleTeambuilderTable[window.room.curTeam.mod];
 if(
-typeIndex===5&&_id in BattleItems||typeIndex===6&&_id in BattleAbilities||
-typeIndex===4&&_id in BattleMovedex||typeIndex===2&&titleCase(_id)in BattleTypeChart)
+_id in BattleItems||_id in BattleAbilities||
+_id in BattleMovedex||_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart)
 {
 bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
-}if(
+}else if(
 table&&(table.overrideDexInfo&&_id in table.overrideDexInfo||
-typeIndex===6&&table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
-typeIndex===4&&_id in table.overrideMoveDesc||typeIndex===5&&_id in table.overrideItemDesc))
+table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
+_id in table.overrideMoveDesc||_id in table.overrideItemDesc))
 {
 bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
 }
