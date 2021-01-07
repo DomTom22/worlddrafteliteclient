@@ -32,6 +32,7 @@ requireScript('https://dragonheaven.herokuapp.com/data/moves.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/data/abilities.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/data/items.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/data/teambuilder-tables.js?a7');
+requireScript('https://dragonheaven.herokuapp.com/data/mod-sprites.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/js/battle-tooltips.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/js/battle.js?a7');
 
