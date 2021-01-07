@@ -179,7 +179,7 @@ function requireNoCache(pathSpec) {
 			index.push('' + toID(name.slice(i2)) + ' ' + type + ' ' + id + ' ' + toID(name.slice(0, i2)).length);
 		}
 	}
-
+	
 	for (const id in Dex.data.Pokedex) {
 		const name = Dex.data.Pokedex[id].name;
 		generateAlias(id, name, 'pokemon');
@@ -196,6 +196,7 @@ function requireNoCache(pathSpec) {
 		const name = Dex.data.Abilities[id].name;
 		generateAlias(id, name, 'ability');
 	}
+	
 	const infoTable = {Pokedex: 'pokemon', Moves: 'move', Items: 'item', Abilities: 'ability'};
 	for (const modid in ClientMods) {
 		for (const key in infoTable) {

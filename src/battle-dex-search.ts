@@ -346,6 +346,7 @@ class DexSearch {
 			}
 
 			let typeIndex = DexSearch.typeTable[type];
+			const typeI = typeIndex;
 
 			// For performance, with a query length of 1, we only fill the first bucket
 			if (query.length === 1 && typeIndex !== (searchType ? searchTypeIndex : 1)) continue;
@@ -416,21 +417,22 @@ class DexSearch {
 			// don't match duplicate aliases
 			let curBufLength = (passType === 'alias' && bufs[typeIndex].length);
 			if (curBufLength && bufs[typeIndex][curBufLength - 1][1] === id) continue;
-
+			
 			const table = BattleTeambuilderTable[window.room.curTeam.mod];
 			if (
-				id in BattleItems || id in BattleAbilities || id in BattleMovedex ||
-				id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart
+				(typeI === 1 && BattlePokedex[id] && (BattlePokedex[id].exists === undefined || BattlePokedex[id].exists === true)) ||
+				(typeI === 5 && BattleItems[id]) || (typeI === 6 && BattleAbilities[id]) || (typeI === 4 && BattleMovedex[id]) ||
+				(typeI === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart)
 			) {
 				bufs[typeIndex].push([type, id, matchStart, matchEnd]);
-			} else if (
-				table && ((table.overrideDexInfo && id in table.overrideDexInfo) || 
-				(table.overrideAbilityDesc && id in table.overrideAbilityDesc) ||
-				id in table.overrideMoveDesc || id in table.overrideItemDesc)
+			} 
+			if (
+				table && ((typeI === 1 && table.overrideDexInfo && id in table.overrideDexInfo) || 
+				(typeI === 6 && table.overrideAbilityDesc && id in table.overrideAbilityDesc) ||
+				(typeI === 4 && id in table.overrideMoveDesc) || (typeI === 5 && id in table.overrideItemDesc))
 			) {
 				bufs[typeIndex].push([type, id, matchStart, matchEnd]);
 			}
-
 			count++;
 		}
 
@@ -506,6 +508,8 @@ class DexSearch {
 				break;
 			}
 		}
+		console.log('instafilter result');
+		console.log(buf);
 		return [...buf, ...illegalBuf];
 	}
 
@@ -768,7 +772,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			let learnset = BattleTeambuilderTable.learnsets[learnsetid];
 			if (this.mod){
 				const overrideLearnsets = BattleTeambuilderTable[this.mod].overrideLearnsets;
-				if (overrideLearnsets[id] && overrideLearnsets[id][moveid]) learnset = overrideLearnsets[id];
+				if (overrideLearnsets[learnsetid] && overrideLearnsets[learnsetid][moveid]) learnset = overrideLearnsets[learnsetid];
 			}
 			if (learnset && (moveid in learnset) && learnset[moveid].includes(genChar)) {
 				return true;

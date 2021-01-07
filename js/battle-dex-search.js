@@ -346,6 +346,7 @@ if(passType==='alias')continue;
 }
 
 var typeIndex=DexSearch.typeTable[type];
+var typeI=typeIndex;
 
 
 if(query.length===1&&typeIndex!==(searchType?searchTypeIndex:1))continue;
@@ -419,18 +420,19 @@ if(curBufLength&&bufs[typeIndex][curBufLength-1][1]===_id)continue;
 
 var table=BattleTeambuilderTable[window.room.curTeam.mod];
 if(
-_id in BattleItems||_id in BattleAbilities||_id in BattleMovedex||
-_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart)
-{
-bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
-}else if(
-table&&(table.overrideDexInfo&&_id in table.overrideDexInfo||
-table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
-_id in table.overrideMoveDesc||_id in table.overrideItemDesc))
+typeI===1&&BattlePokedex[_id]&&(BattlePokedex[_id].exists===undefined||BattlePokedex[_id].exists===true)||
+typeI===5&&BattleItems[_id]||typeI===6&&BattleAbilities[_id]||typeI===4&&BattleMovedex[_id]||
+typeI===2&&_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart)
 {
 bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
 }
-
+if(
+table&&(typeI===1&&table.overrideDexInfo&&_id in table.overrideDexInfo||
+typeI===6&&table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
+typeI===4&&_id in table.overrideMoveDesc||typeI===5&&_id in table.overrideItemDesc))
+{
+bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
+}
 count++;
 }
 
@@ -506,6 +508,8 @@ if(BattleMovedex[_id5].category===category){
 break;}
 
 }
+console.log('instafilter result');
+console.log(buf);
 return[].concat(buf,illegalBuf);
 };DexSearch.
 
@@ -768,7 +772,7 @@ while(learnsetid){
 var learnset=BattleTeambuilderTable.learnsets[learnsetid];
 if(this.mod){
 var overrideLearnsets=BattleTeambuilderTable[this.mod].overrideLearnsets;
-if(overrideLearnsets[id]&&overrideLearnsets[id][moveid])learnset=overrideLearnsets[id];
+if(overrideLearnsets[learnsetid]&&overrideLearnsets[learnsetid][moveid])learnset=overrideLearnsets[learnsetid];
 }
 if(learnset&&moveid in learnset&&learnset[moveid].includes(genChar)){
 return true;
