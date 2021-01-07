@@ -746,7 +746,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		return '' as ID;
 	}
 	protected canLearn(speciesid: ID, moveid: ID) {
-		if (!this.mod && this.dex.gen >= 8 && this.dex.getMove(moveid).isNonstandard === 'Past' && this.formatType !== 'natdex') {
+		if (this.dex.gen >= 8 && this.dex.getMove(moveid).isNonstandard === 'Past' && this.formatType !== 'natdex') {
 			return false;
 		}
 		let genChar = `${this.dex.gen}`;
@@ -763,17 +763,15 @@ abstract class BattleTypedSearch<T extends SearchType> {
 				genChar = 'p';
 			}
 		}
-		const lsetStr = this.mod ? BattleTeambuilderTable[this.mod].lsetStr : '';
 		let learnsetid = this.firstLearnsetid(speciesid);
 		while (learnsetid) {
 			let learnset = BattleTeambuilderTable.learnsets[learnsetid];
-			if (learnset && (moveid in learnset)) {
-				if (lsetStr && learnset[moveid].includes('m' + lsetStr)) {
-					return true
-				} else if (lsetStr && learnset[moveid].includes('n' + lsetStr)) {
-				} else if (learnset[moveid].includes(genChar)) {
-					return true;
-				}
+			if (this.mod){
+				const overrideLearnsets = BattleTeambuilderTable[this.mod].overrideLearnsets;
+				if (overrideLearnsets[id] && overrideLearnsets[id][moveid]) learnset = overrideLearnsets[id];
+			}
+			if (learnset && (moveid in learnset) && learnset[moveid].includes(genChar)) {
+				return true;
 			}
 			learnsetid = this.nextLearnsetid(learnsetid, speciesid);
 		}
@@ -1408,6 +1406,13 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		let gen = '' + dex.gen;
 		while (learnsetid) {
 			let learnset = BattleTeambuilderTable.learnsets[learnsetid];
+			if (this.mod) {
+				learnset = JSON.parse(JSON.stringify(learnset));
+				const overrideLearnsets = BattleTeambuilderTable[this.mod].overrideLearnsets;
+				if (overrideLearnsets[learnsetid]) {
+					for (const moveid in overrideLearnsets[learnsetid]) learnset[moveid] = overrideLearnsets[learnsetid][moveid];
+				}
+			}
 			if (this.formatType === 'letsgo') learnset = BattleTeambuilderTable['letsgo'].learnsets[learnsetid];
 			if (this.formatType?.startsWith('dlc1')) learnset = BattleTeambuilderTable['gen8dlc1'].learnsets[learnsetid];
 			if (learnset) {
@@ -1416,21 +1421,13 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 					/* if (requirePentagon && learnsetEntry.indexOf('p') < 0) {
 						continue;
 					} */
-					let addByMod = false;
-					if (this.mod) {
-						const lsetStr = BattleTeambuilderTable[this.mod].lsetStr;
-						if (learnsetEntry.includes('m' + lsetStr)) addByMod = true;
-						else if (learnsetEntry.includes('n' + lsetStr)) continue;
+					if (galarBornLegality && !learnsetEntry.includes('g')) {
+						continue;
+					} else if (!learnsetEntry.includes(gen)) {
+						continue;
 					}
-					if (!addByMod) {
-						if (galarBornLegality && !learnsetEntry.includes('g')) {
-							continue;
-						} else if (!learnsetEntry.includes(gen)) {
-							continue;
-						}
-						if (this.dex.gen >= 8 && BattleMovedex[moveid].isNonstandard === "Past" && this.formatType !== 'natdex') continue;
-						if (this.formatType?.startsWith('dlc1') && BattleTeambuilderTable['gen8dlc1']?.nonstandardMoves.includes(moveid)) continue;
-					}
+					if (this.dex.gen >= 8 && BattleMovedex[moveid].isNonstandard === "Past" && this.formatType !== 'natdex') continue;
+					if (this.formatType?.startsWith('dlc1') && BattleTeambuilderTable['gen8dlc1']?.nonstandardMoves.includes(moveid)) continue;
 					if (moves.includes(moveid)) continue;
 					moves.push(moveid);
 					if (moveid === 'sketch') sketch = true;

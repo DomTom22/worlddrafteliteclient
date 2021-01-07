@@ -746,7 +746,7 @@ if(next)return toID(next);
 return'';
 };_proto2.
 canLearn=function canLearn(speciesid,moveid){
-if(!this.mod&&this.dex.gen>=8&&this.dex.getMove(moveid).isNonstandard==='Past'&&this.formatType!=='natdex'){
+if(this.dex.gen>=8&&this.dex.getMove(moveid).isNonstandard==='Past'&&this.formatType!=='natdex'){
 return false;
 }
 var genChar=""+this.dex.gen;
@@ -763,17 +763,15 @@ genChar='q';
 genChar='p';
 }
 }
-var lsetStr=this.mod?BattleTeambuilderTable[this.mod].lsetStr:'';
 var learnsetid=this.firstLearnsetid(speciesid);
 while(learnsetid){
 var learnset=BattleTeambuilderTable.learnsets[learnsetid];
-if(learnset&&moveid in learnset){
-if(lsetStr&&learnset[moveid].includes('m'+lsetStr)){
-return true;
-}else if(lsetStr&&learnset[moveid].includes('n'+lsetStr)){
-}else if(learnset[moveid].includes(genChar)){
-return true;
+if(this.mod){
+var overrideLearnsets=BattleTeambuilderTable[this.mod].overrideLearnsets;
+if(overrideLearnsets[id]&&overrideLearnsets[id][moveid])learnset=overrideLearnsets[id];
 }
+if(learnset&&moveid in learnset&&learnset[moveid].includes(genChar)){
+return true;
 }
 learnsetid=this.nextLearnsetid(learnsetid,speciesid);
 }
@@ -1408,33 +1406,32 @@ var sketch=false;
 var gen=''+dex.gen;
 while(learnsetid){var _this$formatType2;
 var learnset=BattleTeambuilderTable.learnsets[learnsetid];
+if(this.mod){
+learnset=JSON.parse(JSON.stringify(learnset));
+var overrideLearnsets=BattleTeambuilderTable[this.mod].overrideLearnsets;
+if(overrideLearnsets[learnsetid]){
+for(var moveid in overrideLearnsets[learnsetid]){learnset[moveid]=overrideLearnsets[learnsetid][moveid];}
+}
+}
 if(this.formatType==='letsgo')learnset=BattleTeambuilderTable['letsgo'].learnsets[learnsetid];
 if((_this$formatType2=this.formatType)!=null&&_this$formatType2.startsWith('dlc1'))learnset=BattleTeambuilderTable['gen8dlc1'].learnsets[learnsetid];
 if(learnset){
-for(var moveid in learnset){
-var learnsetEntry=learnset[moveid];
+for(var _moveid in learnset){var _this$formatType3,_BattleTeambuilderTab;
+var learnsetEntry=learnset[_moveid];
 
 
 
-var addByMod=false;
-if(this.mod){
-var lsetStr=BattleTeambuilderTable[this.mod].lsetStr;
-if(learnsetEntry.includes('m'+lsetStr))addByMod=true;else
-if(learnsetEntry.includes('n'+lsetStr))continue;
-}
-if(!addByMod){var _this$formatType3,_BattleTeambuilderTab;
 if(galarBornLegality&&!learnsetEntry.includes('g')){
 continue;
 }else if(!learnsetEntry.includes(gen)){
 continue;
 }
-if(this.dex.gen>=8&&BattleMovedex[moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;
-if((_this$formatType3=this.formatType)!=null&&_this$formatType3.startsWith('dlc1')&&(_BattleTeambuilderTab=BattleTeambuilderTable['gen8dlc1'])!=null&&_BattleTeambuilderTab.nonstandardMoves.includes(moveid))continue;
-}
-if(moves.includes(moveid))continue;
-moves.push(moveid);
-if(moveid==='sketch')sketch=true;
-if(moveid==='hiddenpower'){
+if(this.dex.gen>=8&&BattleMovedex[_moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;
+if((_this$formatType3=this.formatType)!=null&&_this$formatType3.startsWith('dlc1')&&(_BattleTeambuilderTab=BattleTeambuilderTable['gen8dlc1'])!=null&&_BattleTeambuilderTab.nonstandardMoves.includes(_moveid))continue;
+if(moves.includes(_moveid))continue;
+moves.push(_moveid);
+if(_moveid==='sketch')sketch=true;
+if(_moveid==='hiddenpower'){
 moves.push(
 'hiddenpowerbug','hiddenpowerdark','hiddenpowerdragon','hiddenpowerelectric','hiddenpowerfighting','hiddenpowerfire','hiddenpowerflying','hiddenpowerghost','hiddenpowergrass','hiddenpowerground','hiddenpowerice','hiddenpowerpoison','hiddenpowerpsychic','hiddenpowerrock','hiddenpowersteel','hiddenpowerwater');
 
