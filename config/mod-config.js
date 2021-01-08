@@ -41,6 +41,10 @@ const ModConfig = {
 		'twisted': true,
 		'roseredirisblue': true,
 		'prism': true,
+		'smashmodsmelee': {
+			'excludeStandardTiers': true,
+		},
+		'breakthisteam': true,
 	}
 };
 exports.ModConfig = ModConfig;
