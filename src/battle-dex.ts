@@ -732,7 +732,7 @@ const Dex = new class implements ModdedDex {
 		let fainted = ((pokemon as Pokemon | ServerPokemon)?.fainted ? `;opacity:.3;filter:grayscale(100%) brightness(.5)` : ``);
 		let species = Dex.getSpecies(id);
 		if ((species.exists === false || mod) && ModSprites[id]) {
-			if (!mod) {
+			if (!mod || !ModSprites[id][mod]) {
 				for (const modName in ModSprites[id]) {
 					if (ModSprites[id][modName].includes('icons')) mod = modName;
 				}
@@ -750,11 +750,12 @@ const Dex = new class implements ModdedDex {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
 		if ((species.exists === false || mod) && ModSprites[id]) {
-			if (!mod) {
+			if (!mod || !ModSprites[id][mod]) {
 				for (const modName in ModSprites[id]) {
 					if (ModSprites[id][modName].includes('front')) mod = modName;
 				}
 			}
+			console.log( mod + ' ' + id);
 			if (mod && ModSprites[id][mod].includes('front')) return { spriteDir: `${mod}/sprites/front`, spriteid: spriteid, shiny: pokemon.shiny, x: 10, y: 5 };
 		}
 		if (species.exists === false) return {spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5};
@@ -801,11 +802,11 @@ const Dex = new class implements ModdedDex {
 		const data = this.getTeambuilderSpriteData(pokemon, gen, mod);
 		const shiny = (data.shiny ? '-shiny' : '');
 		let resourcePrefix = Dex.resourcePrefix;
-		if (mod && data.spriteDir === `${mod}/sprites/front`) resourcePrefix = Dex.modResourcePrefix;
+		if (mod && data.spriteDir.includes('front')) resourcePrefix = Dex.modResourcePrefix;
 		return 'background-image:url(' + resourcePrefix + data.spriteDir + shiny + '/' + data.spriteid + '.png);background-position:' + data.x + 'px ' + data.y + 'px;background-repeat:no-repeat';
 	}
 
-	getItemIcon(item: any) {
+	getItemIcon(item: any, mod: string = '') {
 		let num = 0;
 		if (typeof item === 'string' && exports.BattleItems) item = exports.BattleItems[toID(item)];
 		if (item.id === 'waterring')

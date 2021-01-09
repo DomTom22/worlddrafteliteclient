@@ -732,7 +732,7 @@ var left=num%12*40;
 var fainted=(_pokemon5=pokemon)!=null&&_pokemon5.fainted?";opacity:.3;filter:grayscale(100%) brightness(.5)":"";
 var species=Dex.getSpecies(id);
 if((species.exists===false||mod)&&ModSprites[id]){
-if(!mod){
+if(!mod||!ModSprites[id][mod]){
 for(var modName in ModSprites[id]){
 if(ModSprites[id][modName].includes('icons'))mod=modName;
 }
@@ -750,11 +750,12 @@ if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
 if((species.exists===false||mod)&&ModSprites[id]){
-if(!mod){
+if(!mod||!ModSprites[id][mod]){
 for(var modName in ModSprites[id]){
 if(ModSprites[id][modName].includes('front'))mod=modName;
 }
 }
+console.log(mod+' '+id);
 if(mod&&ModSprites[id][mod].includes('front'))return{spriteDir:mod+"/sprites/front",spriteid:spriteid,shiny:pokemon.shiny,x:10,y:5};
 }
 if(species.exists===false)return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
@@ -801,11 +802,11 @@ if(!pokemon)return'';
 var data=this.getTeambuilderSpriteData(pokemon,gen,mod);
 var shiny=data.shiny?'-shiny':'';
 var resourcePrefix=Dex.resourcePrefix;
-if(mod&&data.spriteDir===mod+"/sprites/front")resourcePrefix=Dex.modResourcePrefix;
+if(mod&&data.spriteDir.includes('front'))resourcePrefix=Dex.modResourcePrefix;
 return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.spriteid+'.png);background-position:'+data.x+'px '+data.y+'px;background-repeat:no-repeat';
 };_proto2.
 
-getItemIcon=function getItemIcon(item){var _item;
+getItemIcon=function getItemIcon(item){var _item;var mod=arguments.length>1&&arguments[1]!==undefined?arguments[1]:'';
 var num=0;
 if(typeof item==='string'&&exports.BattleItems)item=exports.BattleItems[toID(item)];
 if(item.id==='waterring')
