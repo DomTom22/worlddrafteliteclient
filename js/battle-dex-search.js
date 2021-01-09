@@ -425,8 +425,7 @@ typeI===5&&BattleItems[_id]||typeI===6&&BattleAbilities[_id]||typeI===4&&BattleM
 typeI===2&&_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart)
 {
 bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
-}
-if(
+}else if(
 table&&(typeI===1&&table.overrideDexInfo&&_id in table.overrideDexInfo||
 typeI===6&&table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
 typeI===4&&_id in table.overrideMoveDesc||typeI===5&&_id in table.overrideItemDesc))
@@ -1430,7 +1429,7 @@ continue;
 }else if(!learnsetEntry.includes(gen)){
 continue;
 }
-if(this.dex.gen>=8&&BattleMovedex[_moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;
+if(this.dex.gen>=8&&BattleMovedex[_moveid]&&BattleMovedex[_moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;
 if((_this$formatType3=this.formatType)!=null&&_this$formatType3.startsWith('dlc1')&&(_BattleTeambuilderTab=BattleTeambuilderTable['gen8dlc1'])!=null&&_BattleTeambuilderTab.nonstandardMoves.includes(_moveid))continue;
 if(moves.includes(_moveid))continue;
 moves.push(_moveid);

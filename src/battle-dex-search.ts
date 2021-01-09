@@ -425,8 +425,7 @@ class DexSearch {
 				(typeI === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart)
 			) {
 				bufs[typeIndex].push([type, id, matchStart, matchEnd]);
-			} 
-			if (
+			} else if (
 				table && ((typeI === 1 && table.overrideDexInfo && id in table.overrideDexInfo) || 
 				(typeI === 6 && table.overrideAbilityDesc && id in table.overrideAbilityDesc) ||
 				(typeI === 4 && id in table.overrideMoveDesc) || (typeI === 5 && id in table.overrideItemDesc))
@@ -1430,7 +1429,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 					} else if (!learnsetEntry.includes(gen)) {
 						continue;
 					}
-					if (this.dex.gen >= 8 && BattleMovedex[moveid].isNonstandard === "Past" && this.formatType !== 'natdex') continue;
+					if (this.dex.gen >= 8 && BattleMovedex[moveid] && BattleMovedex[moveid].isNonstandard === "Past" && this.formatType !== 'natdex') continue;
 					if (this.formatType?.startsWith('dlc1') && BattleTeambuilderTable['gen8dlc1']?.nonstandardMoves.includes(moveid)) continue;
 					if (moves.includes(moveid)) continue;
 					moves.push(moveid);
