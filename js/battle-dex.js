@@ -443,12 +443,12 @@ return species.tier;
 
 getType=function getType(type){
 if(!type||typeof type==='string'){
-var id=toID(type);
-id=id.substr(0,1).toUpperCase()+id.substr(1);
-type=window.BattleTypeChart&&window.BattleTypeChart[id]||{};
+var _id=toID(type);
+_id=_id.substr(0,1).toUpperCase()+_id.substr(1);
+type=window.BattleTypeChart&&window.BattleTypeChart[_id]||{};
 if(type.damageTaken)type.exists=true;
-if(!type.id)type.id=id;
-if(!type.name)type.name=id;
+if(!type.id)type.id=_id;
+if(!type.name)type.name=_id;
 if(!type.effectType){
 type.effectType='Type';
 }
@@ -464,6 +464,18 @@ if(ability===species.abilities[i])return true;
 return false;
 };_proto2.
 
+getSpriteMod=function getSpriteMod(mod,id,folder){var overrideStandard=arguments.length>3&&arguments[3]!==undefined?arguments[3]:false;
+if(!ModSprites[id])return null;
+if(overrideStandard&&!mod)return null;
+if(!mod||!ModSprites[id][mod]){
+for(var modName in ModSprites[id]){
+if(ModSprites[id][modName].includes(folder))return modName;
+}
+}
+if(mod&&ModSprites[id][mod].includes(folder))return mod;
+return null;
+};_proto2.
+
 loadSpriteData=function loadSpriteData(gen){
 if(this.loadedSpriteData[gen])return;
 this.loadedSpriteData[gen]=1;
@@ -476,6 +488,7 @@ var el=document.createElement('script');
 el.src=path+'data/pokedex-mini-bw.js'+qs;
 document.getElementsByTagName('body')[0].appendChild(el);
 };_proto2.
+
 getSpriteData=function getSpriteData(pokemon,isFront)
 
 
@@ -504,18 +517,13 @@ var spriteDir='sprites/';
 var fakeSprite=false;
 var name=species.spriteid;
 var id=toID(name);
-if((species.exists===false||options.mod)&&ModSprites[id]){
-if(!options.mod){
-for(var modName in ModSprites[id]){
-options.mod=modName;
-break;
-}
-}
-if(options.mod&&ModSprites[id][options.mod].includes('front')&&isFront||ModSprites[id][options.mod].includes('back')&&!isFront){
+
+options.mod=this.getSpriteMod(options.mod,id,isFront?'front':'back',species===false);
+if(options.mod){
 resourcePrefix=Dex.modResourcePrefix;
 spriteDir=options.mod+"/sprites/";
 fakeSprite=true;
-}
+if(!this.getSpriteMod(options.mod,id,(isFront?'front':'back')+'-shiny',species===false))options.shiny='';
 }
 
 
@@ -704,7 +712,6 @@ return num;
 };_proto2.
 
 getPokemonIcon=function getPokemonIcon(pokemon,facingLeft){var _pokemon,_pokemon2,_pokemon3,_pokemon3$volatiles,_pokemon4,_pokemon5;var mod=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';
-
 if(pokemon==='pokeball'){
 return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -0px 4px";
 }else if(pokemon==='pokeball-statused'){
@@ -731,14 +738,8 @@ var top=Math.floor(num/12)*30;
 var left=num%12*40;
 var fainted=(_pokemon5=pokemon)!=null&&_pokemon5.fainted?";opacity:.3;filter:grayscale(100%) brightness(.5)":"";
 var species=Dex.getSpecies(id);
-if((species.exists===false||mod)&&ModSprites[id]){
-if(!mod||!ModSprites[id][mod]){
-for(var modName in ModSprites[id]){
-if(ModSprites[id][modName].includes('icons'))mod=modName;
-}
-}
-if(mod&&ModSprites[id][mod].includes('icons'))return"background:transparent url("+this.modResourcePrefix+mod+"/sprites/icons/"+id+".png) no-repeat scroll -0px -0px"+fainted;
-}
+mod=this.getSpriteMod(mod,id,'icons',species===false);
+if(mod)return"background:transparent url("+this.modResourcePrefix+mod+"/sprites/icons/"+id+".png) no-repeat scroll -0px -0px"+fainted;
 return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v4) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
 };_proto2.
 
@@ -749,15 +750,14 @@ var species=Dex.getSpecies(pokemon.species);
 if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
-if((species.exists===false||mod)&&ModSprites[id]){
-if(!mod||!ModSprites[id][mod]){
-for(var modName in ModSprites[id]){
-if(ModSprites[id][modName].includes('front'))mod=modName;
-}
-}
-console.log(mod+' '+id);
-if(mod&&ModSprites[id][mod].includes('front'))return{spriteDir:mod+"/sprites/front",spriteid:spriteid,shiny:pokemon.shiny,x:10,y:5};
-}
+mod=this.getSpriteMod(mod,id,'front',species===false);
+if(mod)return{
+spriteDir:mod+"/sprites/front",
+spriteid:spriteid,
+shiny:this.getSpriteMod(mod,id,'front-shiny',species===false)!==null&&pokemon.shiny,
+x:10,
+y:5};
+
 if(species.exists===false)return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
 var spriteData={
 spriteid:spriteid,
@@ -809,8 +809,8 @@ return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.sprit
 getItemIcon=function getItemIcon(item){var _item;var mod=arguments.length>1&&arguments[1]!==undefined?arguments[1]:'';
 var num=0;
 if(typeof item==='string'&&exports.BattleItems)item=exports.BattleItems[toID(item)];
-if(item.id==='waterring')
-return'background:transparent url(https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/waterring.png) no-repeat';
+mod=this.getSpriteMod(mod,item,'items');
+if(mod)return'background:transparent url(${this.modResourcePrefix}${mod}/sprites/items/${id}.png) no-repeat';
 if((_item=item)!=null&&_item.spritenum)num=item.spritenum;
 
 var top=Math.floor(num/16)*24;
@@ -818,13 +818,14 @@ var left=num%16*24;
 return'background:transparent url('+Dex.resourcePrefix+'sprites/itemicons-sheet.png?g8) no-repeat scroll -'+left+'px -'+top+'px';
 };_proto2.
 
-getTypeIcon=function getTypeIcon(type,b){
+getTypeIcon=function getTypeIcon(type,b){var mod=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';
 type=this.getType(type).name;
 if(!type)type='???';
 var sanitizedType=type.replace(/\?/g,'%3f');
 
-if(sanitizedType==='Gas')
-return"<img src=\"https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/gas.png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";else
+mod=this.getSpriteMod(mod,type,'items');
+if(mod)
+return"<img src=\""+this.modResourcePrefix+mod+"/sprites/types/"+id+".png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";else
 
 return"<img src=\""+Dex.resourcePrefix+"sprites/types/"+sanitizedType+".png\" alt=\""+type+"\" height=\"14\" width=\"32\" class=\"pixelated"+(b?' b':'')+"\" />";
 };_proto2.

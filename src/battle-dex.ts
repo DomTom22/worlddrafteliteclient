@@ -463,7 +463,19 @@ const Dex = new class implements ModdedDex {
 		}
 		return false;
 	}
-
+	
+	getSpriteMod(mod: string, id: string, folder: string, overrideStandard: boolean = false) {
+		if (!ModSprites[id]) return null;
+		if (overrideStandard && !mod) return null;
+		if (!mod || !ModSprites[id][mod]) {
+			for (const modName in ModSprites[id]) {
+				if (ModSprites[id][modName].includes(folder)) return modName;
+			}
+		}
+		if (mod && ModSprites[id][mod].includes(folder)) return mod;
+		return null;
+	}
+	
 	loadSpriteData(gen: 'xy' | 'bw') {
 		if (this.loadedSpriteData[gen]) return;
 		this.loadedSpriteData[gen] = 1;
@@ -476,6 +488,7 @@ const Dex = new class implements ModdedDex {
 		el.src = path + 'data/pokedex-mini-bw.js' + qs;
 		document.getElementsByTagName('body')[0].appendChild(el);
 	}
+	
 	getSpriteData(pokemon: Pokemon | Species | string, isFront: boolean, options: {
 		gen?: number,
 		shiny?: boolean,
@@ -504,18 +517,13 @@ const Dex = new class implements ModdedDex {
 		let fakeSprite = false;
 		let name = species.spriteid;
 		let id = toID(name);
-		if ((species.exists === false || options.mod) && ModSprites[id]) {
-			if (!options.mod) {
-				for (const modName in ModSprites[id]) {
-					options.mod = modName;
-					break;
-				}
-			}
-			if (options.mod && (ModSprites[id][options.mod].includes('front') && isFront) || (ModSprites[id][options.mod].includes('back') && !isFront)) {
-				resourcePrefix = Dex.modResourcePrefix;
-				spriteDir = `${options.mod}/sprites/`;
-				fakeSprite = true;
-			}
+		//check for sprites in ModSprites if a mod is given or the species is not recognized
+		options.mod = this.getSpriteMod(options.mod, id, isFront ? 'front' : 'back', species === false)
+		if (options.mod) {
+			resourcePrefix = Dex.modResourcePrefix;
+			spriteDir = `${options.mod}/sprites/`;
+			fakeSprite = true;
+			if (!this.getSpriteMod(options.mod, id, (isFront ? 'front' : 'back') + '-shiny', species === false)) options.shiny = '';
 		}
 		
 		// Gmax sprites are already extremely large, so we don't need to double.
@@ -704,7 +712,6 @@ const Dex = new class implements ModdedDex {
 	}
 
 	getPokemonIcon(pokemon: string | Pokemon | ServerPokemon | PokemonSet | null, facingLeft?: boolean, mod : string = '') {
-		
 		if (pokemon === 'pokeball') {
 			return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -0px 4px`;
 		} else if (pokemon === 'pokeball-statused') {
@@ -731,14 +738,8 @@ const Dex = new class implements ModdedDex {
 		let left = (num % 12) * 40;
 		let fainted = ((pokemon as Pokemon | ServerPokemon)?.fainted ? `;opacity:.3;filter:grayscale(100%) brightness(.5)` : ``);
 		let species = Dex.getSpecies(id);
-		if ((species.exists === false || mod) && ModSprites[id]) {
-			if (!mod || !ModSprites[id][mod]) {
-				for (const modName in ModSprites[id]) {
-					if (ModSprites[id][modName].includes('icons')) mod = modName;
-				}
-			}
-			if (mod && ModSprites[id][mod].includes('icons')) return `background:transparent url(${this.modResourcePrefix}${mod}/sprites/icons/${id}.png) no-repeat scroll -0px -0px${fainted}`;
-		}
+		mod = this.getSpriteMod(mod, id, 'icons', species === false);
+		if (mod) return `background:transparent url(${this.modResourcePrefix}${mod}/sprites/icons/${id}.png) no-repeat scroll -0px -0px${fainted}`;
 		return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-sheet.png?v4) no-repeat scroll -${left}px -${top}px${fainted}`;
 	}
 
@@ -749,15 +750,14 @@ const Dex = new class implements ModdedDex {
 		if (pokemon.species && !spriteid) {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
-		if ((species.exists === false || mod) && ModSprites[id]) {
-			if (!mod || !ModSprites[id][mod]) {
-				for (const modName in ModSprites[id]) {
-					if (ModSprites[id][modName].includes('front')) mod = modName;
-				}
-			}
-			console.log( mod + ' ' + id);
-			if (mod && ModSprites[id][mod].includes('front')) return { spriteDir: `${mod}/sprites/front`, spriteid: spriteid, shiny: pokemon.shiny, x: 10, y: 5 };
-		}
+		mod = this.getSpriteMod(mod, id, 'front', species === false);
+		if (mod) return {
+			spriteDir: `${mod}/sprites/front`,
+			spriteid: spriteid,
+			shiny: (this.getSpriteMod(mod, id, 'front-shiny', species === false) !== null && pokemon.shiny),
+			x: 10, 
+			y: 5 
+		};
 		if (species.exists === false) return {spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5};
 		const spriteData: TeambuilderSpriteData = {
 			spriteid,
@@ -809,8 +809,8 @@ const Dex = new class implements ModdedDex {
 	getItemIcon(item: any, mod: string = '') {
 		let num = 0;
 		if (typeof item === 'string' && exports.BattleItems) item = exports.BattleItems[toID(item)];
-		if (item.id === 'waterring')
-			return 'background:transparent url(https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/waterring.png) no-repeat'
+		mod = this.getSpriteMod(mod, item, 'items');
+		if (mod) return 'background:transparent url(${this.modResourcePrefix}${mod}/sprites/items/${id}.png) no-repeat'
 		if (item?.spritenum) num = item.spritenum;
 
 		let top = Math.floor(num / 16) * 24;
@@ -818,13 +818,14 @@ const Dex = new class implements ModdedDex {
 		return 'background:transparent url(' + Dex.resourcePrefix + 'sprites/itemicons-sheet.png?g8) no-repeat scroll -' + left + 'px -' + top + 'px';
 	}
 
-	getTypeIcon(type: string | null, b?: boolean) { // b is just for utilichart.js
+	getTypeIcon(type: string | null, b?: boolean, mod: string = '') { // b is just for utilichart.js
 		type = this.getType(type).name;
 		if (!type) type = '???';
 		let sanitizedType = type.replace(/\?/g, '%3f');
 		// console.log(sanitizedType);
-		if (sanitizedType === 'Gas')
-			return `<img src="https://raw.githubusercontent.com/petuuuhhh/DH/master/data/mods/prism/sprites/gas.png" alt="${type}" class="pixelated${b ? ' b' : ''}" />`;
+		mod = this.getSpriteMod(mod, type, 'items');
+		if (mod)
+			return `<img src="${this.modResourcePrefix}${mod}/sprites/types/${id}.png" alt="${type}" class="pixelated${b ? ' b' : ''}" />`;
 		else 
 			return `<img src="${Dex.resourcePrefix}sprites/types/${sanitizedType}.png" alt="${type}" height="14" width="32" class="pixelated${b ? ' b' : ''}" />`;
 	}

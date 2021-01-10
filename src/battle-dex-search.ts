@@ -42,7 +42,7 @@ class DexSearch {
 
 	results: SearchRow[] | null = null;
 	exactMatch = false;
-
+	
 	static typeTable = {
 		pokemon: 1,
 		type: 2,
@@ -82,6 +82,7 @@ class DexSearch {
 
 	constructor(searchType: SearchType | '' = '', formatid = '' as ID, species = '' as ID) {
 		this.setType(searchType, formatid, species);
+		if (window.room.curTeam.mod) this.dex = Dex.mod(window.room.curTeam.mod);
 	}
 
 	getTypedSearch(searchType: SearchType | '', format = '' as ID, speciesOrSet: ID | PokemonSet = '' as ID) {
@@ -462,24 +463,40 @@ class DexSearch {
 		let buf: SearchRow[] = [];
 		let illegalBuf: SearchRow[] = [];
 		let illegal = this.typedSearch?.illegalReasons;
+		//change object to look in if using a mod
+		let pokedex = BattlePokedex;
+		let moveDex = BattleMovedex;
+		if (window.room.curTeam.mod){
+			pokedex = {};
+			movedex = {};
+			const table = BattleTeambuilderTable[window.room.curTeam.mod];
+			for(const id in table.overrideDexInfo) {
+				pokedex[id] = { types: table.overrideDexInfo[id].types, abilities: table.overrideDexInfo[id].abilities};
+			}
+			for(const id in table.fullMoveName) movedex[id] = {};
+			for(const id in table.overrideMoveType) movedex[id].type = table.overrideMoveType[id];
+			for(const id in table.overrideMoveType) movedex[id].category = table.overrideMoveCategory[id];
+			pokedex = {...pokedex, ...BattlePokedex};
+			movedex = {...movedex, ...BattleMovedex};
+		}
 		if (searchType === 'pokemon') {
 			switch (fType) {
 			case 'type':
 				let type = fId.charAt(0).toUpperCase() + fId.slice(1) as TypeName;
 				buf.push(['header', `${type}-type Pok&eacute;mon`]);
-				for (let id in BattlePokedex) {
-					if (!BattlePokedex[id].types) continue;
+				for (let id in pokedex) {
+					if (!pokedex[id].types) continue;
 					if (this.dex.getSpecies(id).types.includes(type)) {
 						(illegal && id in illegal ? illegalBuf : buf).push(['pokemon', id as ID]);
 					}
 				}
 				break;
 			case 'ability':
-				let ability = Dex.getAbility(fId).name;
+				let ability = this.dex.getAbility(fId).name;
 				buf.push(['header', `${ability} Pok&eacute;mon`]);
-				for (let id in BattlePokedex) {
-					if (!BattlePokedex[id].abilities) continue;
-					if (Dex.hasAbility(this.dex.getSpecies(id), ability)) {
+				for (let id in pokedex) {
+					if (!pokedex[id].abilities) continue;
+					if (this.dex.hasAbility(this.dex.getSpecies(id), ability)) {
 						(illegal && id in illegal ? illegalBuf : buf).push(['pokemon', id as ID]);
 					}
 				}
@@ -490,8 +507,8 @@ class DexSearch {
 			case 'type':
 				let type = fId.charAt(0).toUpperCase() + fId.slice(1);
 				buf.push(['header', `${type}-type moves`]);
-				for (let id in BattleMovedex) {
-					if (BattleMovedex[id].type === type) {
+				for (let id in movedex) {
+					if (movedex[id].type === type) {
 						(illegal && id in illegal ? illegalBuf : buf).push(['move', id as ID]);
 					}
 				}
@@ -499,16 +516,14 @@ class DexSearch {
 			case 'category':
 				let category = fId.charAt(0).toUpperCase() + fId.slice(1);
 				buf.push(['header', `${category} moves`]);
-				for (let id in BattleMovedex) {
-					if (BattleMovedex[id].category === category) {
+				for (let id in movedex) {
+					if (movedex[id].category === category) {
 						(illegal && id in illegal ? illegalBuf : buf).push(['move', id as ID]);
 					}
 				}
 				break;
 			}
 		}
-		console.log('instafilter result');
-		console.log(buf);
 		return [...buf, ...illegalBuf];
 	}
 
@@ -1006,14 +1021,28 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 	sort(results: SearchRow[], sortCol: string) {
 		if (['hp', 'atk', 'def', 'spa', 'spd', 'spe'].includes(sortCol)) {
 			return results.sort(([rowType1, id1], [rowType2, id2]) => {
-				const stat1 = BattlePokedex[id1].baseStats[sortCol as StatName];
-				const stat2 = BattlePokedex[id2].baseStats[sortCol as StatName];
+				let pokedex1 = BattlePokedex;
+				let pokedex2 = BattlePokedex;
+				if (this.mod) {
+					const table = BattleTeambuilderTable[this.mod].overrideDexInfo;
+					if (table[id1] && table[id1].baseStats) pokedex1 = table;
+					if (table[id2] && table[id2].baseStats) pokedex2 = table;
+				}
+				const stat1 = pokedex1[id1].baseStats[sortCol as StatName];
+				const stat2 = pokedex2[id2].baseStats[sortCol as StatName];
 				return stat2 - stat1;
 			});
 		} else if (sortCol === 'bst') {
 			return results.sort(([rowType1, id1], [rowType2, id2]) => {
-				const base1 = BattlePokedex[id1].baseStats;
-				const base2 = BattlePokedex[id2].baseStats;
+				let pokedex1 = BattlePokedex;
+				let pokedex2 = BattlePokedex;
+				if (this.mod) {
+					const table = BattleTeambuilderTable[this.mod].overrideDexInfo;
+					if (table[id1] && table[id1].baseStats) pokedex1 = table;
+					if (table[id2] && table[id2].baseStats) pokedex2 = table;
+				}
+				const base1 = pokedex1[id1].baseStats;
+				const base2 = pokedex2[id2].baseStats;
 				const bst1 = base1.hp + base1.atk + base1.def + base1.spa + base1.spd + base1.spe;
 				const bst2 = base2.hp + base2.atk + base2.def + base2.spa + base2.spd + base2.spe;
 				return bst2 - bst1;
