@@ -466,7 +466,6 @@ return false;
 
 getSpriteMod=function getSpriteMod(mod,id,folder){var overrideStandard=arguments.length>3&&arguments[3]!==undefined?arguments[3]:false;
 if(!ModSprites[id])return null;
-console.log(id+' '+overrideStandard);
 if((!mod||!ModSprites[id][mod])&&!overrideStandard){
 for(var modName in ModSprites[id]){
 if(ModSprites[id][modName].includes(folder))return modName;

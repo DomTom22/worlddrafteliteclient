@@ -466,7 +466,6 @@ const Dex = new class implements ModdedDex {
 	
 	getSpriteMod(mod: string, id: string, folder: string, overrideStandard: boolean = false) {
 		if (!ModSprites[id]) return null;
-		console.log(id + ' ' + overrideStandard);
 		if ((!mod || !ModSprites[id][mod]) && !overrideStandard) {
 			for (const modName in ModSprites[id]) {
 				if (ModSprites[id][modName].includes(folder)) return modName;
