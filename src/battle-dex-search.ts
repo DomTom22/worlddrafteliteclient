@@ -318,24 +318,7 @@ class DexSearch {
 			let type = entry[1];
 
 			if (!id) break;
-			
-			let typeIndex = DexSearch.typeTable[type];
-			const table = BattleTeambuilderTable[window.room.curTeam.mod];
-			if (
-				(
-					typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
-					(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
-				) || 
-				(typeIndex === 5 && !BattleItems[id] && (!table || id in table.overrideItemDesc === false)) ||
-				(typeIndex === 6 && !BattleAbilities[id] && (!table || id in table.overrideAbilityDesc === false)) ||
-				(typeIndex === 4 && !BattleMovedex[id] && (!table || id in table.overrideMoveDesc === false)) ||
-				(
-					typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
-					(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
-				)			
-			) {
-				continue;
-			}
+
 			if (passType === 'fuzzy') {
 				// fuzzy match pass; stop after 2 results
 				if (count >= 2) {
@@ -362,7 +345,8 @@ class DexSearch {
 				// normal entry
 				if (passType === 'alias') continue;
 			}
-			
+
+			let typeIndex = DexSearch.typeTable[type];
 			// For performance, with a query length of 1, we only fill the first bucket
 			if (query.length === 1 && typeIndex !== (searchType ? searchTypeIndex : 1)) continue;
 
@@ -379,7 +363,7 @@ class DexSearch {
 			if (qFilterType === 'type' && typeIndex !== 2) continue;
 			// hardcode cases of duplicate non-consecutive aliases
 			if ((id === 'megax' || id === 'megay') && 'mega'.startsWith(query)) continue;
-
+			
 			let matchStart = 0;
 			let matchEnd = 0;
 			if (passType === 'alias') {
@@ -400,6 +384,28 @@ class DexSearch {
 
 			// some aliases are substrings
 			if (queryAlias === id && query !== id) continue;
+
+			const table = BattleTeambuilderTable[window.room.curTeam.mod];
+				if (
+					typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
+					(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
+				) continue;
+				else if (
+					typeIndex === 5 && (!BattleItems[id] || BattlePokedex[id].exists === false) &&
+					(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
+				) continue;
+				else if (
+					typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
+					(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
+				) continue;	
+				else if (
+					typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
+					(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
+				) continue;
+				else if (
+					typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
+					(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
+				) continue;
 
 			if (searchType && searchTypeIndex !== typeIndex) {
 				// This is a filter, set it as an instafilter candidate
@@ -1021,12 +1027,12 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		return true;
 	}
 	sort(results: SearchRow[], sortCol: string) {
+		const table = !this.mod ? '' : BattleTeambuilderTable[this.mod].overrideDexInfo;
 		if (['hp', 'atk', 'def', 'spa', 'spd', 'spe'].includes(sortCol)) {
 			return results.sort(([rowType1, id1], [rowType2, id2]) => {
 				let pokedex1 = BattlePokedex;
 				let pokedex2 = BattlePokedex;
 				if (this.mod) {
-					const table = BattleTeambuilderTable[this.mod].overrideDexInfo;
 					if (table[id1] && table[id1].baseStats) pokedex1 = table;
 					if (table[id2] && table[id2].baseStats) pokedex2 = table;
 				}
@@ -1039,7 +1045,6 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 				let pokedex1 = BattlePokedex;
 				let pokedex2 = BattlePokedex;
 				if (this.mod) {
-					const table = BattleTeambuilderTable[this.mod].overrideDexInfo;
 					if (table[id1] && table[id1].baseStats) pokedex1 = table;
 					if (table[id2] && table[id2].baseStats) pokedex2 = table;
 				}
@@ -1581,24 +1586,30 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 				fissure: 1500, horndrill: 1500, guillotine: 1500,
 			};
 			return results.sort(([rowType1, id1], [rowType2, id2]) => {
+				const modPow1 = this.mod ? BattleTeambuilderTable[this.mod].overrideBP[id1] : null;
+				const modPow2 = this.mod ? BattleTeambuilderTable[this.mod].overrideBP[id2] : null;
 				let move1 = BattleMovedex[id1];
 				let move2 = BattleMovedex[id2];
-				let pow1 = move1.basePower || powerTable[id1] || (move1.category === 'Status' ? -1 : 1400);
-				let pow2 = move2.basePower || powerTable[id2] || (move2.category === 'Status' ? -1 : 1400);
+				let pow1 = modPow1 || move1.basePower || powerTable[id1] || (move1.category === 'Status' ? -1 : 1400);
+				let pow2 = modPow2 || move2.basePower || powerTable[id2] || (move2.category === 'Status' ? -1 : 1400);
 				return pow2 - pow1;
 			});
 		case 'accuracy':
 			return results.sort(([rowType1, id1], [rowType2, id2]) => {
-				let accuracy1 = BattleMovedex[id1].accuracy || 0;
-				let accuracy2 = BattleMovedex[id2].accuracy || 0;
+				const modAcc1 = this.mod ? BattleTeambuilderTable[this.mod].overrideAcc[id1] : null;
+				const modAcc2 = this.mod ? BattleTeambuilderTable[this.mod].overrideAcc[id2] : null;
+				let accuracy1 = modAcc1 || BattleMovedex[id1].accuracy || 0;
+				let accuracy2 = modAcc2 || BattleMovedex[id2].accuracy || 0;
 				if (accuracy1 === true) accuracy1 = 101;
 				if (accuracy2 === true) accuracy2 = 101;
 				return accuracy2 - accuracy1;
 			});
 		case 'pp':
 			return results.sort(([rowType1, id1], [rowType2, id2]) => {
-				let pp1 = BattleMovedex[id1].pp || 0;
-				let pp2 = BattleMovedex[id2].pp || 0;
+				const modPP1 = this.mod ? BattleTeambuilderTable[this.mod].overridePP[id1] : null;
+				const modPP2 = this.mod ? BattleTeambuilderTable[this.mod].overridePP[id2] : null;
+				let pp1 = modPP1 || BattleMovedex[id1].pp || 0;
+				let pp2 = modPP2 || BattleMovedex[id2].pp || 0;
 				return pp2 - pp1;
 			});
 		}
