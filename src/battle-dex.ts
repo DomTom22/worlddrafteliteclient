@@ -472,7 +472,7 @@ const Dex = new class implements ModdedDex {
 				if (ModSprites[id][modName].includes(folder)) return modName;
 			}
 		}
-		if (mod && ModSprites[id][mod].includes(folder)) return mod;
+		if (mod && ModSprites[id][mod] && ModSprites[id][mod].includes(folder)) return mod;
 		return null;
 	}
 	

@@ -472,7 +472,7 @@ for(var modName in ModSprites[id]){
 if(ModSprites[id][modName].includes(folder))return modName;
 }
 }
-if(mod&&ModSprites[id][mod].includes(folder))return mod;
+if(mod&&ModSprites[id][mod]&&ModSprites[id][mod].includes(folder))return mod;
 return null;
 };_proto2.
 
