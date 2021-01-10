@@ -1611,6 +1611,12 @@ var modPP2=_this5.mod?BattleTeambuilderTable[_this5.mod].overridePP[id2]:null;
 var pp1=modPP1||BattleMovedex[id1].pp||0;
 var pp2=modPP2||BattleMovedex[id2].pp||0;
 return pp2-pp1;
+});
+case'name':
+return results.sort(function(_ref21,_ref22){var rowType1=_ref21[0],id1=_ref21[1];var rowType2=_ref22[0],id2=_ref22[1];
+var name1=id1;
+var name2=id2;
+return name1<name2?-1:name1>name2?1:0;
 });}
 
 throw new Error("invalid sortcol");
