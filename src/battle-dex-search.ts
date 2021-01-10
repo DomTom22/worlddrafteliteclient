@@ -473,9 +473,9 @@ class DexSearch {
 			for(const id in table.overrideDexInfo) {
 				pokedex[id] = { types: table.overrideDexInfo[id].types, abilities: table.overrideDexInfo[id].abilities};
 			}
-			for(const id in table.fullMoveName) movedex[id] = {};
+			for(const id in ...table.fullMoveName, ...table.overrideMoveType, ...table.overrideMoveCategory) movedex[id] = {};
 			for(const id in table.overrideMoveType) movedex[id].type = table.overrideMoveType[id];
-			for(const id in table.overrideMoveType) movedex[id].category = table.overrideMoveCategory[id];
+			for(const id in table.overrideMoveCategory) movedex[id].category = table.overrideMoveCategory[id];
 			pokedex = {...pokedex, ...BattlePokedex};
 			movedex = {...movedex, ...BattleMovedex};
 		}
