@@ -473,9 +473,9 @@ var table=BattleTeambuilderTable[window.room.curTeam.mod];
 for(var _id2 in table.overrideDexInfo){
 pokedex[_id2]={types:table.overrideDexInfo[_id2].types,abilities:table.overrideDexInfo[_id2].abilities};
 }
-for(var _id3 in table.fullMoveName){movedex[_id3]={};}
+for(var _id3 in Object.assign({},table.fullMoveName,table.overrideMoveType,table.overrideMoveCategory)){movedex[_id3]={};}
 for(var _id4 in table.overrideMoveType){movedex[_id4].type=table.overrideMoveType[_id4];}
-for(var _id5 in table.overrideMoveType){movedex[_id5].category=table.overrideMoveCategory[_id5];}
+for(var _id5 in table.overrideMoveCategory){movedex[_id5].category=table.overrideMoveCategory[_id5];}
 pokedex=Object.assign({},pokedex,BattlePokedex);
 movedex=Object.assign({},movedex,BattleMovedex);
 }
@@ -496,7 +496,7 @@ var ability=this.dex.getAbility(fId).name;
 buf.push(['header',ability+" Pok&eacute;mon"]);
 for(var _id7 in pokedex){
 if(!pokedex[_id7].abilities)continue;
-if(this.dex.hasAbility(this.dex.getSpecies(_id7),ability)){
+if(Dex.hasAbility(this.dex.getSpecies(_id7),ability)){
 (illegal&&_id7 in illegal?illegalBuf:buf).push(['pokemon',_id7]);
 }
 }

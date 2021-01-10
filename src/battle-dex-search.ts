@@ -473,7 +473,7 @@ class DexSearch {
 			for(const id in table.overrideDexInfo) {
 				pokedex[id] = { types: table.overrideDexInfo[id].types, abilities: table.overrideDexInfo[id].abilities};
 			}
-			for(const id in ...table.fullMoveName, ...table.overrideMoveType, ...table.overrideMoveCategory) movedex[id] = {};
+			for(const id in {...table.fullMoveName, ...table.overrideMoveType, ...table.overrideMoveCategory}) movedex[id] = {};
 			for(const id in table.overrideMoveType) movedex[id].type = table.overrideMoveType[id];
 			for(const id in table.overrideMoveCategory) movedex[id].category = table.overrideMoveCategory[id];
 			pokedex = {...pokedex, ...BattlePokedex};
@@ -496,7 +496,7 @@ class DexSearch {
 				buf.push(['header', `${ability} Pok&eacute;mon`]);
 				for (let id in pokedex) {
 					if (!pokedex[id].abilities) continue;
-					if (this.dex.hasAbility(this.dex.getSpecies(id), ability)) {
+					if (Dex.hasAbility(this.dex.getSpecies(id), ability)) {
 						(illegal && id in illegal ? illegalBuf : buf).push(['pokemon', id as ID]);
 					}
 				}
