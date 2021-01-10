@@ -1364,7 +1364,7 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 	const modSprites = {};
     for (const i in modDir) {
         const modName = modDir[i];
-		const subFolders = ['front', 'front-shiny', 'back', 'back-shiny', 'icons', 'types'];
+		const subFolders = ['front', 'front-shiny', 'back', 'back-shiny', 'icons', 'types', 'items'];
         for (const j in subFolders) 
 		{
 			const subF = subFolders[j];
