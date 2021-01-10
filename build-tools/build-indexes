@@ -1020,20 +1020,32 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			const modDex = Dex.mod(modid);
 			const modData = modDex.data;
 			let modGen = 0;
-			BattleTeambuilderTable.ClientMods[modid].formats = [];
-			BattleTeambuilderTable.ClientMods[modid].teambuilderFormats = [];
-			BattleTeambuilderTable.ClientMods[modid].formatTypes = [];
+			const formats = {};
+			BattleTeambuilderTable.ClientMods[modid].formats = formats;
 			// Find formats using this mod
-			for (const formatid in Dex.data.Formats) {
-				const format = Dex.getFormat(formatid);
+			for (const formatName in Dex.data.Formats) {
+				const format = Dex.getFormat(formatName);
+				const formatid = toID(formatName);
 				let maxGen = 0;
 				if (format.mod === modid) {
+					formats[formatid] = {teambuilderFormat: '', formatType: '', bans: [], unbans: [],};
+					
+					if (format.teambuilderFormat) formats[formatid].teambuilderFormat = format.teambuilderFormat;
+					if (format.ruleset.includes('Standard NatDex')) formats[formatid].formatType = 'natdex';
+					
+					for (const name of format.banlist) {
+						const id = toID(name);
+						if (id in Dex.data.Pokedex || id in modData.Pokedex) formats[formatid].bans.push(id);
+					}
+					if (format.banlist.includes("All Pokemon")) {
+						formats[formatid].bans.push('All Pokemon');
+						for (const name of format.unbanlist) {
+							const id = toID(name);
+							if (id in Dex.data.Pokedex || id in modData.Pokedex) formats[formatid].unbans.push(id);
+						}
+					}
+					
 					if (formatid.startsWith('gen') && maxGen < Number(formatid.charAt(3))) maxGen = Number(formatid.charAt(3));
-					BattleTeambuilderTable.ClientMods[modid].formats.push(format.fullname);
-					if (format.teambuilderFormat) BattleTeambuilderTable.ClientMods[modid].teambuilderFormats.push(format.teambuilderFormat);
-					else BattleTeambuilderTable.ClientMods[modid].teambuilderFormats.push('');
-					if (format.ruleset.includes('Standard NatDex')) BattleTeambuilderTable.ClientMods[modid].formatTypes.push('natdex');
-					else BattleTeambuilderTable.ClientMods[modid].formatTypes.push('');
 				}
 				if (maxGen !== 8) modGen = maxGen;
 			}

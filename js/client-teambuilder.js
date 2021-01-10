@@ -679,9 +679,8 @@
 			this.curTeam.gen = this.getGen(this.curTeam.format);
 			var ClientMods = BattleTeambuilderTable.ClientMods;
 			for (var modid in (ClientMods)) {
-				for (var i in ClientMods[modid].formats) {
-					var formatName = ClientMods[modid].formats[i];
-					if (toID(formatName) === this.curTeam.format) this.curTeam.mod = modid;
+				for (var formatid in ClientMods[modid].formats) {
+					if (formatid === this.curTeam.format) this.curTeam.mod = modid;
 				}
 			}
 			Storage.activeSetList = this.curSetList = Storage.unpackTeam(this.curTeam.team);
@@ -1401,9 +1400,8 @@
 			this.curTeam.mod = 0;
 			var ClientMods = BattleTeambuilderTable.ClientMods;
 			for (var modid in (ClientMods)) {
-				for (var i in ClientMods[modid].formats) {
-					var formatName = ClientMods[modid].formats[i];
-					if (toID(formatName) === this.curTeam.format) this.curTeam.mod = modid;
+				for (var formatid in ClientMods[modid].formats) {
+					if (formatid === this.curTeam.format) this.curTeam.mod = modid;
 				}
 			}
 			this.save();

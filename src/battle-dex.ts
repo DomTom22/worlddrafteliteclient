@@ -801,7 +801,7 @@ const Dex = new class implements ModdedDex {
 		const data = this.getTeambuilderSpriteData(pokemon, gen, mod);
 		const shiny = (data.shiny ? '-shiny' : '');
 		let resourcePrefix = Dex.resourcePrefix;
-		if (mod && data.spriteDir.includes('front')) resourcePrefix = Dex.modResourcePrefix;
+		if (data.spriteDir.includes('front')) resourcePrefix = Dex.modResourcePrefix;
 		return 'background-image:url(' + resourcePrefix + data.spriteDir + shiny + '/' + data.spriteid + '.png);background-position:' + data.x + 'px ' + data.y + 'px;background-repeat:no-repeat';
 	}
 

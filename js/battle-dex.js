@@ -801,7 +801,7 @@ if(!pokemon)return'';
 var data=this.getTeambuilderSpriteData(pokemon,gen,mod);
 var shiny=data.shiny?'-shiny':'';
 var resourcePrefix=Dex.resourcePrefix;
-if(mod&&data.spriteDir.includes('front'))resourcePrefix=Dex.modResourcePrefix;
+if(data.spriteDir.includes('front'))resourcePrefix=Dex.modResourcePrefix;
 return'background-image:url('+resourcePrefix+data.spriteDir+shiny+'/'+data.spriteid+'.png);background-position:'+data.x+'px '+data.y+'px;background-repeat:no-repeat';
 };_proto2.
 

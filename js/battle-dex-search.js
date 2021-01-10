@@ -600,10 +600,15 @@ BattleTypedSearch=function(){
 
 
 
-function BattleTypedSearch(searchType){var format=arguments.length>1&&arguments[1]!==undefined?arguments[1]:'';var speciesOrSet=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';this.dex=Dex;this.format='';this.species='';this.set=null;this.mod='';this.formatType=null;this.baseResults=null;this.baseIllegalResults=null;this.illegalReasons=null;this.results=null;this.sortRow=null;
+
+
+
+
+function BattleTypedSearch(searchType){var format=arguments.length>1&&arguments[1]!==undefined?arguments[1]:'';var speciesOrSet=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';this.dex=Dex;this.format='';this.modFormat='';this.species='';this.set=null;this.mod='';this.formatType=null;this.baseResults=null;this.baseIllegalResults=null;this.illegalReasons=null;this.results=null;this.sortRow=null;
 this.searchType=searchType;
 this.baseResults=null;
 this.baseIllegalResults=null;
+this.modFormat=format;
 var gen=8;
 var ClientMods=BattleTeambuilderTable.ClientMods;
 if(format.slice(0,3)==='gen'){
@@ -612,12 +617,13 @@ var mod='';
 var overrideFormat='';
 var modFormatType='';
 for(var modid in ClientMods){
-for(var i in ClientMods[modid].formats){
-var formatName=ClientMods[modid].formats[i];
-if(toID(formatName)===format){
+for(var formatid in ClientMods[modid].formats){
+if(formatid===format){
 mod=modid;
-if(mod&&ClientMods[modid].teambuilderFormats[i])overrideFormat=toID(ClientMods[modid].teambuilderFormats[i]);
-if(mod&&ClientMods[modid].formatTypes[i])modFormatType=toID(ClientMods[modid].formatTypes[i]);
+var formatTable=ClientMods[modid].formats[formatid];
+if(mod&&formatTable.teambuilderFormat)overrideFormat=toID(formatTable.teambuilderFormat);
+if(mod&&formatTable.formatType)modFormatType=toID(formatTable.formatType);
+break;
 }
 }
 }
@@ -999,6 +1005,29 @@ table.customTiers=null;
 var customTierSet=table.customTierSet;
 if(customTierSet){
 tierSet=customTierSet.concat(tierSet);
+var modFormatTable=BattleTeambuilderTable.ClientMods[this.mod].formats[this.modFormat];
+if(modFormatTable.bans.length>0&&!modFormatTable.bans.includes("All Pokemon")){
+tierSet=tierSet.filter(function(_ref5){var type=_ref5[0],id=_ref5[1];
+var banned=modFormatTable.bans;
+return!banned.includes(id);
+});
+}else if(modFormatTable.unbans.length>0&&modFormatTable.bans.includes("All Pokemon")){
+tierSet=tierSet.filter(function(_ref6){var type=_ref6[0],id=_ref6[1];
+var unbanned=modFormatTable.unbans;
+return unbanned.includes(id)||type==='header';
+});
+}
+var headerCount=0;
+var lastHeader='';
+var emptyHeaders=[];
+for(var i in tierSet){
+headerCount=tierSet[i][0]==='header'?headerCount+1:0;
+if(headerCount>1)emptyHeaders.push(lastHeader);
+if(headerCount>0)lastHeader=tierSet[i][1];
+}
+tierSet=tierSet.filter(function(_ref7){var type=_ref7[0],id=_ref7[1];
+return type!=='header'||!emptyHeaders.includes(id);
+});
 }
 return tierSet;
 };_proto3.
@@ -1006,7 +1035,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='pokemon')return true;
 var species=this.dex.getSpecies(row[1]);for(var _i5=0;_i5<
-filters.length;_i5++){var _ref5=filters[_i5];var filterType=_ref5[0];var value=_ref5[1];
+filters.length;_i5++){var _ref8=filters[_i5];var filterType=_ref8[0];var value=_ref8[1];
 switch(filterType){
 case'type':
 if(species.types[0]!==value&&species.types[1]!==value)return false;
@@ -1029,7 +1058,7 @@ return true;
 sort=function sort(results,sortCol){var _this3=this;
 var table=!this.mod?'':BattleTeambuilderTable[this.mod].overrideDexInfo;
 if(['hp','atk','def','spa','spd','spe'].includes(sortCol)){
-return results.sort(function(_ref6,_ref7){var rowType1=_ref6[0],id1=_ref6[1];var rowType2=_ref7[0],id2=_ref7[1];
+return results.sort(function(_ref9,_ref10){var rowType1=_ref9[0],id1=_ref9[1];var rowType2=_ref10[0],id2=_ref10[1];
 var pokedex1=BattlePokedex;
 var pokedex2=BattlePokedex;
 if(_this3.mod){
@@ -1041,7 +1070,7 @@ var stat2=pokedex2[id2].baseStats[sortCol];
 return stat2-stat1;
 });
 }else if(sortCol==='bst'){
-return results.sort(function(_ref8,_ref9){var rowType1=_ref8[0],id1=_ref8[1];var rowType2=_ref9[0],id2=_ref9[1];
+return results.sort(function(_ref11,_ref12){var rowType1=_ref11[0],id1=_ref11[1];var rowType2=_ref12[0],id2=_ref12[1];
 var pokedex1=BattlePokedex;
 var pokedex2=BattlePokedex;
 if(_this3.mod){
@@ -1055,7 +1084,7 @@ var bst2=base2.hp+base2.atk+base2.def+base2.spa+base2.spd+base2.spe;
 return bst2-bst1;
 });
 }else if(sortCol==='name'){
-return results.sort(function(_ref10,_ref11){var rowType1=_ref10[0],id1=_ref10[1];var rowType2=_ref11[0],id2=_ref11[1];
+return results.sort(function(_ref13,_ref14){var rowType1=_ref13[0],id1=_ref13[1];var rowType2=_ref14[0],id2=_ref14[1];
 var name1=id1;
 var name2=id2;
 return name1<name2?-1:name1>name2?1:0;
@@ -1138,7 +1167,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='ability')return true;
 var ability=this.dex.getAbility(row[1]);for(var _i7=0;_i7<
-filters.length;_i7++){var _ref12=filters[_i7];var filterType=_ref12[0];var value=_ref12[1];
+filters.length;_i7++){var _ref15=filters[_i7];var filterType=_ref15[0];var value=_ref15[1];
 switch(filterType){
 case'pokemon':
 if(!Dex.hasAbility(this.dex.getSpecies(value),ability.name))return false;
@@ -1202,7 +1231,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='ability')return true;
 var ability=this.dex.getAbility(row[1]);for(var _i9=0;_i9<
-filters.length;_i9++){var _ref13=filters[_i9];var filterType=_ref13[0];var value=_ref13[1];
+filters.length;_i9++){var _ref16=filters[_i9];var filterType=_ref16[0];var value=_ref16[1];
 switch(filterType){
 case'pokemon':
 if(!Dex.hasAbility(this.dex.getSpecies(value),ability.name))return false;
@@ -1559,7 +1588,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='move')return true;
 var move=this.dex.getMove(row[1]);for(var _i13=0;_i13<
-filters.length;_i13++){var _ref14=filters[_i13];var filterType=_ref14[0];var value=_ref14[1];
+filters.length;_i13++){var _ref17=filters[_i13];var filterType=_ref17[0];var value=_ref17[1];
 switch(filterType){
 case'type':
 if(move.type!==value)return false;
@@ -1585,7 +1614,7 @@ beatup:24,punishment:1020,psywave:1250,nightshade:1200,seismictoss:1200,
 dragonrage:1140,sonicboom:1120,superfang:1350,endeavor:1399,sheercold:1501,
 fissure:1500,horndrill:1500,guillotine:1500};
 
-return results.sort(function(_ref15,_ref16){var rowType1=_ref15[0],id1=_ref15[1];var rowType2=_ref16[0],id2=_ref16[1];
+return results.sort(function(_ref18,_ref19){var rowType1=_ref18[0],id1=_ref18[1];var rowType2=_ref19[0],id2=_ref19[1];
 var modPow1=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideBP[id1]:null;
 var modPow2=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideBP[id2]:null;
 var move1=BattleMovedex[id1];
@@ -1595,7 +1624,7 @@ var pow2=modPow2||move2.basePower||powerTable[id2]||(move2.category==='Status'?-
 return pow2-pow1;
 });
 case'accuracy':
-return results.sort(function(_ref17,_ref18){var rowType1=_ref17[0],id1=_ref17[1];var rowType2=_ref18[0],id2=_ref18[1];
+return results.sort(function(_ref20,_ref21){var rowType1=_ref20[0],id1=_ref20[1];var rowType2=_ref21[0],id2=_ref21[1];
 var modAcc1=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideAcc[id1]:null;
 var modAcc2=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideAcc[id2]:null;
 var accuracy1=modAcc1||BattleMovedex[id1].accuracy||0;
@@ -1605,7 +1634,7 @@ if(accuracy2===true)accuracy2=101;
 return accuracy2-accuracy1;
 });
 case'pp':
-return results.sort(function(_ref19,_ref20){var rowType1=_ref19[0],id1=_ref19[1];var rowType2=_ref20[0],id2=_ref20[1];
+return results.sort(function(_ref22,_ref23){var rowType1=_ref22[0],id1=_ref22[1];var rowType2=_ref23[0],id2=_ref23[1];
 var modPP1=_this5.mod?BattleTeambuilderTable[_this5.mod].overridePP[id1]:null;
 var modPP2=_this5.mod?BattleTeambuilderTable[_this5.mod].overridePP[id2]:null;
 var pp1=modPP1||BattleMovedex[id1].pp||0;
@@ -1613,7 +1642,7 @@ var pp2=modPP2||BattleMovedex[id2].pp||0;
 return pp2-pp1;
 });
 case'name':
-return results.sort(function(_ref21,_ref22){var rowType1=_ref21[0],id1=_ref21[1];var rowType2=_ref22[0],id2=_ref22[1];
+return results.sort(function(_ref24,_ref25){var rowType1=_ref24[0],id1=_ref24[1];var rowType2=_ref25[0],id2=_ref25[1];
 var name1=id1;
 var name2=id2;
 return name1<name2?-1:name1>name2?1:0;

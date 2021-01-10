@@ -569,8 +569,12 @@ abstract class BattleTypedSearch<T extends SearchType> {
 	 *
 	 * This string specifically normalizes out generation number and the words
 	 * "Doubles" and "Let's Go" from the name.
+	 *
+	 * mod formats can set the format variable to a standard format, so modFormat
+	 * keeps track of the original format in such a case
 	 */
 	format = '' as ID;
+	modFormat = '' as ID;
 	/**
 	 * `species` is the second of two base filters. It constrains results to
 	 * things that species can use, and affects the default sort.
@@ -604,6 +608,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		this.searchType = searchType;
 		this.baseResults = null;
 		this.baseIllegalResults = null;
+		this.modFormat = format;
 		let gen = 8;
 		const ClientMods = BattleTeambuilderTable.ClientMods;
 		if (format.slice(0, 3) === 'gen') {
@@ -612,12 +617,13 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			let overrideFormat = '';
 			let modFormatType = '';
 			for (const modid in (ClientMods)) {
-				for (const i in ClientMods[modid].formats) {
-					let formatName = ClientMods[modid].formats[i];
-					if (toID(formatName) === format) {
+				for (const formatid in ClientMods[modid].formats) {
+					if (formatid === format) {
 						mod = modid;
-						if (mod && ClientMods[modid].teambuilderFormats[i]) overrideFormat = toID(ClientMods[modid].teambuilderFormats[i]);
-						if (mod && ClientMods[modid].formatTypes[i]) modFormatType = toID(ClientMods[modid].formatTypes[i]);	
+						const formatTable = ClientMods[modid].formats[formatid]
+						if (mod && formatTable.teambuilderFormat) overrideFormat = toID(formatTable.teambuilderFormat);
+						if (mod && formatTable.formatType) modFormatType = toID(formatTable.formatType);
+						break;
 					}
 				}
 			}
@@ -999,6 +1005,29 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		let customTierSet: SearchRow[] = table.customTierSet;
 		if (customTierSet) {
 			tierSet = customTierSet.concat(tierSet);
+			const modFormatTable = BattleTeambuilderTable.ClientMods[this.mod].formats[this.modFormat];
+			if (modFormatTable.bans.length > 0 && !modFormatTable.bans.includes("All Pokemon")) {
+				tierSet = tierSet.filter(([type, id]) => {
+					let banned = modFormatTable.bans;
+					return !(banned.includes(id));
+				});
+			} else if (modFormatTable.unbans.length > 0 && modFormatTable.bans.includes("All Pokemon")) {
+				tierSet = tierSet.filter(([type, id]) => {
+					let unbanned = modFormatTable.unbans;
+					return (unbanned.includes(id) || type === 'header');
+				});
+			}
+			let headerCount = 0;
+			let lastHeader = '';
+			const emptyHeaders = [];
+			for (const i in tierSet) {
+				headerCount = tierSet[i][0] === 'header' ? headerCount + 1 : 0;
+				if (headerCount > 1) emptyHeaders.push(lastHeader);
+				if (headerCount > 0) lastHeader = tierSet[i][1];
+			}
+			tierSet = tierSet.filter(([type, id]) => {
+				return (type !== 'header' || !emptyHeaders.includes(id));
+			});
 		}
 		return tierSet;
 	}
