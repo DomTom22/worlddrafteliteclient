@@ -319,6 +319,23 @@ var type=entry[1];
 
 if(!_id)break;
 
+var typeIndex=DexSearch.typeTable[type];
+var table=BattleTeambuilderTable[window.room.curTeam.mod];
+if(
+
+typeIndex===1&&(!BattlePokedex[_id]||BattlePokedex[_id].exists===false)&&(
+!table||!table.overrideDexInfo||_id in table.overrideDexInfo===false)||
+
+typeIndex===5&&!BattleItems[_id]&&(!table||_id in table.overrideItemDesc===false)||
+typeIndex===6&&!BattleAbilities[_id]&&(!table||_id in table.overrideAbilityDesc===false)||
+typeIndex===4&&!BattleMovedex[_id]&&(!table||_id in table.overrideMoveDesc===false)||
+
+typeIndex===2&&_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart===false&&(
+!table||_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in table.overrideTypeChart===false))
+
+{
+continue;
+}
 if(passType==='fuzzy'){
 
 if(count>=2){
@@ -345,9 +362,6 @@ if(passType!=='alias')continue;
 
 if(passType==='alias')continue;
 }
-
-var typeIndex=DexSearch.typeTable[type];
-var typeI=typeIndex;
 
 
 if(query.length===1&&typeIndex!==(searchType?searchTypeIndex:1))continue;
@@ -419,20 +433,8 @@ bufs[typeIndex]=[['header',DexSearch.typeName[type]]];
 var curBufLength=passType==='alias'&&bufs[typeIndex].length;
 if(curBufLength&&bufs[typeIndex][curBufLength-1][1]===_id)continue;
 
-var table=BattleTeambuilderTable[window.room.curTeam.mod];
-if(
-typeI===1&&BattlePokedex[_id]&&(BattlePokedex[_id].exists===undefined||BattlePokedex[_id].exists===true)||
-typeI===5&&BattleItems[_id]||typeI===6&&BattleAbilities[_id]||typeI===4&&BattleMovedex[_id]||
-typeI===2&&_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart)
-{
+
 bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
-}else if(
-table&&(typeI===1&&table.overrideDexInfo&&_id in table.overrideDexInfo||
-typeI===6&&table.overrideAbilityDesc&&_id in table.overrideAbilityDesc||
-typeI===4&&_id in table.overrideMoveDesc||typeI===5&&_id in table.overrideItemDesc))
-{
-bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
-}
 count++;
 }
 

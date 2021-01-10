@@ -197,15 +197,15 @@ function requireNoCache(pathSpec) {
 		generateAlias(id, name, 'ability');
 	}
 	
-	const infoTable = {Pokedex: 'pokemon', Moves: 'move', Items: 'item', Abilities: 'ability'};
+	const infoTable = {Pokedex: 'pokemon', Moves: 'move', Items: 'item', Abilities: 'ability', TypeChart: 'type'};
 	for (const modid in ClientMods) {
 		for (const key in infoTable) {
 			const modDex = Dex.mod(modid);
-			for (const id in modDex.data[key]) {
+			for (let id in modDex.data[key]) {
 				if (!modDex.data[key][id]) continue;
-				if (!usedIDs.includes(id)) {
-					index.push(id + ' ' + infoTable[key]);
-					usedIDs.push(id);
+				if (!usedIDs.includes(toID(id)) && id in Dex.data.TypeChart === false) {
+					index.push(toID(id) + ' ' + infoTable[key]);
+					usedIDs.push(toID(id));
 					const name = modDex.data[key][id].name;
 					if (name) generateAlias(id, name, infoTable[key]);
 				}
@@ -1215,6 +1215,16 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				if (fakeAbility) fullAbilityName[id] = modData.Abilities[id].name;
 				if (fakeAbility || (modEntry.shortDesc || modEntry.desc) !== (baseEntry.shortDesc || baseEntry.desc)) {
 					overrideAbilityDesc[id] = (modEntry.shortDesc || modEntry.desc);
+				}
+			}
+			//type chart
+			const overrideTypeChart = {};
+			BattleTeambuilderTable[modid].overrideTypeChart = overrideTypeChart;
+			for (const id in modData.TypeChart) {
+				const modEntry = modData.TypeChart[id];
+				const baseEntry = Dex.data.TypeChart[id];
+				if (JSON.stringify(modEntry) !== JSON.stringify(baseEntry)) {
+					overrideTypeChart[id] = modEntry;
 				}
 			}
 		} catch (err) {
