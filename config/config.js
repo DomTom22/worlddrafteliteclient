@@ -33,7 +33,7 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (17ddeca9/55fadf43)";
+Config.version = "0.11.2 (36eeb936/55fadf43)";
 
 Config.routes = {
 	root: 'scoopapa-dh.glitch.me',
