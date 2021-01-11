@@ -384,28 +384,28 @@ class DexSearch {
 
 			// some aliases are substrings
 			if (queryAlias === id && query !== id) continue;
-
+			// determine if the element comes from the current mod
 			const table = BattleTeambuilderTable[window.room.curTeam.mod];
-				if (
-					typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
-					(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
-				) continue;
-				else if (
-					typeIndex === 5 && (!BattleItems[id] || BattlePokedex[id].exists === false) &&
-					(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
-				) continue;
-				else if (
-					typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
-					(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
-				) continue;	
-				else if (
-					typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
-					(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
-				) continue;
-				else if (
-					typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
-					(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
-				) continue;
+			if (
+				typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
+				(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
+			) continue;
+			else if (
+				typeIndex === 5 && (!BattleItems[id] || BattlePokedex[id].exists === false) &&
+				(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
+			) continue;
+			else if (
+				typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
+				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
+			) continue;	
+			else if (
+				typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
+				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
+			) continue;
+			else if (
+				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
+				(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
+			) continue;
 
 			if (searchType && searchTypeIndex !== typeIndex) {
 				// This is a filter, set it as an instafilter candidate

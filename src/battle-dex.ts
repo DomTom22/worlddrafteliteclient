@@ -926,7 +926,10 @@ class ModdedDex {
 		if (this.cache.Items.hasOwnProperty(id)) return this.cache.Items[id];
 		const table = window.BattleTeambuilderTable[this.modid];
 		let data = {...Dex.getItem(name)};
-		if (table.fullItemName && id in table.fullItemName) data.name = table.fullItemName[id];
+		if (table.fullItemName && id in table.fullItemName) {
+			data.name = table.fullItemName[id];
+			data.exists = true;
+		}
 		if (id in table.overrideItemDesc) data.shortDesc = table.overrideItemDesc[id];
 		for (let i = this.gen; i < 8; i++) {
 			if (id in window.BattleTeambuilderTable['gen' + i].overrideItemDesc) {
@@ -948,7 +951,10 @@ class ModdedDex {
 		if (this.cache.Abilities.hasOwnProperty(id)) return this.cache.Abilities[id];
 		let table = BattleTeambuilderTable[this.modid];
 		let data = {...Dex.getAbility(name)};
-		if (table.fullAbilityName && id in table.fullAbilityName) data.name = table.fullAbilityName[id];
+		if (table.fullAbilityName && id in table.fullAbilityName) {
+			data.name = table.fullAbilityName[id];
+			data.exists = true;
+		}
 		if (id in table.overrideAbilityDesc) {
 			data.shortDesc = table.overrideAbilityDesc[id];
 		} else {

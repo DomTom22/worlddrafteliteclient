@@ -2837,6 +2837,7 @@
 			this.updateChart(false, wasIncomplete);
 		},
 		chartChange: function (e, selectNext) {
+			var thisDex = this.curTeam.mod ? Dex.mod(this.curTeam.mod) : Dex;
 			var name = e.currentTarget.name;
 			if (this.curChartName !== name) return;
 			var id = toID(e.currentTarget.value);
@@ -2844,26 +2845,26 @@
 			var val = '';
 			switch (name) {
 			case 'pokemon':
-				val = (id in BattlePokedex ? Dex.getSpecies(e.currentTarget.value).name : '');
+				val = (thisDex.getSpecies(id).exists ? thisDex.getSpecies(e.currentTarget.value).name : '');
 				break;
 			case 'ability':
-				if (id in BattleItems && this.curTeam.format == "gen8dualwielding") {
-					val = BattleItems[id].name;
-				} else if (id in BattleMovedex && this.curTeam.format == "gen8trademarked") {
-					val = BattleMovedex[id].name;
+				if (thisDex.getItem(id).exists && this.curTeam.format == "gen8dualwielding") {
+					val = thisDex.getItem(id).name;
+				} else if (thisDex.getMove(id).exists && this.curTeam.format == "gen8trademarked") {
+					val = thisDex.getMove(id).name;
 				} else {
-					val = (id in BattleAbilities ? BattleAbilities[id].name : '');
+					val = (thisDex.getAbility(id).exists ? thisDex.getAbility(id).name : '');
 				}
 				break;
 			case 'item':
-				if (id in BattleMovedex && this.curTeam.format == "gen8fortemons") {
-					val = BattleMovedex[id].name;
+				if (thisDex.getMove(id).exists && this.curTeam.format == "gen8fortemons") {
+					val = thisDex.getMove(id).name;
 				} else {
-					val = (id in BattleItems ? BattleItems[id].name : '');
+					val = (thisDex.getItem(id).exists ? thisDex.getItem(id).name : '');
 				}
 				break;
 			case 'move1': case 'move2': case 'move3': case 'move4':
-				val = (id in BattleMovedex ? BattleMovedex[id].name : '');
+				val = (thisDex.getMove(id).exists ? thisDex.getMove(id).name : '');
 				break;
 			}
 			if (!val) {
