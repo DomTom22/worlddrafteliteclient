@@ -1106,7 +1106,8 @@ Battle=function(){
 
 
 
-function Battle($frame,$logFrame){var id=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';this.sidesSwitched=false;this.activityQueue=[];this.preemptActivityQueue=[];this.waitForAnimations=true;this.activityStep=0;this.fastForward=0;this.fastForwardWillScroll=false;this.resultWaiting=false;this.activeMoveIsSpread=null;this.faintCallback=null;this.switchCallback=null;this.dragCallback=null;this.turnCallback=null;this.startCallback=null;this.stagnateCallback=null;this.endCallback=null;this.customCallback=null;this.errorCallback=null;this.mute=false;this.messageFadeTime=300;this.messageShownTime=1;this.turnsSinceMoved=0;this.turn=0;this.started=false;this.ended=false;this.usesUpkeep=false;this.weather='';this.pseudoWeather=[];this.weatherTimeLeft=0;this.weatherMinTimeLeft=0;this.mySide=null;this.nearSide=null;this.farSide=null;this.p1=null;this.p2=null;this.myPokemon=null;this.sides=[null,null];this.lastMove='';this.gen=7;this.dex=Dex;this.teamPreviewCount=0;this.speciesClause=false;this.tier='';this.gameType='singles';this.rated=false;this.isBlitz=false;this.endLastTurnPending=false;this.totalTimeLeft=0;this.graceTimeLeft=0;this.kickingInactive=false;this.id='';this.roomid='';this.hardcoreMode=false;this.ignoreNicks=!!Dex.prefs('ignorenicks');this.ignoreOpponent=!!Dex.prefs('ignoreopp');this.ignoreSpects=!!Dex.prefs('ignorespects');this.debug=false;this.joinButtons=false;this.paused=true;this.playbackState=Playback.Uninitialized;this.resumeButton=null;
+
+function Battle($frame,$logFrame){var id=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';this.sidesSwitched=false;this.activityQueue=[];this.preemptActivityQueue=[];this.waitForAnimations=true;this.activityStep=0;this.fastForward=0;this.fastForwardWillScroll=false;this.resultWaiting=false;this.activeMoveIsSpread=null;this.faintCallback=null;this.switchCallback=null;this.dragCallback=null;this.turnCallback=null;this.startCallback=null;this.stagnateCallback=null;this.endCallback=null;this.customCallback=null;this.errorCallback=null;this.mute=false;this.messageFadeTime=300;this.messageShownTime=1;this.turnsSinceMoved=0;this.turn=0;this.started=false;this.ended=false;this.usesUpkeep=false;this.weather='';this.pseudoWeather=[];this.weatherTimeLeft=0;this.weatherMinTimeLeft=0;this.mySide=null;this.nearSide=null;this.farSide=null;this.p1=null;this.p2=null;this.myPokemon=null;this.sides=[null,null];this.lastMove='';this.gen=7;this.mod='';this.dex=Dex;this.teamPreviewCount=0;this.speciesClause=false;this.tier='';this.gameType='singles';this.rated=false;this.isBlitz=false;this.endLastTurnPending=false;this.totalTimeLeft=0;this.graceTimeLeft=0;this.kickingInactive=false;this.id='';this.roomid='';this.hardcoreMode=false;this.ignoreNicks=!!Dex.prefs('ignorenicks');this.ignoreOpponent=!!Dex.prefs('ignoreopp');this.ignoreSpects=!!Dex.prefs('ignorespects');this.debug=false;this.joinButtons=false;this.paused=true;this.playbackState=Playback.Uninitialized;this.resumeButton=null;
 this.id=id;
 
 if(!$frame&&!$logFrame){
@@ -1114,7 +1115,18 @@ this.scene=new BattleSceneStub();
 }else{
 this.scene=new BattleScene(this,$frame,$logFrame);
 }
-
+format=this.id.slice(this.id.indexOf('-')+1,this.id.lastIndexOf('-'));
+for(var mod in BattleTeambuilderTable.ClientMods){
+for(var formatid in BattleTeambuilderTable.ClientMods[mod].formats){
+if(format===formatid){
+this.mod=mod;
+this.dex=Dex.mod(mod);
+break;
+}
+}
+if(this.mod)break;
+}
+if(this.id.includes('digimon'))this.mod='digimon';
 this.init();
 }var _proto3=Battle.prototype;_proto3.
 
@@ -3367,7 +3379,7 @@ break;
 }
 case'gen':{
 this.gen=parseInt(args[1],10);
-this.dex=Dex.forGen(this.gen);
+this.dex=this.mod?Dex.mod(this.mod):Dex.forGen(this.gen);
 this.scene.updateGen();
 this.log(args);
 break;

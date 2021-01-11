@@ -106,21 +106,8 @@ class BattleScene {
 		};
 
 		let numericId = 0;
-		let formatid = '';
 		if (battle.id) {
-			formatid = battle.id.slice(battle.id.indexOf('-') + 1, battle.id.lastIndexOf('-'));
 			numericId = parseInt(battle.id.slice(battle.id.lastIndexOf('-') + 1), 10);
-			for (const mod in BattleTeambuilderTable.ClientMods) {
-				for (const i in BattleTeambuilderTable.ClientMods[mod].formats) {
-					const format = toID(BattleTeambuilderTable.ClientMods[mod].formats[i]);
-					if (format === formatid) {
-						this.mod = mod;
-						break;
-					}
-				}
-				if (this.mod) break;
-			}
-			if (this.battle.id.includes('digimon')) this.mod = 'digimon';
 		}
 		if (!numericId) {
 			numericId = Math.floor(Math.random() * 1000000);
@@ -743,7 +730,7 @@ class BattleScene {
 				let spriteData = Dex.getSpriteData(pokemon, !!spriteIndex, {
 					gen: this.gen,
 					noScale: true,
-					mod: this.mod,
+					mod: this.battle.mod,
 				});
 				let y = 0;
 				let x = 0;
@@ -994,7 +981,7 @@ class BattleScene {
 	addPokemonSprite(pokemon: Pokemon) {
 		const sprite = new PokemonSprite(Dex.getSpriteData(pokemon, pokemon.side.isFar, {
 			gen: this.gen,
-			mod: this.mod,
+			mod: this.battle.mod,
 		}), {
 			x: pokemon.side.x,
 			y: pokemon.side.y,
@@ -1865,7 +1852,7 @@ class PokemonSprite extends Sprite {
 		if (this.$sub) return;
 		const subsp = Dex.getSpriteData('substitute', this.isFrontSprite, {
 			gen: this.scene.gen,
-			mod: this.scene.mod,
+			mod: this.scene.battle.mod,
 		});
 		this.subsp = subsp;
 		this.$sub = $('<img src="' + subsp.url + '" style="display:block;opacity:0;position:absolute"' + (subsp.pixelated ? ' class="pixelated"' : '') + ' />');
@@ -1980,7 +1967,7 @@ class PokemonSprite extends Sprite {
 			if (!this.oldsp) this.oldsp = this.sp;
 			this.sp = Dex.getSpriteData(pokemon, this.isFrontSprite, {
 				gen: this.scene.gen,
-				mod: this.scene.mod,
+				mod: this.scene.battle.mod,
 			});
 		} else if (this.oldsp) {
 			this.sp = this.oldsp;
@@ -2373,7 +2360,7 @@ class PokemonSprite extends Sprite {
 		if (!this.scene.animating && !isPermanent) return;
 		let sp = Dex.getSpriteData(pokemon, this.isFrontSprite, {
 			gen: this.scene.gen,
-			mod: this.scene.mod,
+			mod: this.scene.battle.mod,
 		});
 		let oldsp = this.sp;
 		if (isPermanent) {

@@ -1220,7 +1220,7 @@
 			var itemicon = '<span class="itemicon"></span>';
 			if (set.item) {
 				var item = Dex.getItem(set.item);
-				itemicon = '<span class="itemicon" style="' + Dex.getItemIcon(item) + '"></span>';
+				itemicon = '<span class="itemicon" style="' + Dex.getItemIcon(item, this.curTeam.mod) + '"></span>';
 			}
 			buf += itemicon;
 			buf += '</div>';
@@ -1229,7 +1229,7 @@
 			var table = (this.curTeam.gen < 7 ? BattleTeambuilderTable['gen' + this.curTeam.gen] : null);
 			if (table && species.id in table.overrideType) types = table.overrideType[species.id].split('/');
 			if (types) {
-				for (var i = 0; i < types.length; i++) buf += Dex.getTypeIcon(types[i]);
+				for (var i = 0; i < types.length; i++) buf += Dex.getTypeIcon(types[i], null, this.curTeam.mod);
 			}
 			buf += '</div></div>';
 
@@ -1764,7 +1764,7 @@
 
 			var item = Dex.getItem(set.item);
 			if (item.id) {
-				this.$('.setcol-details .itemicon').css('background', Dex.getItemIcon(item).substr(11));
+				this.$('.setcol-details .itemicon').css('background', Dex.getItemIcon(item, this.curTeam.mod).substr(11));
 			} else {
 				this.$('.setcol-details .itemicon').css('background', 'none');
 			}
