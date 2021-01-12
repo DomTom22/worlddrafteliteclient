@@ -400,7 +400,7 @@ class DexSearch {
 			) continue;	
 			else if (
 				typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
-				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
+				(!table || !table.overrideAbilityDesc || id in table.overrideAbilityDesc === false)
 			) continue;
 			else if (
 				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&

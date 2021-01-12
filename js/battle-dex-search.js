@@ -400,7 +400,7 @@ typeIndex===4&&(!BattleMovedex[_id]||BattleMovedex[_id].exists===false)&&(
 continue;else
 if(
 typeIndex===6&&(!BattleAbilities[_id]||BattleAbilities[_id].exists===false)&&(
-!table||!table.overrideMoveDesc||_id in table.overrideMoveDesc===false))
+!table||!table.overrideAbilityDesc||_id in table.overrideAbilityDesc===false))
 continue;else
 if(
 typeIndex===2&&_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart===false&&(

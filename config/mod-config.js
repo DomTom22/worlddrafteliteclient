@@ -5,46 +5,48 @@ excludeStandardTiers - set to true if you want only your custom tiers to show up
 */
 const ModConfigData = {
 	ClientMods: {
-		'cleanslate': {
-			'excludeStandardTiers': true,
+		cleanslate: {
+			excludeStandardTiers: true,
 		},
-		'cleanslatemicro': {
-			'excludeStandardTiers': true,
+		cleanslatemicro: {
+			excludeStandardTiers: true,
 		},
-		'cleanslate2': {
-			'excludeStandardTiers': true,
+		cleanslate2: {
+			excludeStandardTiers: true,
 		},
-		'csts': {
-			'customTiers': ['CS1', 'CSM', 'CS2'],
-			'excludeStandardTiers': true,
+		csts: {
+			customTiers: ['CS1', 'CSM', 'CS2'],
+			excludeStandardTiers: true,
 		},
-		'roulettemons': {
-			'excludeStandardTiers': true,
+		roulettemons: {
+			excludeStandardTiers: true,
 		},
-		'sylvemonstest': {},
-		'ccapm2020': {},
-		'optimons': {},
-		'megamax': {},
-		'm4av6': {},
-		'perfectgalar': {},
-		'gen7dlcmons': {},
-		'fealpha': {
-			'excludeStandardTiers': true,
+		sylvemonstest: {},
+		ccapm2020: {
+			excludeStandardTiers: true,
 		},
-		'viabilities': {},
-		'breedingvariants': {},
-		'abnormal': {},
-		'crossoverchaos': {},
-		'pkmnyb': {},
-		'twisted': {},
-		'roseredirisblue': {},
-		'prism': {
-			'ignoreEVLimits': true,
+		optimons: {},
+		megamax: {},
+		m4av6: {},
+		perfectgalar: {},
+		gen7dlcmons: {},
+		fealpha: {
+			excludeStandardTiers: true,
 		},
-		'smashmodsmelee': {
-			'excludeStandardTiers': true,
+		viabilities: {},
+		breedingvariants: {},
+		abnormal: {},
+		crossoverchaos: {},
+		pkmnyb: {},
+		twisted: {},
+		roseredirisblue: {},
+		prism: {
+			ignoreEVLimits: true,
 		},
-		'breakthisteam': {},
+		smashmodsmelee: {
+			excludeStandardTiers: true,
+		},
+		breakthisteam: {},
 	}
 };
 exports.ModConfigData = ModConfigData;
