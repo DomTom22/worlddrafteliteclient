@@ -610,7 +610,7 @@ this.baseResults=null;
 this.baseIllegalResults=null;
 this.modFormat=format;
 var gen=8;
-var ClientMods=BattleTeambuilderTable.ClientMods;
+var ClientMods=ModConfig;
 if(format.slice(0,3)==='gen'){
 gen=Number(format.charAt(3))||6;
 var mod='';
@@ -1005,7 +1005,7 @@ table.customTiers=null;
 var customTierSet=table.customTierSet;
 if(customTierSet){
 tierSet=customTierSet.concat(tierSet);
-var modFormatTable=BattleTeambuilderTable.ClientMods[this.mod].formats[this.modFormat];
+var modFormatTable=ModConfig[this.mod].formats[this.modFormat];
 if(modFormatTable.bans.length>0&&!modFormatTable.bans.includes("All Pokemon")){
 tierSet=tierSet.filter(function(_ref5){var type=_ref5[0],id=_ref5[1];
 var banned=modFormatTable.bans;

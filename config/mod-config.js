@@ -3,7 +3,7 @@ optional data:
 customTiers - these are auto-detected by the script, but you can set them here to ensure they show up in the right order
 excludeStandardTiers - set to true if you want only your custom tiers to show up for the format
 */
-const ModConfig = {
+const ModConfigData = {
 	ClientMods: {
 		'cleanslate': {
 			'excludeStandardTiers': true,
@@ -21,32 +21,30 @@ const ModConfig = {
 		'roulettemons': {
 			'excludeStandardTiers': true,
 		},
-		'sylvemonstest': {
-			'baseTier': 'OU',
-		},
-		'ccapm2020': true,
-		'optimons': true,
-		'megamax': true,
-		'm4av6': true,
-		'perfectgalar': true,
-		'gen7dlcmons': true,
+		'sylvemonstest': {},
+		'ccapm2020': {},
+		'optimons': {},
+		'megamax': {},
+		'm4av6': {},
+		'perfectgalar': {},
+		'gen7dlcmons': {},
 		'fealpha': {
 			'excludeStandardTiers': true,
 		},
-		'viabilities': true,
-		'breedingvariants': true,
-		'abnormal': true,
-		'crossoverchaos': true,
-		'pkmnyb': true,
-		'twisted': true,
-		'roseredirisblue': true,
+		'viabilities': {},
+		'breedingvariants': {},
+		'abnormal': {},
+		'crossoverchaos': {},
+		'pkmnyb': {},
+		'twisted': {},
+		'roseredirisblue': {},
 		'prism': {
 			'igonreEVlimits': true,
 		},
 		'smashmodsmelee': {
 			'excludeStandardTiers': true,
 		},
-		'breakthisteam': true,
+		'breakthisteam': {},
 	}
 };
-exports.ModConfig = ModConfig;
+exports.ModConfigData = ModConfigData;

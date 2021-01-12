@@ -610,7 +610,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		this.baseIllegalResults = null;
 		this.modFormat = format;
 		let gen = 8;
-		const ClientMods = BattleTeambuilderTable.ClientMods;
+		const ClientMods = ModConfig;
 		if (format.slice(0, 3) === 'gen') {
 			gen = (Number(format.charAt(3)) || 6);
 			let mod = '';
@@ -1005,7 +1005,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		let customTierSet: SearchRow[] = table.customTierSet;
 		if (customTierSet) {
 			tierSet = customTierSet.concat(tierSet);
-			const modFormatTable = BattleTeambuilderTable.ClientMods[this.mod].formats[this.modFormat];
+			const modFormatTable = ModConfig[this.mod].formats[this.modFormat];
 			if (modFormatTable.bans.length > 0 && !modFormatTable.bans.includes("All Pokemon")) {
 				tierSet = tierSet.filter(([type, id]) => {
 					let banned = modFormatTable.bans;

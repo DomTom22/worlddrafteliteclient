@@ -131,7 +131,7 @@
 			if (this.curTeam) {
 				this.ignoreEVLimits = (
 					this.curTeam.gen < 3 || this.curTeam.format.includes('hackmons') || this.curTeam.format === 'gen8metronomebattle' || 
-					(this.curTeam.mod && BattleTeambuilderTable.ClientMods[this.curTeam.mod].ignoreEVLimits)
+					(this.curTeam.mod && ModConfig[this.curTeam.mod].ignoreEVLimits)
 				);
 				if (this.curSet) {
 					return this.updateSetView();
@@ -680,7 +680,7 @@
 			this.curTeam = teams[i];
 			this.curTeam.iconCache = '!';
 			this.curTeam.gen = this.getGen(this.curTeam.format);
-			var ClientMods = BattleTeambuilderTable.ClientMods;
+			var ClientMods = ModConfig;
 			for (var modid in (ClientMods)) {
 				for (var formatid in ClientMods[modid].formats) {
 					if (formatid === this.curTeam.format) this.curTeam.mod = modid;
@@ -1401,7 +1401,7 @@
 			this.curTeam.format = format;
 			this.curTeam.gen = this.getGen(this.curTeam.format);
 			this.curTeam.mod = 0;
-			var ClientMods = BattleTeambuilderTable.ClientMods;
+			var ClientMods = ModConfig;
 			for (var modid in (ClientMods)) {
 				for (var formatid in ClientMods[modid].formats) {
 					if (formatid === this.curTeam.format) this.curTeam.mod = modid;

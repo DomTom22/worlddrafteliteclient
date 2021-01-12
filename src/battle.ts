@@ -1116,8 +1116,8 @@ class Battle {
 			this.scene = new BattleScene(this, $frame, $logFrame);
 		}
 		format = this.id.slice(this.id.indexOf('-') + 1, this.id.lastIndexOf('-'));
-		for (const mod in BattleTeambuilderTable.ClientMods) {
-			for (const formatid in BattleTeambuilderTable.ClientMods[mod].formats) {
+		for (const mod in ModConfig) {
+			for (const formatid in ModConfig[mod].formats) {
 				if (format === formatid) {
 					this.mod = mod;
 					this.dex = Dex.mod(mod);
