@@ -391,7 +391,7 @@ typeIndex===1&&(!BattlePokedex[_id]||BattlePokedex[_id].exists===false)&&(
 !table||!table.overrideDexInfo||_id in table.overrideDexInfo===false))
 continue;else
 if(
-typeIndex===5&&(!BattleItems[_id]||BattlePokedex[_id].exists===false)&&(
+typeIndex===5&&(!BattleItems[_id]||BattleItems[_id].exists===false)&&(
 !table||!table.overrideItemDesc||_id in table.overrideItemDesc===false))
 continue;else
 if(

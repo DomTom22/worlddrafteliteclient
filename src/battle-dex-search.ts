@@ -391,7 +391,7 @@ class DexSearch {
 				(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
 			) continue;
 			else if (
-				typeIndex === 5 && (!BattleItems[id] || BattlePokedex[id].exists === false) &&
+				typeIndex === 5 && (!BattleItems[id] || BattleItems[id].exists === false) &&
 				(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
 			) continue;
 			else if (
