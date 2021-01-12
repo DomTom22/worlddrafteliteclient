@@ -39,7 +39,7 @@ const ModConfigData = {
 		'twisted': {},
 		'roseredirisblue': {},
 		'prism': {
-			'igonreEVlimits': true,
+			'ignoreEVLimits': true,
 		},
 		'smashmodsmelee': {
 			'excludeStandardTiers': true,

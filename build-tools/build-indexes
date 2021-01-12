@@ -1050,11 +1050,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			const standardTiers = ['uber', 'ou', 'uubl', 'uu', 'rubl', 'ru', 'nubl', 'nu', 'publ',
 				'pu', 'zu', 'nfe', 'lcuber', 'lc', 'cap', 'caplc', 'capnfe', 'ag', 'duber', 'dou',
 				'dbl', 'duu', 'dnu', 'illegal', 'unreleased'];
-			if (ModConfig[modid].customTiers) {
-				ModConfig[modid].customTiers = ModConfig[modid].customTiers;
-			} else {
-				ModConfig[modid].customTiers = [];
-			}
+			if (!ModConfig[modid].customTiers) ModConfig[modid].customTiers = [];
 			// Find any nonstandard tiers used by this mod
 			for (const speciesid in modData.FormatsData) {
 				const tier = modData.FormatsData[speciesid].tier;

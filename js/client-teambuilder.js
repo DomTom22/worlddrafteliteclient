@@ -2001,7 +2001,7 @@
 
 			buf += '<div class="resultheader"><h3>EVs</h3></div>';
 			buf += '<div class="statform">';
-			var guess = new BattleStatGuesser(this.curTeam.format).guess(set);
+			var guess = new BattleStatGuesser(this.curTeam.format, this.curTeam.mod).guess(set);
 			var role = guess.role;
 
 			var guessedEVs = guess.evs;
