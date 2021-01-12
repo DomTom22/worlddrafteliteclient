@@ -129,7 +129,10 @@
 		update: function () {
 			teams = Storage.teams;
 			if (this.curTeam) {
-				this.ignoreEVLimits = (this.curTeam.gen < 3 || this.curTeam.format.includes('hackmons') || this.curTeam.format === 'gen8metronomebattle');
+				this.ignoreEVLimits = (
+					this.curTeam.gen < 3 || this.curTeam.format.includes('hackmons') || this.curTeam.format === 'gen8metronomebattle' || 
+					(this.curTeam.mod && BattleTeambuilderTable.ClientMods[this.curTeam.mod].ignoreEVLimits)
+				);
 				if (this.curSet) {
 					return this.updateSetView();
 				}
@@ -1236,7 +1239,7 @@
 			buf += '<div class="setrow">';
 			// if (this.curTeam.gen > 1 && !isLetsGo) buf += '<div class="setcell setcell-item"><label>Item</label><input type="text" name="item" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.item) + '" /></div>';
 			if (this.curTeam.gen > 1) buf += '<div class="setcell setcell-item"><label>Item</label><input type="text" name="item" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.item) + '" autocomplete="off" /></div>';
-			if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism') && !isLetsGo) buf += '<div class="setcell setcell-ability"><label>Ability</label><input type="text" name="ability" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.ability) + '" autocomplete="off" /></div>';
+			if (this.curTeam.gen > 2 && !isLetsGo) buf += '<div class="setcell setcell-ability"><label>Ability</label><input type="text" name="ability" class="textbox chartinput" value="' + BattleLog.escapeHTML(set.ability) + '" autocomplete="off" /></div>';
 			buf += '</div></div>';
 			// moves
 			if (!set.moves) set.moves = [];
@@ -1250,7 +1253,7 @@
 			buf += '<div class="setcol setcol-stats"><div class="setrow"><label>Stats</label><button class="textbox setstats" name="stats">';
 			buf += '<span class="statrow statrow-head"><label></label> <span class="statgraph"></span> <em>' + (!isLetsGo ? 'EV' : 'AV') + '</em></span>';
 			var stats = {};
-			var defaultEV = ((this.curTeam.gen > 2 && !this.curTeam.format.includes('prism')) ? 0 : 252);
+			var defaultEV = (this.curTeam.gen > 2 && !this.ignoreEVLimits) ? 0 : 252;
 			for (var j in BattleStatNames) {
 				if (j === 'spd' && this.curTeam.gen === 1) continue;
 				stats[j] = this.getStat(j, set);
@@ -1781,7 +1784,7 @@
 
 			// stat cell
 			var buf = '<span class="statrow statrow-head"><label></label> <span class="statgraph"></span> <em>' + (supportsEVs ? 'EV' : 'AV') + '</em></span>';
-			var defaultEV = ((this.curTeam.gen > 2 && !this.curTeam.format.includes('prism')) ? 0 : 252);
+			var defaultEV = (this.curTeam.gen > 2 && !this.ignoreEVLimits) ? 0 : 252;
 			for (var stat in stats) {
 				if (stat === 'spd' && this.curTeam.gen === 1) continue;
 				stats[stat] = this.getStat(stat, set);
@@ -1823,10 +1826,10 @@
 				totalev += (set.evs[stat] || 0);
 			}
 
-			if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism') && supportsEVs) buf += '<div><em>Remaining:</em></div>';
+			if (this.curTeam.gen > 2 && supportsEVs) buf += '<div><em>Remaining:</em></div>';
 			this.$chart.find('.graphcol').html(buf);
 
-			if (this.curTeam.gen <= 2 || this.curTeam.format.includes('prism')) return;
+			if (this.curTeam.gen <= 2) return;
 			if (supportsEVs) {
 				var maxEv = 510;
 				if (totalev <= maxEv) {
@@ -2041,7 +2044,7 @@
 
 			var supportsEVs = !this.curTeam.format.includes('letsgo');
 			// var supportsAVs = !supportsEVs && this.curTeam.format.endsWith('norestrictions');
-			var defaultEV = (this.curTeam.format.includes('prism') || this.curTeam.gen <= 2) ? 252 : 0;
+			var defaultEV = (this.curTeam.gen > 2 && !this.ignoreEVLimits) ? 0 : 252;
 			var maxEV = supportsEVs ? 252 : 200;
 			var stepEV = supportsEVs ? 4 : 1;
 
@@ -2072,7 +2075,7 @@
 				if (color > 360) color = 360;
 				buf += '<div><em><span style="width:' + Math.floor(width) + 'px;background:hsl(' + color + ',85%,45%);border-color:hsl(' + color + ',85%,35%)"></span></em></div>';
 			}
-			if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism') && supportsEVs) buf += '<div><em>Remaining:</em></div>';
+			if (this.curTeam.gen > 2 && supportsEVs) buf += '<div><em>Remaining:</em></div>';
 			buf += '</div>';
 
 			buf += '<div class="col evcol"><div><strong>' + (supportsEVs ? 'EVs' : 'AVs') + '</strong></div>';
@@ -2093,7 +2096,7 @@
 				buf += '<div><input type="text" name="stat-' + i + '" value="' + val + '" class="textbox inputform numform" /></div>';
 				totalev += (set.evs[i] || 0);
 			}
-			if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism') && supportsEVs) {
+			if (this.curTeam.gen > 2 && supportsEVs) {
 				var maxTotalEVs = 510;
 				if (totalev <= maxTotalEVs) {
 					buf += '<div class="totalev"><em>' + (totalev > (maxTotalEVs - 2) ? 0 : (maxTotalEVs - 2) - totalev) + '</em></div>';
@@ -2110,7 +2113,7 @@
 			}
 			buf += '</div>';
 
-			if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism')) {
+			if (this.curTeam.gen > 2) {
 				buf += '<div class="col ivcol"><div><strong>IVs</strong></div>';
 				if (!set.ivs) set.ivs = {};
 				for (var i in stats) {
@@ -2247,7 +2250,7 @@
 			}
 			buf += '</div>';
 
-			if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism')) {
+			if (this.curTeam.gen > 2) {
 				buf += '<p style="clear:both">Nature: <select name="nature">';
 				for (var i in BattleNatures) {
 					var curNature = BattleNatures[i];
@@ -2342,7 +2345,7 @@
 				// IV
 				var stat = inputName.substr(3);
 
-				if (this.curTeam.gen <= 2 || this.curTeam.format.includes('prism')) {
+				if (this.curTeam.gen <= 2) {
 					val *= 2;
 					if (val === 30) val = 31;
 				}
@@ -2372,7 +2375,7 @@
 			if (!hasHiddenPower) return;
 			var hpTypes = ['Fighting', 'Flying', 'Poison', 'Ground', 'Rock', 'Bug', 'Ghost', 'Steel', 'Fire', 'Water', 'Grass', 'Electric', 'Psychic', 'Ice', 'Dragon', 'Dark'];
 			var hpType;
-			if (this.curTeam.gen <= 2 || this.curTeam.format.includes('prism')) {
+			if (this.curTeam.gen <= 2) {
 				var hpDV = Math.floor(set.ivs.hp / 2);
 				var atkDV = Math.floor(set.ivs.atk / 2);
 				var defDV = Math.floor(set.ivs.def / 2);
@@ -2563,7 +2566,7 @@
 				}
 			}
 
-			if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism')) {
+			if (this.curTeam.gen > 2) {
 				buf += '<div class="formrow" style="display:none"><label class="formlabel">Pokeball:</label><div><select name="pokeball">';
 				buf += '<option value=""' + (!set.pokeball ? ' selected="selected"' : '') + '></option>'; // unset
 				var balls = Dex.forGen(this.curTeam.gen).getPokeballs();
@@ -3029,7 +3032,7 @@
 					var hpType = moveName.substr(13);
 
 					set.ivs = {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31};
-					if (this.curTeam.gen > 2 && !this.curTeam.format.includes('prism')) {
+					if (this.curTeam.gen > 2) {
 						for (var i in exports.BattleTypeChart[hpType].HPivs) {
 							set.ivs[i] = exports.BattleTypeChart[hpType].HPivs[i];
 						}
@@ -3191,10 +3194,10 @@
 
 			var baseStat = species.baseStats[stat];
 			var iv = (set.ivs[stat] || 0);
-			if (this.curTeam.gen <= 2 || this.curTeam.format.includes('prism')) iv &= 30;
+			if (this.curTeam.gen <= 2) iv &= 30;
 			var ev = set.evs[stat];
 			if (evOverride !== undefined) ev = evOverride;
-			if (ev === undefined) ev = ((this.curTeam.gen > 2 && !this.curTeam.format.includes('prism')) ? 0 : 252);
+			if (ev === undefined) ev = ((this.curTeam.gen > 2) ? 0 : 252);
 
 			if (stat === 'hp') {
 				if (baseStat === 1) return 1;

@@ -40,7 +40,9 @@ const ModConfig = {
 		'pkmnyb': true,
 		'twisted': true,
 		'roseredirisblue': true,
-		'prism': true,
+		'prism': {
+			'igonreEVlimits': true,
+		},
 		'smashmodsmelee': {
 			'excludeStandardTiers': true,
 		},
