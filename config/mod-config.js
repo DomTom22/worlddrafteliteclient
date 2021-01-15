@@ -29,6 +29,7 @@ const ModConfigData = {
 		megamax: {},
 		m4av6: {},
 		m4asandbox: {},
+		megarevolution: {},
 		perfectgalar: {},
 		gen7dlcmons: {},
 		fealpha: {
