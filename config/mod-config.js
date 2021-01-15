@@ -28,9 +28,13 @@ const ModConfigData = {
 		optimons: {},
 		megamax: {},
 		m4av6: {},
+		m4asandbox: {},
 		perfectgalar: {},
 		gen7dlcmons: {},
 		fealpha: {
+			excludeStandardTiers: true,
+		},
+		feuu: {
 			excludeStandardTiers: true,
 		},
 		viabilities: {},
