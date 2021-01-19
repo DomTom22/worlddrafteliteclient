@@ -52,6 +52,7 @@ const ModConfigData = {
 			excludeStandardTiers: true,
 		},
 		breakthisteam: {},
+		conniecorddraft: {},
 	}
 };
 exports.ModConfigData = ModConfigData;
