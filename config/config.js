@@ -33,7 +33,7 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (e5ad92d5/55fadf43)";
+Config.version = "0.11.2 (d65aff5f/55fadf43)";
 
 Config.routes = {
 	root: 'scoopapa-dh.glitch.me',
@@ -41,5 +41,6 @@ Config.routes = {
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
 	users: 'pokemonshowdown.com/users',
+	psmain: 'pokemonshowdown.com',
 };
 /*** End automatically generated configuration ***/

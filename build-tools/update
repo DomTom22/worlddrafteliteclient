@@ -54,6 +54,7 @@ Config.routes = {
 	dex: '${routes.dex}',
 	replays: '${routes.replays}',
 	users: '${routes.users}',
+	psmain: '${routes.psmain}',
 };
 ${AUTOCONFIG_END}`;
 
