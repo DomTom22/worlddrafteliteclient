@@ -684,7 +684,7 @@ class BattleLog {
 				return false;
 			},
 			getURI(uri: string) {
-				return `http://${Config.routes.root}/interstice?uri=${encodeURIComponent(uri)}`;
+				return `http://${Config.routes.psclient}/interstice?uri=${encodeURIComponent(uri)}`;
 			},
 		};
 	})();
