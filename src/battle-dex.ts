@@ -498,6 +498,7 @@ const Dex = new class implements ModdedDex {
 		dynamax?: boolean,
 	} = {gen: 6}) {
 		const mechanicsGen = options.gen || 6;
+		if (options.mod && ModConfig[options.mod].spriteGen) mechanicsGen = modConfig[options.mod].spriteGen;
 		let isDynamax = !!options.dynamax;
 		if (pokemon instanceof Pokemon) {
 			if (pokemon.volatiles.transform) {
@@ -749,6 +750,7 @@ const Dex = new class implements ModdedDex {
 		if (pokemon.species && !spriteid) {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
+		if (mod && ModConfig[mod].spriteGen) gen = ModConfig[mod].spriteGen;		
 		mod = this.getSpriteMod(mod, id, 'front', species.exists !== false);
 		if (mod) return {
 			spriteDir: `${mod}/sprites/front`,

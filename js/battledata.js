@@ -1,4 +1,4 @@
-var _temp;/**
+var _temp;function _readOnlyError(name){throw new TypeError("\""+name+"\" is read-only");}/**
  * Pokemon Showdown Dex
  *
  * Roughly equivalent to sim/dex.js in a Pokemon Showdown server, but
@@ -498,6 +498,7 @@ getSpriteData=function getSpriteData(pokemon,isFront)
 
 {var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{gen:6};
 var mechanicsGen=options.gen||6;
+if(options.mod&&ModConfig[options.mod].spriteGen)mechanicsGen=(_readOnlyError("mechanicsGen"),modConfig[options.mod].spriteGen);
 var isDynamax=!!options.dynamax;
 if(pokemon instanceof Pokemon){
 if(pokemon.volatiles.transform){
@@ -749,6 +750,7 @@ var species=Dex.getSpecies(pokemon.species);
 if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
+if(mod&&ModConfig[mod].spriteGen)gen=ModConfig[mod].spriteGen;
 mod=this.getSpriteMod(mod,id,'front',species.exists!==false);
 if(mod)return{
 spriteDir:mod+"/sprites/front",

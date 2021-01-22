@@ -1029,11 +1029,13 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				let maxGen = 0;
 				if (format.mod === modid) {
 					formats[formatid] = {
+						name: formatName,
 						teambuilderFormat: '', 
 						formatType: '', 
 						gameType: '', 
 						bans: [], 
 						unbans: [],
+						banlist: format.banlist,
 					};
 					if (format.teambuilderFormat) formats[formatid].teambuilderFormat = format.teambuilderFormat;
 					if (format.ruleset.includes('Standard NatDex')) formats[formatid].formatType = 'natdex';
@@ -1057,12 +1059,12 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				}
 				if (maxGen !== 8) modGen = maxGen;
 			}
+			// Find any nonstandard tiers used by this mod
 			const standardTiers = ['uber', 'ou', 'uubl', 'uu', 'rubl', 'ru', 'nubl', 'nu', 'publ',
 				'pu', 'zu', 'nfe', 'lcuber', 'lc', 'cap', 'caplc', 'capnfe', 'ag', 'duber', 'dou',
 				'dbl', 'duu', 'dnu', 'illegal', 'unreleased'];
 			if (!ModConfig[modid].customTiers) ModConfig[modid].customTiers = [];
-			if (!ModConfig[modid].customDoublesTiers) ModConfig[modid].customDoublesTiers = [];
-			// Find any nonstandard tiers used by this mod
+			if (!ModConfig[modid].customDoublesTiers) ModConfig[modid].customDoublesTiers = [];				
 			for (const speciesid in modData.FormatsData) {
 				const tier = modData.FormatsData[speciesid].tier;
 				const doublesTier = modData.FormatsData[speciesid].doublesTier;
@@ -1098,7 +1100,17 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 					const doublesTier = species.doublesTier
 					doublesOverrideTier[species.id] = species.doublesTier;
 					if (!tierTable[doublesTier]) tierTable[doublesTier] = [];
-					tierTable[doublesTier].push(id);
+					if (tier !== doublesTier) tierTable[doublesTier].push(id);
+				}
+			}
+			for (const tier in tierTable) {
+				for (const formatid in formats) {
+					if (formats[formatid].banlist.includes(tier) || formats[formatid].banlist.includes(toID(tier))) {
+						for (const i in tierTable[tier]) {
+							const speciesid = tierTable[tier][i];
+							if (!formats[formatid].bans.includes(speciesid)) formats[formatid].bans.push(speciesid);
+						}
+					}
 				}
 			}
 			const tiers = [];

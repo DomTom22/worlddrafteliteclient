@@ -47,6 +47,7 @@ const ModConfigData = {
 		roseredirisblue: {},
 		prism: {
 			ignoreEVLimits: true,
+			spriteGen: 2,
 		},
 		smashmodsmelee: {
 			excludeStandardTiers: true,
