@@ -813,8 +813,9 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (this.formatType === 'metronome' || this.formatType === 'natdex') {
 			return pokemon.num >= 0 ? String(pokemon.num) : pokemon.tier;
 		}
+		const modFormatTable = this.mod ? ModConfig[this.mod].formats[this.modFormat] : {};
 		let table = window.BattleTeambuilderTable;
-		if (this.mod) table = window.BattleTeambuilderTable[this.mod];
+		if (this.mod) table = modFormatTable.gameType !== 'doubles' ? BattleTeambuilderTable[this.mod] : BattleTeambuilderTable[this.mod].doubles;
 		const tableKey = this.formatType === 'doubles' ? `gen${this.dex.gen}doubles` :
 			this.formatType === 'letsgo' ? 'letsgo' :
 			this.formatType === 'nfe' ? `gen${this.dex.gen}nfe` :
@@ -897,10 +898,10 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		const requirePentagon = format === 'battlespotsingles' || format === 'battledoubles' || format.startsWith('vgc');
 		let isDoublesOrBS = this.formatType === 'doubles';
 		const dex = this.dex;
-
+		const modFormatTable = this.mod ? ModConfig[this.mod].formats[this.modFormat] : {};
 		let table = BattleTeambuilderTable;
 		if (this.mod) {
-			table = BattleTeambuilderTable[this.mod];
+			table = modFormatTable.gameType !== 'doubles' ? BattleTeambuilderTable[this.mod] : BattleTeambuilderTable[this.mod].doubles;
 		} else if (format.endsWith('cap') || format.endsWith('caplc')) {
 			// CAP formats always use the singles table
 			if (dex.gen < 8) {

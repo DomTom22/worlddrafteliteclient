@@ -813,8 +813,9 @@ getTier=function getTier(pokemon){
 if(this.formatType==='metronome'||this.formatType==='natdex'){
 return pokemon.num>=0?String(pokemon.num):pokemon.tier;
 }
+var modFormatTable=this.mod?ModConfig[this.mod].formats[this.modFormat]:{};
 var table=window.BattleTeambuilderTable;
-if(this.mod)table=window.BattleTeambuilderTable[this.mod];
+if(this.mod)table=modFormatTable.gameType!=='doubles'?BattleTeambuilderTable[this.mod]:BattleTeambuilderTable[this.mod].doubles;
 var tableKey=this.formatType==='doubles'?"gen"+this.dex.gen+"doubles":
 this.formatType==='letsgo'?'letsgo':
 this.formatType==='nfe'?"gen"+this.dex.gen+"nfe":
@@ -897,10 +898,10 @@ if(!format)return this.getDefaultResults();
 var requirePentagon=format==='battlespotsingles'||format==='battledoubles'||format.startsWith('vgc');
 var isDoublesOrBS=this.formatType==='doubles';
 var dex=this.dex;
-
+var modFormatTable=this.mod?ModConfig[this.mod].formats[this.modFormat]:{};
 var table=BattleTeambuilderTable;
 if(this.mod){
-table=BattleTeambuilderTable[this.mod];
+table=modFormatTable.gameType!=='doubles'?BattleTeambuilderTable[this.mod]:BattleTeambuilderTable[this.mod].doubles;
 }else if(format.endsWith('cap')||format.endsWith('caplc')){
 
 if(dex.gen<8){
@@ -1005,15 +1006,15 @@ table.customTiers=null;
 var customTierSet=table.customTierSet;
 if(customTierSet){
 tierSet=customTierSet.concat(tierSet);
-var modFormatTable=ModConfig[this.mod].formats[this.modFormat];
-if(modFormatTable.bans.length>0&&!modFormatTable.bans.includes("All Pokemon")){
+var _modFormatTable=ModConfig[this.mod].formats[this.modFormat];
+if(_modFormatTable.bans.length>0&&!_modFormatTable.bans.includes("All Pokemon")){
 tierSet=tierSet.filter(function(_ref5){var type=_ref5[0],id=_ref5[1];
-var banned=modFormatTable.bans;
+var banned=_modFormatTable.bans;
 return!banned.includes(id);
 });
-}else if(modFormatTable.unbans.length>0&&modFormatTable.bans.includes("All Pokemon")){
+}else if(_modFormatTable.unbans.length>0&&_modFormatTable.bans.includes("All Pokemon")){
 tierSet=tierSet.filter(function(_ref6){var type=_ref6[0],id=_ref6[1];
-var unbanned=modFormatTable.unbans;
+var unbanned=_modFormatTable.unbans;
 return unbanned.includes(id)||type==='header';
 });
 }
