@@ -1035,7 +1035,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 						gameType: '', 
 						bans: [], 
 						unbans: [],
-						banlist: format.banlist,
+						banlist: format.banlist.concat(format.teambuilderBans),
 					};
 					if (format.teambuilderFormat) formats[formatid].teambuilderFormat = format.teambuilderFormat;
 					if (format.ruleset.includes('Standard NatDex')) formats[formatid].formatType = 'natdex';
@@ -1105,11 +1105,13 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			}
 			for (const tier in tierTable) {
 				for (const formatid in formats) {
-					if (formats[formatid].banlist.includes(tier) || formats[formatid].banlist.includes(toID(tier))) {
+					const banlist = formats[formatid].banlist;
+					if (banlist.includes(tier) || banlist.includes(toID(tier))) {
 						for (const i in tierTable[tier]) {
 							const speciesid = tierTable[tier][i];
 							if (!formats[formatid].bans.includes(speciesid)) formats[formatid].bans.push(speciesid);
 						}
+
 					}
 				}
 			}
