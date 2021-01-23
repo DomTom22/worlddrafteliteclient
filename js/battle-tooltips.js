@@ -256,6 +256,7 @@ BattleTooltips.hideTooltip();
 };_proto2.
 
 showTooltip=function showTooltip(elem){
+console.log('showTooltip');
 var args=(elem.dataset.tooltip||'').split('|');var
 type=args[0];
 
@@ -726,6 +727,7 @@ return text;
 showPokemonTooltip=function showPokemonTooltip(
 clientPokemon,serverPokemon,isActive,illusionIndex)
 {var _this3=this;
+console.log('showPokemonTooltip');
 var pokemon=clientPokemon||serverPokemon;
 var text='';
 var genderBuf='';
