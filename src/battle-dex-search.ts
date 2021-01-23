@@ -364,30 +364,6 @@ class DexSearch {
 			// hardcode cases of duplicate non-consecutive aliases
 			if ((id === 'megax' || id === 'megay') && 'mega'.startsWith(query)) continue;
 
-			// Determine if the element comes from the current mod
-			const table = BattleTeambuilderTable[window.room.curTeam.mod];
-			if (
-				typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
-				(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
-			) continue;
-			else if (
-				typeIndex === 5 && (!BattleItems[id] || BattleItems[id].exists === false) &&
-				(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
-			) continue;
-			else if (
-				typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
-				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
-			) continue;	
-			else if (
-				typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
-				(!table || !table.overrideAbilityDesc || id in table.overrideAbilityDesc === false)
-			) continue;
-			else if (
-				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
-				(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
-			) continue;
-			// console.log( id + ' ' + typeIndex );
-			// console.log( BattleMovedex[id] );
 			let matchStart = 0;
 			let matchEnd = 0;
 			if (passType === 'alias') {
@@ -420,6 +396,29 @@ class DexSearch {
 			if (topbufIndex < 0 && searchTypeIndex < 2 && passType === 'alias' && !bufs[1].length && bufs[2].length) {
 				topbufIndex = 2;
 			}
+
+			// Determine if the element comes from the current mod
+			const table = BattleTeambuilderTable[window.room.curTeam.mod];
+			if (
+				typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
+				(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
+			) continue;
+			else if (
+				typeIndex === 5 && (!BattleItems[id] || BattleItems[id].exists === false) &&
+				(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
+			) continue;
+			else if (
+				typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
+				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
+			) continue;	
+			else if (
+				typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
+				(!table || !table.overrideAbilityDesc || id in table.overrideAbilityDesc === false)
+			) continue;
+			else if (
+				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
+				(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
+			) continue;
 
 			if (illegal && typeIndex === searchTypeIndex) {
 				// Always show illegal results under legal results.
@@ -691,10 +690,10 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		}
 
 		if (!this.baseIllegalResults) {
-			console.log("!this.baseIllegalResults");
+			// console.log("!this.baseIllegalResults");
 			const legalityFilter: {[id: string]: 1} = {};
 			for (const [resultType, value] of this.baseResults) {
-				console.log(resultType + ' ' + value);
+				// console.log(resultType + ' ' + value);
 				if (resultType === this.searchType) legalityFilter[value] = 1;
 			}
 			this.baseIllegalResults = [];
@@ -712,7 +711,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		let illegalResults: SearchRow[] | null;
 
 		if (filters) {
-			console.log("filters");
+			// console.log("filters");
 			results = [];
 			illegalResults = [];
 			for (const result of this.baseResults) {
@@ -782,7 +781,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		return '' as ID;
 	}
 	protected canLearn(speciesid: ID, moveid: ID) {
-		console.log("canLearn");
+		// console.log("canLearn");
 		if (this.dex.gen >= 8 && this.dex.getMove(moveid).isNonstandard === 'Past' && this.formatType !== 'natdex') {
 			return false;
 		}
