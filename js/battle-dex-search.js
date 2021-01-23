@@ -303,7 +303,6 @@ var instafilter=null;
 var instafilterSort=[0,1,2,5,4,3,6,7,8];
 var illegal=(_this$typedSearch6=this.typedSearch)==null?void 0:_this$typedSearch6.illegalReasons;
 
-
 for(i=0;i<BattleSearchIndex.length;i++){
 if(!passType){
 var searchPass=searchPasses.shift();
@@ -690,10 +689,8 @@ this.baseResults=this.getBaseResults();
 }
 
 if(!this.baseIllegalResults){
-
 var legalityFilter={};for(var _i2=0,_this$baseResults=
 this.baseResults;_i2<_this$baseResults.length;_i2++){var _ref=_this$baseResults[_i2];var resultType=_ref[0];var value=_ref[1];
-
 if(resultType===this.searchType)legalityFilter[value]=1;
 }
 this.baseIllegalResults=[];
@@ -711,7 +708,6 @@ var results;
 var illegalResults;
 
 if(filters){
-
 results=[];
 illegalResults=[];for(var _i3=0,_this$baseResults2=
 this.baseResults;_i3<_this$baseResults2.length;_i3++){var result=_this$baseResults2[_i3];
@@ -781,7 +777,6 @@ if(next)return toID(next);
 return'';
 };_proto2.
 canLearn=function canLearn(speciesid,moveid){
-
 if(this.dex.gen>=8&&this.dex.getMove(moveid).isNonstandard==='Past'&&this.formatType!=='natdex'){
 return false;
 }
@@ -853,7 +848,8 @@ return pokemon.tier;
 BattlePokemonSearch=function(_BattleTypedSearch){_inheritsLoose(BattlePokemonSearch,_BattleTypedSearch);function BattlePokemonSearch(){var _this2;for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this2=_BattleTypedSearch.call.apply(_BattleTypedSearch,[this].concat(args))||this;_this2.
 sortRow=['sortpokemon',''];return _this2;}var _proto3=BattlePokemonSearch.prototype;_proto3.
 getTable=function getTable(){
-return BattlePokedex;
+if(!this.mod)return BattlePokedex;else
+return Object.assign({},BattleTeambuilderTable[this.mod].overrideDexInfo,BattlePokedex);
 };_proto3.
 getDefaultResults=function getDefaultResults(){
 var results=[];
@@ -1101,7 +1097,8 @@ throw new Error("invalid sortcol");
 
 BattleAbilitySearch=function(_BattleTypedSearch2){_inheritsLoose(BattleAbilitySearch,_BattleTypedSearch2);function BattleAbilitySearch(){return _BattleTypedSearch2.apply(this,arguments)||this;}var _proto4=BattleAbilitySearch.prototype;_proto4.
 getTable=function getTable(){
-return BattleAbilities;
+if(!this.mod)return BattleAbilities;else
+return Object.assign({},BattleTeambuilderTable[this.mod].fullAbilityName,BattleAbilities);
 };_proto4.
 getDefaultResults=function getDefaultResults(){
 var results=[];
@@ -1188,7 +1185,8 @@ throw new Error("invalid sortcol");
 
 BattleItemSearch=function(_BattleTypedSearch3){_inheritsLoose(BattleItemSearch,_BattleTypedSearch3);function BattleItemSearch(){return _BattleTypedSearch3.apply(this,arguments)||this;}var _proto5=BattleItemSearch.prototype;_proto5.
 getTable=function getTable(){
-return BattleItems;
+if(!this.mod)return BattleItems;else
+return Object.assign({},BattleTeambuilderTable[this.mod].fullItemName,BattleItems);
 };_proto5.
 getDefaultResults=function getDefaultResults(){
 var table=BattleTeambuilderTable;
@@ -1253,7 +1251,8 @@ throw new Error("invalid sortcol");
 BattleMoveSearch=function(_BattleTypedSearch4){_inheritsLoose(BattleMoveSearch,_BattleTypedSearch4);function BattleMoveSearch(){var _this4;for(var _len2=arguments.length,args=new Array(_len2),_key2=0;_key2<_len2;_key2++){args[_key2]=arguments[_key2];}_this4=_BattleTypedSearch4.call.apply(_BattleTypedSearch4,[this].concat(args))||this;_this4.
 sortRow=['sortmove',''];return _this4;}var _proto6=BattleMoveSearch.prototype;_proto6.
 getTable=function getTable(){
-return BattleMovedex;
+if(!this.mod)return BattleMovedex;else
+return Object.assign({},BattleTeambuilderTable[this.mod].fullMoveName,BattleMovedex);
 };_proto6.
 getDefaultResults=function getDefaultResults(){
 var results=[];
@@ -1681,7 +1680,8 @@ throw new Error("invalid sortcol");
 
 BattleTypeSearch=function(_BattleTypedSearch6){_inheritsLoose(BattleTypeSearch,_BattleTypedSearch6);function BattleTypeSearch(){return _BattleTypedSearch6.apply(this,arguments)||this;}var _proto8=BattleTypeSearch.prototype;_proto8.
 getTable=function getTable(){
-return window.BattleTypeChart;
+if(!this.mod)return window.BattleTypeChart;else
+return Object.assign({},BattleTeambuilderTable[this.mod].overrideTypeChart,window.BattleTypeChart);
 };_proto8.
 getDefaultResults=function getDefaultResults(){
 var results=[];

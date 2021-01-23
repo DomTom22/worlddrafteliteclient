@@ -302,7 +302,6 @@ class DexSearch {
 		let instafilter: [SearchType, ID, number] | null = null;
 		let instafilterSort = [0, 1, 2, 5, 4, 3, 6, 7, 8];
 		let illegal = this.typedSearch?.illegalReasons;
-		// console.log( illegal );
 		// We aren't actually looping through the entirety of the searchIndex
 		for (i = 0; i < BattleSearchIndex.length; i++) {
 			if (!passType) {
@@ -690,10 +689,8 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		}
 
 		if (!this.baseIllegalResults) {
-			// console.log("!this.baseIllegalResults");
 			const legalityFilter: {[id: string]: 1} = {};
 			for (const [resultType, value] of this.baseResults) {
-				// console.log(resultType + ' ' + value);
 				if (resultType === this.searchType) legalityFilter[value] = 1;
 			}
 			this.baseIllegalResults = [];
@@ -711,7 +708,6 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		let illegalResults: SearchRow[] | null;
 
 		if (filters) {
-			// console.log("filters");
 			results = [];
 			illegalResults = [];
 			for (const result of this.baseResults) {
@@ -781,7 +777,6 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		return '' as ID;
 	}
 	protected canLearn(speciesid: ID, moveid: ID) {
-		// console.log("canLearn");
 		if (this.dex.gen >= 8 && this.dex.getMove(moveid).isNonstandard === 'Past' && this.formatType !== 'natdex') {
 			return false;
 		}
@@ -853,7 +848,8 @@ abstract class BattleTypedSearch<T extends SearchType> {
 class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 	sortRow: SearchRow = ['sortpokemon', ''];
 	getTable() {
-		return BattlePokedex;
+		if (!this.mod) return BattlePokedex;
+		else return {...BattleTeambuilderTable[this.mod].overrideDexInfo, ...BattlePokedex};
 	}
 	getDefaultResults(): SearchRow[] {
 		let results: SearchRow[] = [];
@@ -1101,7 +1097,8 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 
 class BattleAbilitySearch extends BattleTypedSearch<'ability'> {
 	getTable() {
-		return BattleAbilities;
+		if (!this.mod) return BattleAbilities;
+		else return {...BattleTeambuilderTable[this.mod].fullAbilityName, ...BattleAbilities};
 	}
 	getDefaultResults(): SearchRow[] {
 		const results: SearchRow[] = [];
@@ -1188,7 +1185,8 @@ class BattleAbilitySearch extends BattleTypedSearch<'ability'> {
 
 class BattleItemSearch extends BattleTypedSearch<'item'> {
 	getTable() {
-		return BattleItems;
+		if (!this.mod) return BattleItems;
+		else return {...BattleTeambuilderTable[this.mod].fullItemName, ...BattleItems};
 	}
 	getDefaultResults(): SearchRow[] {
 		let table = BattleTeambuilderTable;
@@ -1253,7 +1251,8 @@ class BattleItemSearch extends BattleTypedSearch<'item'> {
 class BattleMoveSearch extends BattleTypedSearch<'move'> {
 	sortRow: SearchRow = ['sortmove', ''];
 	getTable() {
-		return BattleMovedex;
+		if (!this.mod) return BattleMovedex;
+		else return {...BattleTeambuilderTable[this.mod].fullMoveName, ...BattleMovedex};
 	}
 	getDefaultResults(): SearchRow[] {
 		let results: SearchRow[] = [];
@@ -1681,7 +1680,8 @@ class BattleCategorySearch extends BattleTypedSearch<'category'> {
 
 class BattleTypeSearch extends BattleTypedSearch<'type'> {
 	getTable() {
-		return window.BattleTypeChart;
+		if (!this.mod) return window.BattleTypeChart;
+		else return {...BattleTeambuilderTable[this.mod].overrideTypeChart, ...window.BattleTypeChart};
 	}
 	getDefaultResults(): SearchRow[] {
 		const results: SearchRow[] = [];
