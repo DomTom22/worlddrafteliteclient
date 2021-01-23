@@ -302,7 +302,7 @@ class DexSearch {
 		let instafilter: [SearchType, ID, number] | null = null;
 		let instafilterSort = [0, 1, 2, 5, 4, 3, 6, 7, 8];
 		let illegal = this.typedSearch?.illegalReasons;
-
+		// console.log( illegal );
 		// We aren't actually looping through the entirety of the searchIndex
 		for (i = 0; i < BattleSearchIndex.length; i++) {
 			if (!passType) {
@@ -363,7 +363,31 @@ class DexSearch {
 			if (qFilterType === 'type' && typeIndex !== 2) continue;
 			// hardcode cases of duplicate non-consecutive aliases
 			if ((id === 'megax' || id === 'megay') && 'mega'.startsWith(query)) continue;
-			
+
+			// Determine if the element comes from the current mod
+			const table = BattleTeambuilderTable[window.room.curTeam.mod];
+			if (
+				typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
+				(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
+			) continue;
+			else if (
+				typeIndex === 5 && (!BattleItems[id] || BattleItems[id].exists === false) &&
+				(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
+			) continue;
+			else if (
+				typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
+				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
+			) continue;	
+			else if (
+				typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
+				(!table || !table.overrideAbilityDesc || id in table.overrideAbilityDesc === false)
+			) continue;
+			else if (
+				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
+				(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
+			) continue;
+			// console.log( id + ' ' + typeIndex );
+			// console.log( BattleMovedex[id] );
 			let matchStart = 0;
 			let matchEnd = 0;
 			if (passType === 'alias') {
@@ -416,30 +440,7 @@ class DexSearch {
 			// don't match duplicate aliases
 			let curBufLength = (passType === 'alias' && bufs[typeIndex].length);
 			if (curBufLength && bufs[typeIndex][curBufLength - 1][1] === id) continue;
-			
-						// determine if the element comes from the current mod
-			const table = BattleTeambuilderTable[window.room.curTeam.mod];
-			if (
-				typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
-				(!table || !table.overrideDexInfo || id in table.overrideDexInfo === false)
-			) continue;
-			else if (
-				typeIndex === 5 && (!BattleItems[id] || BattleItems[id].exists === false) &&
-				(!table || !table.overrideItemDesc || id in table.overrideItemDesc === false)
-			) continue;
-			else if (
-				typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
-				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
-			) continue;	
-			else if (
-				typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
-				(!table || !table.overrideAbilityDesc || id in table.overrideAbilityDesc === false)
-			) continue;
-			else if (
-				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
-				(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
-			) continue;
-			
+
 			bufs[typeIndex].push([type, id, matchStart, matchEnd]);
 			count++;
 		}
@@ -471,21 +472,21 @@ class DexSearch {
 		let buf: SearchRow[] = [];
 		let illegalBuf: SearchRow[] = [];
 		let illegal = this.typedSearch?.illegalReasons;
-		//change object to look in if using a mod
+		// Change object to look in if using a mod
 		let pokedex = BattlePokedex;
 		let moveDex = BattleMovedex;
 		if (window.room.curTeam.mod){
 			pokedex = {};
-			movedex = {};
+			moveDex = {};
 			const table = BattleTeambuilderTable[window.room.curTeam.mod];
 			for(const id in table.overrideDexInfo) {
 				pokedex[id] = { types: table.overrideDexInfo[id].types, abilities: table.overrideDexInfo[id].abilities};
 			}
-			for(const id in {...table.fullMoveName, ...table.overrideMoveType, ...table.overrideMoveCategory}) movedex[id] = {};
-			for(const id in table.overrideMoveType) movedex[id].type = table.overrideMoveType[id];
-			for(const id in table.overrideMoveCategory) movedex[id].category = table.overrideMoveCategory[id];
+			for(const id in {...table.fullMoveName, ...table.overrideMoveType, ...table.overrideMoveCategory}) moveDex[id] = {};
+			for(const id in table.overrideMoveType) moveDex[id].type = table.overrideMoveType[id];
+			for(const id in table.overrideMoveCategory) moveDex[id].category = table.overrideMoveCategory[id];
 			pokedex = {...pokedex, ...BattlePokedex};
-			movedex = {...movedex, ...BattleMovedex};
+			moveDex = {...moveDex, ...BattleMovedex};
 		}
 		if (searchType === 'pokemon') {
 			switch (fType) {
@@ -515,8 +516,8 @@ class DexSearch {
 			case 'type':
 				let type = fId.charAt(0).toUpperCase() + fId.slice(1);
 				buf.push(['header', `${type}-type moves`]);
-				for (let id in movedex) {
-					if (movedex[id].type === type) {
+				for (let id in moveDex) {
+					if (moveDex[id].type === type) {
 						(illegal && id in illegal ? illegalBuf : buf).push(['move', id as ID]);
 					}
 				}
@@ -524,8 +525,8 @@ class DexSearch {
 			case 'category':
 				let category = fId.charAt(0).toUpperCase() + fId.slice(1);
 				buf.push(['header', `${category} moves`]);
-				for (let id in movedex) {
-					if (movedex[id].category === category) {
+				for (let id in moveDex) {
+					if (moveDex[id].category === category) {
 						(illegal && id in illegal ? illegalBuf : buf).push(['move', id as ID]);
 					}
 				}
@@ -690,8 +691,10 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		}
 
 		if (!this.baseIllegalResults) {
+			console.log("!this.baseIllegalResults");
 			const legalityFilter: {[id: string]: 1} = {};
 			for (const [resultType, value] of this.baseResults) {
+				console.log(resultType + ' ' + value);
 				if (resultType === this.searchType) legalityFilter[value] = 1;
 			}
 			this.baseIllegalResults = [];
@@ -709,6 +712,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		let illegalResults: SearchRow[] | null;
 
 		if (filters) {
+			console.log("filters");
 			results = [];
 			illegalResults = [];
 			for (const result of this.baseResults) {
@@ -778,6 +782,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		return '' as ID;
 	}
 	protected canLearn(speciesid: ID, moveid: ID) {
+		console.log("canLearn");
 		if (this.dex.gen >= 8 && this.dex.getMove(moveid).isNonstandard === 'Past' && this.formatType !== 'natdex') {
 			return false;
 		}
