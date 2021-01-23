@@ -385,28 +385,6 @@ if(matchEnd)matchEnd+=(BattleSearchIndexOffset[i][matchEnd-1]||'0').charCodeAt(0
 
 if(queryAlias===_id&&query!==_id)continue;
 
-var table=BattleTeambuilderTable[window.room.curTeam.mod];
-if(
-typeIndex===1&&(!BattlePokedex[_id]||BattlePokedex[_id].exists===false)&&(
-!table||!table.overrideDexInfo||_id in table.overrideDexInfo===false))
-continue;else
-if(
-typeIndex===5&&(!BattleItems[_id]||BattleItems[_id].exists===false)&&(
-!table||!table.overrideItemDesc||_id in table.overrideItemDesc===false))
-continue;else
-if(
-typeIndex===4&&(!BattleMovedex[_id]||BattleMovedex[_id].exists===false)&&(
-!table||!table.overrideMoveDesc||_id in table.overrideMoveDesc===false))
-continue;else
-if(
-typeIndex===6&&(!BattleAbilities[_id]||BattleAbilities[_id].exists===false)&&(
-!table||!table.overrideAbilityDesc||_id in table.overrideAbilityDesc===false))
-continue;else
-if(
-typeIndex===2&&_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart===false&&(
-!table||_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in table.overrideTypeChart===false))
-continue;
-
 if(searchType&&searchTypeIndex!==typeIndex){
 
 if(!instafilter||instafilterSort[typeIndex]<instafilterSort[instafilter[2]]){
@@ -439,6 +417,28 @@ bufs[typeIndex]=[['header',DexSearch.typeName[type]]];
 var curBufLength=passType==='alias'&&bufs[typeIndex].length;
 if(curBufLength&&bufs[typeIndex][curBufLength-1][1]===_id)continue;
 
+
+var table=BattleTeambuilderTable[window.room.curTeam.mod];
+if(
+typeIndex===1&&(!BattlePokedex[_id]||BattlePokedex[_id].exists===false)&&(
+!table||!table.overrideDexInfo||_id in table.overrideDexInfo===false))
+continue;else
+if(
+typeIndex===5&&(!BattleItems[_id]||BattleItems[_id].exists===false)&&(
+!table||!table.overrideItemDesc||_id in table.overrideItemDesc===false))
+continue;else
+if(
+typeIndex===4&&(!BattleMovedex[_id]||BattleMovedex[_id].exists===false)&&(
+!table||!table.overrideMoveDesc||_id in table.overrideMoveDesc===false))
+continue;else
+if(
+typeIndex===6&&(!BattleAbilities[_id]||BattleAbilities[_id].exists===false)&&(
+!table||!table.overrideAbilityDesc||_id in table.overrideAbilityDesc===false))
+continue;else
+if(
+typeIndex===2&&_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in BattleTypeChart===false&&(
+!table||_id.replace(_id.charAt(0),_id.charAt(0).toUpperCase())in table.overrideTypeChart===false))
+continue;
 
 bufs[typeIndex].push([type,_id,matchStart,matchEnd]);
 count++;
