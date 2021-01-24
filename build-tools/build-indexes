@@ -27,6 +27,7 @@ const toID = Dex.toID;
 const ModConfigData = require('../config/mod-config').ModConfigData;
 const ModConfig = ModConfigData.ClientMods;
 for (const modid in Dex.dexes) {
+	if (modid === 'gen8' || modid === 'base') continue;
 	const teambuilderConfig = Dex.dexes[modid].data.Scripts.teambuilderConfig;
 	ModConfig[modid] = teambuilderConfig ? {...ModConfig[modid], ...teambuilderConfig} : ModConfig[modid] ? ModConfig[modid] : {};
 }
