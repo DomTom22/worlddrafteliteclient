@@ -11,9 +11,6 @@ const ModConfigData = {
 		cleanslatemicro: {
 			excludeStandardTiers: true,
 		},
-		cleanslate2: {
-			excludeStandardTiers: true,
-		},
 		csts: {
 			customTiers: ['CS1', 'CSM', 'CS2'],
 			excludeStandardTiers: true,
@@ -21,30 +18,15 @@ const ModConfigData = {
 		roulettemons: {
 			excludeStandardTiers: true,
 		},
-		sylvemonstest: {},
 		ccapm2020: {
 			excludeStandardTiers: true,
 		},
-		optimons: {},
-		megamax: {},
-		m4av6: {},
-		m4asandbox: {},
-		megarevolution: {},
-		perfectgalar: {},
-		gen7dlcmons: {},
 		fealpha: {
 			excludeStandardTiers: true,
 		},
 		feuu: {
 			excludeStandardTiers: true,
 		},
-		viabilities: {},
-		breedingvariants: {},
-		abnormal: {},
-		crossoverchaos: {},
-		pkmnyb: {},
-		twisted: {},
-		roseredirisblue: {},
 		prism: {
 			ignoreEVLimits: true,
 			spriteGen: 2,
@@ -52,8 +34,6 @@ const ModConfigData = {
 		smashmodsmelee: {
 			excludeStandardTiers: true,
 		},
-		breakthisteam: {},
-		conniecorddraft: {},
-	}
+	},
 };
 exports.ModConfigData = ModConfigData;
