@@ -935,8 +935,8 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		for (const id in genData.Moves) {
 			const modEntry = genData.Moves[id];
 			const baseEntry = Dex.data.Moves[id];
-			overrideMoveInfo[id] = {};
 			if (typeof baseEntry === 'undefined') {
+				overrideMoveInfo[id] = {};
 				overrideMoveInfo[id] = modEntry;
 				overrideMoveInfo[id].exists = true;
 				continue;
@@ -946,6 +946,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				const modString = JSON.stringify(modEntry[key]);
 				const baseString = JSON.stringify(baseEntry[key]);
 				if (modString !== baseString) {
+					if (!overrideMoveInfo[id]) overrideMoveInfo[id] = {};
 					overrideMoveInfo[id][key] = JSON.parse(modString);
 				}
 			}
@@ -1201,20 +1202,23 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			items.push(...itemTable.slice(1));
 			//moves
 			const overrideMoveInfo = {};
+			const overrideMoveKeys = ['basePower', 'accuracy', 'category', 'pp', 'isNonstandard', 'shortDesc'];
 			BattleTeambuilderTable[modid].overrideMoveInfo = overrideMoveInfo;
 			for (const id in modData.Moves) {
 				const modEntry = modData.Moves[id];
 				const baseEntry = Dex.data.Moves[id];
-				overrideMoveInfo[id] = {};
 				if (typeof baseEntry === 'undefined') {
+					overrideMoveInfo[id] = {};
 					overrideMoveInfo[id] = modEntry;
 					overrideMoveInfo[id].exists = true;
 					continue;
 				}
 				for (const key in modEntry) {
+					if (!overrideMoveKeys.includes(key)) continue;
 					const modString = JSON.stringify(modEntry[key]);
 					const baseString = JSON.stringify(baseEntry[key]);
 					if (modString !== baseString) {
+						if (!overrideMoveInfo[id]) overrideMoveInfo[id] = {};
 						overrideMoveInfo[id][key] = JSON.parse(modString);
 					}
 				}
