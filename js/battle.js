@@ -649,7 +649,6 @@ this.setAvatar(avatar);
 this.rollTrainerSprites();
 if(this.foe&&this.avatar===this.foe.avatar)this.rollTrainerSprites();
 }
-if(this.battle.stagnateCallback)this.battle.stagnateCallback(this.battle);
 };_proto2.
 addSideCondition=function addSideCondition(effect){
 var condition=effect.id;
@@ -810,8 +809,6 @@ pokemon.copyVolatileFrom(this.lastPokemon);
 }
 
 this.battle.scene.animSummon(pokemon,slot);
-
-if(this.battle.switchCallback)this.battle.switchCallback(this.battle,this);
 };_proto2.
 dragIn=function dragIn(pokemon){var slot=arguments.length>1&&arguments[1]!==undefined?arguments[1]:pokemon.slot;
 var oldpokemon=this.active[slot];
@@ -828,8 +825,6 @@ this.active[slot]=pokemon;
 pokemon.slot=slot;
 
 this.battle.scene.animDragIn(pokemon,slot);
-
-if(this.battle.dragCallback)this.battle.dragCallback(this.battle,this);
 };_proto2.
 replace=function replace(pokemon){var slot=arguments.length>1&&arguments[1]!==undefined?arguments[1]:pokemon.slot;
 var oldpokemon=this.active[slot];
@@ -857,8 +852,6 @@ if(oldpokemon){
 this.battle.scene.animUnsummon(oldpokemon,true);
 }
 this.battle.scene.animSummon(pokemon,slot,true);
-
-if(this.battle.dragCallback)this.battle.dragCallback(this.battle,this);
 };_proto2.
 switchOut=function switchOut(pokemon){var slot=arguments.length>1&&arguments[1]!==undefined?arguments[1]:pokemon.slot;
 if(pokemon.lastMove!=='batonpass'&&pokemon.lastMove!=='zbatonpass'){
@@ -924,46 +917,12 @@ pokemon.fainted=true;
 pokemon.hp=0;
 
 this.battle.scene.animFaint(pokemon);
-if(this.battle.faintCallback)this.battle.faintCallback(this.battle,this);
 };_proto2.
 destroy=function destroy(){
 this.clearPokemon();
 this.battle=null;
 this.foe=null;
 };return Side;}();var
-
-
-Playback;(function(Playback){Playback[Playback["Uninitialized"]=0]="Uninitialized";Playback[Playback["Ready"]=1]="Ready";Playback[Playback["Playing"]=2]="Playing";Playback[Playback["Paused"]=3]="Paused";Playback[Playback["Finished"]=4]="Finished";Playback[Playback["Seeking"]=5]="Seeking";})(Playback||(Playback={}));var
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1107,17 +1066,34 @@ Battle=function(){
 
 
 
-function Battle($frame,$logFrame){var id=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';this.sidesSwitched=false;this.activityQueue=[];this.preemptActivityQueue=[];this.waitForAnimations=true;this.activityStep=0;this.fastForward=0;this.fastForwardWillScroll=false;this.resultWaiting=false;this.activeMoveIsSpread=null;this.faintCallback=null;this.switchCallback=null;this.dragCallback=null;this.turnCallback=null;this.startCallback=null;this.stagnateCallback=null;this.endCallback=null;this.customCallback=null;this.errorCallback=null;this.mute=false;this.messageFadeTime=300;this.messageShownTime=1;this.turnsSinceMoved=0;this.turn=0;this.started=false;this.ended=false;this.usesUpkeep=false;this.weather='';this.pseudoWeather=[];this.weatherTimeLeft=0;this.weatherMinTimeLeft=0;this.mySide=null;this.nearSide=null;this.farSide=null;this.p1=null;this.p2=null;this.myPokemon=null;this.sides=[null,null];this.lastMove='';this.gen=7;this.mod='';this.dex=Dex;this.teamPreviewCount=0;this.speciesClause=false;this.tier='';this.gameType='singles';this.rated=false;this.isBlitz=false;this.endLastTurnPending=false;this.totalTimeLeft=0;this.graceTimeLeft=0;this.kickingInactive=false;this.id='';this.roomid='';this.hardcoreMode=false;this.ignoreNicks=!!Dex.prefs('ignorenicks');this.ignoreOpponent=!!Dex.prefs('ignoreopp');this.ignoreSpects=!!Dex.prefs('ignorespects');this.debug=false;this.joinButtons=false;this.paused=true;this.playbackState=Playback.Uninitialized;this.resumeButton=null;
-this.id=id;
 
-if(!$frame&&!$logFrame){
+
+
+
+
+function Battle()
+
+
+
+
+
+
+
+
+{var options=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};this.sidesSwitched=false;this.preemptStepQueue=[];this.waitForAnimations=true;this.currentStep=0;this.seeking=null;this.activeMoveIsSpread=null;this.mute=false;this.messageFadeTime=300;this.messageShownTime=1;this.turnsSinceMoved=0;this.turn=-1;this.atQueueEnd=false;this.started=false;this.ended=false;this.isReplay=false;this.usesUpkeep=false;this.weather='';this.pseudoWeather=[];this.weatherTimeLeft=0;this.weatherMinTimeLeft=0;this.mySide=null;this.nearSide=null;this.farSide=null;this.p1=null;this.p2=null;this.myPokemon=null;this.sides=[null,null];this.lastMove='';this.mod='';this.gen=8;this.dex=Dex;this.teamPreviewCount=0;this.speciesClause=false;this.tier='';this.gameType='singles';this.rated=false;this.isBlitz=false;this.endLastTurnPending=false;this.totalTimeLeft=0;this.graceTimeLeft=0;this.kickingInactive=false;this.id='';this.roomid='';this.hardcoreMode=false;this.ignoreNicks=!!Dex.prefs('ignorenicks');this.ignoreOpponent=!!Dex.prefs('ignoreopp');this.ignoreSpects=!!Dex.prefs('ignorespects');this.joinButtons=false;
+this.id=options.id||'';
+
+if(options.$frame&&options.$logFrame){
+this.scene=new BattleScene(this,options.$frame,options.$logFrame);
+}else if(!options.$frame&&!options.$logFrame){
 this.scene=new BattleSceneStub();
 }else{
-this.scene=new BattleScene(this,$frame,$logFrame);
+throw new Error("You must specify $frame and $logFrame simultaneously");
 }
-format=this.id.slice(this.id.indexOf('-')+1,this.id.lastIndexOf('-'));
-for(var mod in ModConfig){
-for(var formatid in ModConfig[mod].formats){
+
+var format=this.id.slice(this.id.indexOf('-')+1,this.id.lastIndexOf('-'));
+for(var mod in window.ModConfig){
+for(var formatid in window.ModConfig[mod].formats){
 if(format===formatid){
 this.mod=mod;
 this.dex=Dex.mod(mod);
@@ -1127,8 +1103,27 @@ break;
 if(this.mod)break;
 }
 if(this.id.includes('digimon'))this.mod='digimon';
-this.init();
+
+this.paused=!!options.paused;
+this.started=!this.paused;
+this.debug=!!options.debug;
+this.stepQueue=options.log||[];
+this.subscription=options.subscription||null;
+
+this.p1=new Side(this,0);
+this.p2=new Side(this,1);
+this.sides=[this.p1,this.p2];
+this.p2.foe=this.p1;
+this.p1.foe=this.p2;
+this.nearSide=this.mySide=this.p1;
+this.farSide=this.p2;
+
+this.resetStep();
 }var _proto3=Battle.prototype;_proto3.
+
+subscribe=function subscribe(listener){
+this.subscription=listener;
+};_proto3.
 
 removePseudoWeather=function removePseudoWeather(weather){
 for(var i=0;i<this.pseudoWeather.length;i++){
@@ -1151,30 +1146,26 @@ return true;
 }
 return false;
 };_proto3.
-init=function init(){
-this.p1=new Side(this,0);
-this.p2=new Side(this,1);
-this.sides=[this.p1,this.p2];
-this.p2.foe=this.p1;
-this.p1.foe=this.p2;
-this.nearSide=this.mySide=this.p1;
-this.farSide=this.p2;
-this.gen=7;
-this.reset();
+reset=function reset(){var _this$subscription;
+this.paused=true;
+this.scene.pause();
+this.resetStep();
+(_this$subscription=this.subscription)==null?void 0:_this$subscription.call(this,'paused');
 };_proto3.
-reset=function reset(dontResetSound){
+resetStep=function resetStep(){
 
-this.turn=0;
-this.started=false;
+this.turn=-1;
+this.started=!this.paused;
 this.ended=false;
+this.atQueueEnd=false;
 this.weather='';
 this.weatherTimeLeft=0;
 this.weatherMinTimeLeft=0;
 this.pseudoWeather=[];
 this.lastMove='';for(var _i6=0,_this$sides=
 
-this.sides;_i6<_this$sides.length;_i6++){var _side=_this$sides[_i6];
-if(_side)_side.reset();
+this.sides;_i6<_this$sides.length;_i6++){var side=_this$sides[_i6];
+if(side)side.reset();
 }
 this.myPokemon=null;
 
@@ -1183,16 +1174,9 @@ this.scene.reset();
 
 
 this.activeMoveIsSpread=null;
-this.activityStep=0;
-this.fastForwardOff();
-this.resultWaiting=false;
-this.paused=true;
-if(this.playbackState!==Playback.Seeking){
-this.playbackState=Playback.Uninitialized;
-if(!dontResetSound)this.scene.resetBgm();
-}
+this.currentStep=0;
 this.resetTurnsSinceMoved();
-this.nextActivity();
+this.nextStep();
 };_proto3.
 destroy=function destroy(){
 this.scene.destroy();
@@ -1213,21 +1197,7 @@ this.scene.log.add(args,kwArgs,preempt);
 };_proto3.
 
 resetToCurrentTurn=function resetToCurrentTurn(){
-if(this.ended){
-this.reset(true);
-this.fastForwardTo(-1);
-}else{
-var turn=this.turn;
-var paused=this.paused;
-this.reset(true);
-this.paused=paused;
-if(turn)this.fastForwardTo(turn);
-if(!paused){
-this.play();
-}else{
-this.pause();
-}
-}
+this.seekTurn(this.ended?Infinity:this.turn,true);
 };_proto3.
 switchSides=function switchSides(){
 this.setSidesSwitched(!this.sidesSwitched);
@@ -1254,15 +1224,16 @@ this.farSide.isFar=true;
 start=function start(){
 this.log(['start']);
 this.resetTurnsSinceMoved();
-if(this.startCallback)this.startCallback(this);
 };_proto3.
-winner=function winner(_winner){
+winner=function winner(_winner){var _this$subscription2;
 this.log(['win',_winner||'']);
 this.ended=true;
+(_this$subscription2=this.subscription)==null?void 0:_this$subscription2.call(this,'ended');
 };_proto3.
-prematureEnd=function prematureEnd(){
+prematureEnd=function prematureEnd(){var _this$subscription3;
 this.log(['message','This replay ends here.']);
 this.ended=true;
+(_this$subscription3=this.subscription)==null?void 0:_this$subscription3.call(this,'ended');
 };_proto3.
 endLastTurn=function endLastTurn(){
 if(this.endLastTurnPending){
@@ -1276,27 +1247,24 @@ this.scene.updateSidebars();
 this.scene.updateWeather(true);
 };_proto3.
 setTurn=function setTurn(turnNum){
-turnNum=parseInt(turnNum,10);
 if(turnNum===this.turn+1){
 this.endLastTurnPending=true;
 }
 if(this.turn&&!this.usesUpkeep)this.updateTurnCounters();
 this.turn=turnNum;
+this.started=true;
 
-if(!this.fastForward)this.turnsSinceMoved++;
+if(this.seeking===null)this.turnsSinceMoved++;
 
 this.scene.incrementTurn();
 
-if(this.fastForward){
-if(this.turnCallback)this.turnCallback(this);
-if(this.fastForward>-1&&turnNum>=this.fastForward){
-this.fastForwardOff();
-if(this.endCallback)this.endCallback(this);
+if(this.seeking!==null){
+if(turnNum>=this.seeking){
+this.stopSeeking();
 }
-return;
+}else{var _this$subscription4;
+(_this$subscription4=this.subscription)==null?void 0:_this$subscription4.call(this,'turn');
 }
-
-if(this.turnCallback)this.turnCallback(this);
 };_proto3.
 resetTurnsSinceMoved=function resetTurnsSinceMoved(){
 this.turnsSinceMoved=0;
@@ -1312,7 +1280,7 @@ if(this.weather&&this.weatherTimeLeft){
 this.weatherTimeLeft--;
 if(this.weatherMinTimeLeft!==0)this.weatherMinTimeLeft--;
 }
-if(!this.fastForward){
+if(this.seeking===null){
 this.scene.upkeepWeather();
 }
 return;
@@ -1341,13 +1309,13 @@ this.pseudoWeather;_i7<_this$pseudoWeather2.length;_i7++){var pWeather=_this$pse
 if(pWeather[1])pWeather[1]--;
 if(pWeather[2])pWeather[2]--;
 }for(var _i8=0,_this$sides2=
-this.sides;_i8<_this$sides2.length;_i8++){var _side2=_this$sides2[_i8];
-for(var _id3 in _side2.sideConditions){
-var cond=_side2.sideConditions[_id3];
+this.sides;_i8<_this$sides2.length;_i8++){var side=_this$sides2[_i8];
+for(var _id3 in side.sideConditions){
+var cond=side.sideConditions[_id3];
 if(cond[2])cond[2]--;
 if(cond[3])cond[3]--;
-}for(var _i9=0,_side2$active=
-_side2.active;_i9<_side2$active.length;_i9++){var poke=_side2$active[_i9];
+}for(var _i9=0,_side$active=
+side.active;_i9<_side$active.length;_i9++){var poke=_side$active[_i9];
 if(poke){
 if(poke.status==='tox')poke.statusData.toxicTurns++;
 poke.clearTurnstatuses();
@@ -1401,7 +1369,7 @@ pokemon.side.wisher=pokemon;
 };_proto3.
 animateMove=function animateMove(pokemon,move,target,kwArgs){
 this.activeMoveIsSpread=kwArgs.spread;
-if(this.fastForward||kwArgs.still)return;
+if(this.seeking!==null||kwArgs.still)return;
 
 if(!target)target=pokemon.side.foe.active[0];
 if(!target)target=pokemon.side.foe.missedPokemon;
@@ -1526,7 +1494,7 @@ kwArgs.then='.';
 }
 if(args[0]==='detailschange'&&nextArgs[0]==='-mega'){
 if(this.scene.closeMessagebar()){
-this.activityStep--;
+this.currentStep--;
 return;
 }
 kwArgs.simult='.';
@@ -1803,8 +1771,8 @@ break;
 }
 case'-clearallboost':{
 var timeOffset=this.scene.timeOffset;for(var _i16=0,_this$sides3=
-this.sides;_i16<_this$sides3.length;_i16++){var _side3=_this$sides3[_i16];for(var _i17=0,_side3$active=
-_side3.active;_i17<_side3$active.length;_i17++){var active=_side3$active[_i17];
+this.sides;_i16<_this$sides3.length;_i16++){var side=_this$sides3[_i16];for(var _i17=0,_side$active2=
+side.active;_i17<_side$active2.length;_i17++){var active=_side$active2[_i17];
 if(active){
 active.boosts={};
 this.scene.timeOffset=timeOffset;
@@ -2768,9 +2736,9 @@ this.log(args,kwArgs);
 break;
 }
 case'-sidestart':{
-var _side4=this.getSide(args[1]);
+var _side=this.getSide(args[1]);
 var _effect19=Dex.getEffect(args[2]);
-_side4.addSideCondition(_effect19);
+_side.addSideCondition(_effect19);
 
 switch(_effect19.id){
 case'tailwind':
@@ -2793,11 +2761,11 @@ this.log(args,kwArgs);
 break;
 }
 case'-sideend':{
-var _side5=this.getSide(args[1]);
+var _side2=this.getSide(args[1]);
 var _effect20=Dex.getEffect(args[2]);
 
 
-_side5.removeSideCondition(_effect20.name);
+_side2.removeSideCondition(_effect20.name);
 this.log(args,kwArgs);
 break;
 }
@@ -2832,11 +2800,10 @@ this.addPseudoWeather(_effect22.name,5,maxTimeLeft);
 
 switch(_effect22.id){
 case'gravity':
-if(!this.fastForward){for(var _i22=0,_this$sides4=
-this.sides;_i22<_this$sides4.length;_i22++){var _side6=_this$sides4[_i22];for(var _i23=0,_side6$active=
-_side6.active;_i23<_side6$active.length;_i23++){var _active=_side6$active[_i23];
+if(this.seeking!==null)break;for(var _i22=0,_this$sides4=
+this.sides;_i22<_this$sides4.length;_i22++){var _side3=_this$sides4[_i22];for(var _i23=0,_side3$active=
+_side3.active;_i23<_side3$active.length;_i23++){var _active=_side3$active[_i23];
 if(_active)this.scene.runOtherAnim('gravity',[_active]);
-}
 }
 }
 break;}
@@ -3094,20 +3061,12 @@ id:sidename.replace(/ /g,'')};
 
 };_proto3.
 
-add=function add(command,fastForward){
-if(command)this.activityQueue.push(command);
+add=function add(command){
+if(command)this.stepQueue.push(command);
 
-if(this.playbackState===Playback.Uninitialized){
-this.nextActivity();
-}else if(this.playbackState===Playback.Finished){
-this.playbackState=this.paused?Playback.Paused:Playback.Playing;
-if(this.paused)return;
-this.scene.updateBgm();
-if(fastForward){
-this.fastForwardTo(-1);
-}else{
-this.nextActivity();
-}
+if(this.atQueueEnd&&this.currentStep<this.stepQueue.length){
+this.atQueueEnd=false;
+this.nextStep();
 }
 };_proto3.
 
@@ -3120,7 +3079,7 @@ this.nextActivity();
 
 instantAdd=function instantAdd(command){
 this.run(command,true);
-this.preemptActivityQueue.push(command);
+this.preemptStepQueue.push(command);
 this.add(command);
 };_proto3.
 runMajor=function runMajor(args,kwArgs,preempt){
@@ -3138,7 +3097,7 @@ this.updateTurnCounters();
 break;
 }
 case'turn':{
-this.setTurn(args[1]);
+this.setTurn(parseInt(args[1],10));
 this.log(args);
 break;
 }
@@ -3272,19 +3231,19 @@ this.log(args,undefined,preempt);
 break;
 }
 case'player':{
-var _side7=this.getSide(args[1]);
-_side7.setName(args[2]);
-if(args[3])_side7.setAvatar(args[3]);
-if(args[4])_side7.rating=args[4];
-this.scene.updateSidebar(_side7);
+var side=this.getSide(args[1]);
+side.setName(args[2]);
+if(args[3])side.setAvatar(args[3]);
+if(args[4])side.rating=args[4];
+this.scene.updateSidebar(side);
 if(this.joinButtons)this.scene.hideJoinButtons();
 this.log(args);
 break;
 }
 case'teamsize':{
-var _side8=this.getSide(args[1]);
-_side8.totalPokemon=parseInt(args[2],10);
-this.scene.updateSidebar(_side8);
+var _side4=this.getSide(args[1]);
+_side4.totalPokemon=parseInt(args[2],10);
+this.scene.updateSidebar(_side4);
 break;
 }
 case'win':case'tie':{
@@ -3384,12 +3343,11 @@ this.scene.updateGen();
 this.log(args);
 break;
 }
-case'callback':{
-if(this.customCallback)this.customCallback(this,args[1],args.slice(1),kwArgs);
+case'callback':{var _this$subscription5;
+(_this$subscription5=this.subscription)==null?void 0:_this$subscription5.call(this,'callback');
 break;
 }
 case'fieldhtml':{
-this.playbackState=Playback.Seeking;
 this.scene.setFrameHTML(BattleLog.sanitizeHTML(args[1]));
 break;
 }
@@ -3404,8 +3362,8 @@ break;
 };_proto3.
 
 run=function run(str,preempt){
-if(!preempt&&this.preemptActivityQueue.length&&str===this.preemptActivityQueue[0]){
-this.preemptActivityQueue.shift();
+if(!preempt&&this.preemptStepQueue.length&&str===this.preemptStepQueue[0]){
+this.preemptStepQueue.shift();
 this.scene.preemptCatchup();
 return;
 }
@@ -3413,7 +3371,7 @@ if(!str)return;var _BattleTextParser$par=
 BattleTextParser.parseBattleLine(str),args=_BattleTextParser$par.args,kwArgs=_BattleTextParser$par.kwArgs;
 
 if(this.scene.maybeCloseMessagebar(args,kwArgs)){
-this.activityStep--;
+this.currentStep--;
 this.activeMoveIsSpread=null;
 return;
 }
@@ -3421,7 +3379,7 @@ return;
 
 var nextArgs=[''];
 var nextKwargs={};
-var nextLine=this.activityQueue[this.activityStep+1]||'';
+var nextLine=this.stepQueue[this.currentStep+1]||'';
 if(nextLine.slice(0,2)==='|-'){var _BattleTextParser$par2=
 BattleTextParser.parseBattleLine(nextLine);nextArgs=_BattleTextParser$par2.args;nextKwargs=_BattleTextParser$par2.kwArgs;
 }
@@ -3439,7 +3397,7 @@ this.runMinor(args,kwArgs,nextArgs,nextKwargs);
 }else{
 this.runMajor(args,kwArgs,preempt);
 }
-}catch(err){
+}catch(err){var _this$subscription6;
 this.log(['majorerror','Error parsing: '+str+' ('+err+')']);
 if(err.stack){
 var stack=(''+err.stack).split('\n');for(var _i26=0;_i26<
@@ -3450,16 +3408,15 @@ break;
 this.log(['error',line]);
 }
 }
-if(this.errorCallback)this.errorCallback(this);
+(_this$subscription6=this.subscription)==null?void 0:_this$subscription6.call(this,'error');
 }
 }
 
 if(nextLine.startsWith('|start')||args[0]==='teampreview'){
-this.started=true;
-if(this.playbackState===Playback.Uninitialized){
-this.playbackState=Playback.Ready;
-}
+if(this.turn===-1){
+this.turn=0;
 this.scene.updateBgm();
+}
 }
 };_proto3.
 checkActive=function checkActive(poke){
@@ -3470,95 +3427,116 @@ poke.side.replace(poke);
 return false;
 };_proto3.
 
-pause=function pause(){
+pause=function pause(){var _this$subscription7;
 this.paused=true;
-this.playbackState=Playback.Paused;
 this.scene.pause();
+(_this$subscription7=this.subscription)==null?void 0:_this$subscription7.call(this,'paused');
 };_proto3.
-play=function play(){
+
+
+
+
+
+
+
+
+play=function play(){var _this$subscription8;
 this.paused=false;
-this.playbackState=Playback.Playing;
+this.started=true;
 this.scene.resume();
-this.nextActivity();
+this.nextStep();
+(_this$subscription8=this.subscription)==null?void 0:_this$subscription8.call(this,'playing');
 };_proto3.
 skipTurn=function skipTurn(){
-this.fastForwardTo(this.turn+1);
+this.seekTurn(this.turn+1);
 };_proto3.
-fastForwardTo=function fastForwardTo(time){
-if(this.fastForward)return;
-time=Math.floor(Number(time));
-if(isNaN(time))return;
-if(this.ended&&time>=this.turn+1)return;
+seekTurn=function seekTurn(turn,forceReset){
+if(isNaN(turn))return;
+turn=Math.max(Math.floor(turn),0);
 
-if(time<=this.turn&&time!==-1){
-var paused=this.paused;
-this.reset(true);
-if(paused)this.pause();else
-this.paused=false;
-this.fastForwardWillScroll=true;
-}
-if(!time){
-this.fastForwardOff();
-this.nextActivity();
+if(this.seeking!==null&&this.seeking>turn&&!forceReset){
+this.seeking=turn;
 return;
 }
-this.scene.animationOff();
-this.playbackState=Playback.Seeking;
-this.fastForward=time;
-this.nextActivity();
-};_proto3.
-fastForwardOff=function fastForwardOff(){
-this.fastForward=0;
+
+if(turn===0){var _this$subscription9;
+this.seeking=null;
+this.resetStep();
 this.scene.animationOn();
-this.playbackState=this.paused?Playback.Paused:Playback.Playing;
-};_proto3.
-nextActivity=function nextActivity(){var _this=this;
-if(this.playbackState===Playback.Ready||this.playbackState===Playback.Paused){
+if(this.paused)(_this$subscription9=this.subscription)==null?void 0:_this$subscription9.call(this,'paused');
 return;
 }
+
+this.seeking=turn;
+
+if(turn<=this.turn||forceReset){
+this.scene.animationOff();
+this.resetStep();
+}else if(this.atQueueEnd){
+this.scene.animationOn();
+this.seeking=null;
+}else{
+this.scene.animationOff();
+this.nextStep();
+}
+};_proto3.
+stopSeeking=function stopSeeking(){var _this$subscription10;
+this.seeking=null;
+this.scene.animationOn();
+(_this$subscription10=this.subscription)==null?void 0:_this$subscription10.call(this,this.paused?'paused':'playing');
+};_proto3.
+shouldStep=function shouldStep(){
+if(this.atQueueEnd)return false;
+if(this.seeking!==null)return true;
+return!(this.paused&&this.turn>=0);
+};_proto3.
+nextStep=function nextStep(){var _this=this;
+if(!this.shouldStep())return;
 
 this.scene.startAnimations();
 var animations=undefined;
-while(!animations){
+
+do{
 this.waitForAnimations=true;
-if(this.activityStep>=this.activityQueue.length){
-this.fastForwardOff();
-this.playbackState=Playback.Finished;
+if(this.currentStep>=this.stepQueue.length){var _this$subscription11;
+this.atQueueEnd=true;
+if(!this.ended&&this.isReplay)this.prematureEnd();
+this.stopSeeking();
 if(this.ended){
 this.scene.updateBgm();
 }
-if(this.endCallback)this.endCallback(this);
+(_this$subscription11=this.subscription)==null?void 0:_this$subscription11.call(this,'atqueueend');
 return;
 }
 
-if(this.playbackState===Playback.Ready||this.playbackState===Playback.Paused){
-return;
-}
-this.run(this.activityQueue[this.activityStep]);
-this.activityStep++;
+this.run(this.stepQueue[this.currentStep]);
+this.currentStep++;
 if(this.waitForAnimations===true){
 animations=this.scene.finishAnimations();
 }else if(this.waitForAnimations==='simult'){
 this.scene.timeOffset=0;
 }
-}
+}while(!animations&&this.shouldStep());
 
+if(this.paused&&this.turn>=0&&this.seeking===null){
 
-if(this.playbackState===Playback.Ready||this.playbackState===Playback.Paused){
+this.scene.pause();
 return;
 }
+
+if(!animations)return;
 
 var interruptionCount=this.scene.interruptionCount;
 animations.done(function(){
 if(interruptionCount===_this.scene.interruptionCount){
-_this.nextActivity();
+_this.nextStep();
 }
 });
 };_proto3.
 
 setQueue=function setQueue(queue){
-this.activityQueue=queue;
-this.reset();
+this.stepQueue=queue;
+this.resetStep();
 };_proto3.
 
 setMute=function setMute(mute){

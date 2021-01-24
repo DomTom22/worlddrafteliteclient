@@ -519,3 +519,4 @@ Model:ChatRoom,
 Component:ChatPanel};
 
 PS.updateRoomTypes();
+//# sourceMappingURL=panel-chat.js.map

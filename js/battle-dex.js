@@ -1,4 +1,4 @@
-var _temp;function _readOnlyError(name){throw new TypeError("\""+name+"\" is read-only");}/**
+var _temp;/**
  * Pokemon Showdown Dex
  *
  * Roughly equivalent to sim/dex.js in a Pokemon Showdown server, but
@@ -465,14 +465,14 @@ return false;
 };_proto2.
 
 getSpriteMod=function getSpriteMod(mod,id,folder){var overrideStandard=arguments.length>3&&arguments[3]!==undefined?arguments[3]:false;
-if(!ModSprites[id])return null;
-if((!mod||!ModSprites[id][mod])&&!overrideStandard){
-for(var modName in ModSprites[id]){
-if(ModSprites[id][modName].includes(folder))return modName;
+if(!window.ModSprites[id])return'';
+if((!mod||!window.ModSprites[id][mod])&&!overrideStandard){
+for(var modName in window.ModSprites[id]){
+if(window.ModSprites[id][modName].includes(folder))return modName;
 }
 }
-if(mod&&ModSprites[id][mod]&&ModSprites[id][mod].includes(folder))return mod;
-return null;
+if(mod&&window.ModSprites[id][mod]&&window.ModSprites[id][mod].includes(folder))return mod;
+return'';
 };_proto2.
 
 loadSpriteData=function loadSpriteData(gen){
@@ -496,9 +496,9 @@ getSpriteData=function getSpriteData(pokemon,isFront)
 
 
 
-{var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{gen:6};
+{var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{gen:6,mod:''};
 var mechanicsGen=options.gen||6;
-if(options.mod&&ModConfig[options.mod].spriteGen)mechanicsGen=(_readOnlyError("mechanicsGen"),modConfig[options.mod].spriteGen);
+if(options.mod&&window.ModConfig[options.mod].spriteGen)mechanicsGen=window.ModConfig[options.mod].spriteGen;
 var isDynamax=!!options.dynamax;
 if(pokemon instanceof Pokemon){
 if(pokemon.volatiles.transform){
@@ -517,13 +517,12 @@ var spriteDir='sprites/';
 var fakeSprite=false;
 var name=species.spriteid;
 var id=toID(name);
-
 options.mod=this.getSpriteMod(options.mod,id,isFront?'front':'back',species.exists!==false);
 if(options.mod){
 resourcePrefix=Dex.modResourcePrefix;
 spriteDir=options.mod+"/sprites/";
 fakeSprite=true;
-if(!this.getSpriteMod(options.mod,id,(isFront?'front':'back')+'-shiny',species.exists!==false))options.shiny='';
+if(this.getSpriteMod(options.mod,id,(isFront?'front':'back')+'-shiny',species.exists!==false)==='')options.shiny=false;
 }
 
 
@@ -750,15 +749,17 @@ var species=Dex.getSpecies(pokemon.species);
 if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
-if(mod&&ModConfig[mod].spriteGen)gen=ModConfig[mod].spriteGen;
+if(mod&&window.ModConfig[mod].spriteGen)gen=window.ModConfig[mod].spriteGen;
 mod=this.getSpriteMod(mod,id,'front',species.exists!==false);
-if(mod)return{
+if(mod){
+return{
 spriteDir:mod+"/sprites/front",
 spriteid:spriteid,
 shiny:this.getSpriteMod(mod,id,'front-shiny',species.exists!==false)!==null&&pokemon.shiny,
 x:10,
 y:5};
 
+}
 if(species.exists===false)return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
 var spriteData={
 spriteid:spriteid,
@@ -825,10 +826,11 @@ if(!type)type='???';
 var sanitizedType=type.replace(/\?/g,'%3f');
 
 mod=this.getSpriteMod(mod,toID(type),'types');
-if(mod)
-return"<img src=\""+this.modResourcePrefix+mod+"/sprites/types/"+toID(type)+".png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";else
-
+if(mod){
+return"<img src=\""+this.modResourcePrefix+mod+"/sprites/types/"+toID(type)+".png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";
+}else{
 return"<img src=\""+Dex.resourcePrefix+"sprites/types/"+sanitizedType+".png\" alt=\""+type+"\" height=\"14\" width=\"32\" class=\"pixelated"+(b?' b':'')+"\" />";
+}
 };_proto2.
 
 getCategoryIcon=function getCategoryIcon(category){
@@ -878,9 +880,6 @@ this.gen=8;
 this.gen=parseInt(modid.slice(3),10);
 }
 }var _proto3=ModdedDex.prototype;_proto3.
-setGen=function setGen(gen){
-this.gen=gen;
-};_proto3.
 getMove=function getMove(name){
 var id=toID(name);
 if(window.BattleAliases&&id in BattleAliases){
@@ -892,24 +891,9 @@ if(this.cache.Moves.hasOwnProperty(id))return this.cache.Moves[id];
 var data=Object.assign({},Dex.getMove(name));
 
 var table=window.BattleTeambuilderTable[this.modid];
-if(table.fullMoveName&&id in table.fullMoveName){
-data.name=table.fullMoveName[id];
-data.exists=true;
-name=table.fullMoveName[id];
-}
-if(id in table.overrideAcc)data.accuracy=table.overrideAcc[id];
-if(id in table.overrideBP)data.basePower=table.overrideBP[id];
-if(id in table.overridePP)data.pp=table.overridePP[id];
-if(id in table.overrideMoveType)data.type=table.overrideMoveType[id];
-if(table.overrideMoveCategory&&id in table.overrideMoveCategory)data.category=table.overrideMoveCategory[id];
-if(id in table.overrideMoveDesc){
-data.shortDesc=table.overrideMoveDesc[id];
-}else{
-for(var i=this.gen;i<8;i++){
-if(id in window.BattleTeambuilderTable['gen'+i].overrideMoveDesc){
-data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideMoveDesc[id];
-break;
-}
+if(table.overrideMoveInfo[id]){
+for(var key in table.overrideMoveInfo[id]){
+data=Object.assign({},Dex.getMove(name),table.overrideMoveInfo[id]);
 }
 }
 if(this.gen<=3&&data.category!=='Status'){
@@ -980,28 +964,8 @@ id=toID(name);
 if(this.cache.Species.hasOwnProperty(id))return this.cache.Species[id];
 var table=window.BattleTeambuilderTable[this.modid];
 var data=Object.assign({},Dex.getSpecies(name));
-if(table.overrideDexInfo){
 for(var key in table.overrideDexInfo[id]){
-data[key]=table.overrideDexInfo[id][key];
-}
-}else{
-var abilities=Object.assign({},data.abilities);
-if(id in table.overrideAbility){
-abilities['0']=table.overrideAbility[id];
-}
-if(id in table.removeSecondAbility){
-delete abilities['1'];
-}
-if(id in table.overrideHiddenAbility){
-abilities['H']=table.overrideHiddenAbility[id];
-}
-if(this.gen<5)delete abilities['H'];
-if(this.gen<7)delete abilities['S'];
-if(id in table.overrideStats){
-data.baseStats=Object.assign({},data.baseStats,table.overrideStats[id]);
-}
-if(id in table.overrideType)data.types=table.overrideType[id].split('/');
-data.abilities=abilities;
+data=Object.assign({},Dex.getSpecies(name),table.overrideDexInfo[id]);
 }
 if(this.gen<3){
 data.abilities={0:"None"};
@@ -1059,3 +1023,4 @@ if(typeof require==='function'){
 global.Dex=Dex;
 global.toID=toID;
 }
+//# sourceMappingURL=battle-dex.js.map

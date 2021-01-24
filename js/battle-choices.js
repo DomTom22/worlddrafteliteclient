@@ -488,3 +488,4 @@ _move2.id=toID(_move2.name);
 }
 }
 };return BattleChoiceBuilder;}();
+//# sourceMappingURL=battle-choices.js.map

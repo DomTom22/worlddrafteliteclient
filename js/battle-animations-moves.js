@@ -32460,3 +32460,4 @@ BattleMoveAnims['lashout']={anim:BattleMoveAnims['nightslash'].anim};
 BattleMoveAnims['steelroller']={anim:BattleMoveAnims['steamroller'].anim};
 BattleMoveAnims['surgingstrikes']={anim:BattleMoveAnims['aquajet'].anim};
 BattleMoveAnims['eeriespell']={anim:BattleMoveAnims['psyshock'].anim};
+//# sourceMappingURL=battle-animations-moves.js.map

@@ -233,3 +233,4 @@ Component:TeamPanel,
 title:"Team"};
 
 PS.updateRoomTypes();
+//# sourceMappingURL=panel-teambuilder-team.js.map

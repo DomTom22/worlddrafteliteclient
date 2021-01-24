@@ -238,13 +238,19 @@ this.updateWeather(true);
 this.resetTurn();
 this.resetSideConditions();
 };_proto.
-pause=function pause(){
+pause=function pause(){var _this=this;
 this.stopAnimation();
 this.updateBgm();
-if(this.battle.resumeButton){
-this.$frame.append('<div class="playbutton"><button data-action="resume"><i class="fa fa-play icon-play"></i> Resume</button></div>');
-this.$frame.find('div.playbutton button').click(this.battle.resumeButton);
+if(this.battle.turn>0){
+this.$frame.append('<div class="playbutton"><button name="play"><i class="fa fa-play icon-play"></i> Resume</button></div>');
+}else{
+this.$frame.append('<div class="playbutton"><button name="play"><i class="fa fa-play"></i> Play</button><br /><br /><button name="play-muted" class="startsoundchooser" style="font-size:10pt;display:none">Play (music off)</button></div>');
+this.$frame.find('div.playbutton button[name=play-muted]').click(function(){
+_this.battle.setMute(true);
+_this.battle.play();
+});
 }
+this.$frame.find('div.playbutton button[name=play]').click(function(){return _this.battle.play();});
 };_proto.
 resume=function resume(){
 this.$frame.find('div.playbutton').remove();
@@ -451,7 +457,7 @@ return this.activeAnimations.promise();
 preemptCatchup=function preemptCatchup(){
 this.log.preemptCatchup();
 };_proto.
-message=function message(_message){var _this=this;
+message=function message(_message){var _this2=this;
 if(!this.messagebarOpen){
 this.log.addSpacer();
 if(this.animating){
@@ -480,12 +486,12 @@ opacity:0});
 $message.animate({
 height:'hide'},
 1,function(){
-$message.appendTo(_this.$messagebar);
+$message.appendTo(_this2.$messagebar);
 $message.animate({
 height:'show',
 'padding-bottom':4,
 opacity:1},
-_this.battle.messageFadeTime/_this.acceleration);
+_this2.battle.messageFadeTime/_this2.acceleration);
 });
 this.waitFor($message);
 }
@@ -871,7 +877,7 @@ opacity:1.0},
 opacity:isIntense?0.9:0.5},
 300);
 };_proto.
-updateWeather=function updateWeather(instant){var _this2=this;
+updateWeather=function updateWeather(instant){var _this3=this;
 if(!this.animating)return;
 var isIntense=false;
 var weather=this.battle.weather;
@@ -915,9 +921,9 @@ if(weather!==this.curWeather){
 this.$weather.animate({
 opacity:0},
 this.curWeather?300:100,function(){
-_this2.$weather.html('<em>'+weatherhtml+'</em>');
-_this2.$weather.attr('class',weather?'weather '+weather+'weather':'weather');
-_this2.$weather.animate({opacity:isIntense||!weather?0.9:0.5},300);
+_this3.$weather.html('<em>'+weatherhtml+'</em>');
+_this3.$weather.attr('class',weather?'weather '+weather+'weather':'weather');
+_this3.$weather.animate({opacity:isIntense||!weather?0.9:0.5},300);
 });
 this.curWeather=weather;
 }else{
@@ -929,14 +935,14 @@ this.$terrain.animate({
 top:360,
 opacity:0},
 this.curTerrain?400:1,function(){
-_this2.$terrain.attr('class',terrain?'weather '+terrain+'weather':'weather');
-_this2.$terrain.animate({top:0,opacity:1},400);
+_this3.$terrain.attr('class',terrain?'weather '+terrain+'weather':'weather');
+_this3.$terrain.animate({top:0,opacity:1},400);
 });
 this.curTerrain=terrain;
 }
 };_proto.
 resetTurn=function resetTurn(){
-if(!this.battle.turn){
+if(this.battle.turn<=0){
 this.$turn.html('');
 return;
 }
@@ -946,7 +952,7 @@ incrementTurn=function incrementTurn(){
 if(!this.animating)return;
 
 var turn=this.battle.turn;
-if(!turn)return;
+if(turn<=0)return;
 var $prevTurn=this.$turn.children();
 var $newTurn=$('<div class="turn has-tooltip" data-tooltip="field" data-ownheight="1">Turn '+turn+'</div>');
 $newTurn.css({
@@ -1436,6 +1442,7 @@ side.missedPokemon.sprite.isMissedPokemon=true;
 
 
 setFrameHTML=function setFrameHTML(html){
+this.customControls=true;
 this.$frame.html(html);
 };_proto.
 setControlsHTML=function setControlsHTML(html){
@@ -1444,7 +1451,7 @@ var $controls=this.$frame.parent().children('.battle-controls');
 $controls.html(html);
 };_proto.
 
-preloadImage=function preloadImage(url){var _this3=this;
+preloadImage=function preloadImage(url){var _this4=this;
 var token=url.replace(/\.(gif|png)$/,'').replace(/\//g,'-');
 if(this.preloadCache[token]){
 return;
@@ -1452,7 +1459,7 @@ return;
 this.preloadNeeded++;
 this.preloadCache[token]=new Image();
 this.preloadCache[token].onload=function(){
-_this3.preloadDone++;
+_this4.preloadDone++;
 };
 this.preloadCache[token].src=url;
 };_proto.
@@ -1543,8 +1550,8 @@ updateBgm=function updateBgm(){
 
 
 
-var nowPlaying=this.battle.playbackState>Playback.Ready&&
-this.battle.started&&!this.battle.ended&&!this.battle.paused;
+var nowPlaying=
+this.battle.turn>=0&&!this.battle.ended&&!this.battle.paused;
 
 if(nowPlaying){
 if(!this.bgm)this.rollBgm();
@@ -1782,10 +1789,10 @@ PokemonSprite=function(_Sprite){_inheritsLoose(PokemonSprite,_Sprite);
 
 
 
-function PokemonSprite(spriteData,pos,scene,isFrontSprite){var _this4;
-_this4=_Sprite.call(this,spriteData,pos,scene)||this;_this4.forme='';_this4.cryurl=undefined;_this4.subsp=null;_this4.$sub=null;_this4.isSubActive=false;_this4.$statbar=null;_this4.isMissedPokemon=false;_this4.oldsp=null;_this4.statbarLeft=0;_this4.statbarTop=0;_this4.left=0;_this4.top=0;_this4.effects={};
-_this4.cryurl=_this4.sp.cryurl;
-_this4.isFrontSprite=isFrontSprite;return _this4;
+function PokemonSprite(spriteData,pos,scene,isFrontSprite){var _this5;
+_this5=_Sprite.call(this,spriteData,pos,scene)||this;_this5.forme='';_this5.cryurl=undefined;_this5.subsp=null;_this5.$sub=null;_this5.isSubActive=false;_this5.$statbar=null;_this5.isMissedPokemon=false;_this5.oldsp=null;_this5.statbarLeft=0;_this5.statbarTop=0;_this5.left=0;_this5.top=0;_this5.effects={};
+_this5.cryurl=_this5.sp.cryurl;
+_this5.isFrontSprite=isFrontSprite;return _this5;
 }var _proto3=PokemonSprite.prototype;_proto3.
 destroy=function destroy(){
 if(this.$el)this.$el.remove();
@@ -1928,20 +1935,20 @@ this.scene.waitFor(this.$el);
 
 return true;
 };_proto3.
-afterMove=function afterMove(){var _this5=this;
+afterMove=function afterMove(){var _this6=this;
 if(!this.scene.animating)return false;
 if(!this.$sub||this.isSubActive)return false;
 this.isSubActive=true;
 this.$sub.delay(300);
 this.$el.add(this.$sub).promise().done(function(){
-if(!_this5.$sub||!_this5.$el)return;
-_this5.$el.animate(_this5.scene.pos({
-x:_this5.x,
-y:_this5.y,
-z:_this5.behind(30),
+if(!_this6.$sub||!_this6.$el)return;
+_this6.$el.animate(_this6.scene.pos({
+x:_this6.x,
+y:_this6.y,
+z:_this6.behind(30),
 opacity:0.3},
-_this5.sp),300);
-_this5.anim({time:300});
+_this6.sp),300);
+_this6.anim({time:300});
 });
 return false;
 };_proto3.
@@ -2322,7 +2329,7 @@ $statbar.remove();
 });
 }
 };_proto3.
-animFaint=function animFaint(pokemon){var _this6=this;
+animFaint=function animFaint(pokemon){var _this7=this;
 this.removeSub();
 if(!this.scene.animating){
 this.$el.remove();
@@ -2343,7 +2350,7 @@ opacity:0},
 'accel');
 this.scene.waitFor(this.$el);
 this.$el.promise().done(function(){
-_this6.$el.remove();
+_this7.$el.remove();
 });
 
 var $statbar=this.$statbar;
@@ -2356,7 +2363,7 @@ $statbar.remove();
 });
 }
 };_proto3.
-animTransform=function animTransform(pokemon,isCustomAnim,isPermanent){var _this7=this;
+animTransform=function animTransform(pokemon,isCustomAnim,isPermanent){var _this8=this;
 if(!this.scene.animating&&!isPermanent)return;
 var sp=Dex.getSpriteData(pokemon,this.isFrontSprite,{
 gen:this.scene.gen,
@@ -2416,15 +2423,15 @@ yscale:0,
 xscale:0,
 opacity:0.3},
 oldsp),300,function(){
-if(_this7.cryurl&&doCry){
-BattleSound.playEffect(_this7.cryurl);
+if(_this8.cryurl&&doCry){
+BattleSound.playEffect(_this8.cryurl);
 }
-_this7.$el.replaceWith($newEl);
-_this7.$el=$newEl;
-_this7.$el.animate(scene.pos({
-x:_this7.x,
-y:_this7.y,
-z:_this7.z,
+_this8.$el.replaceWith($newEl);
+_this8.$el=$newEl;
+_this8.$el.animate(scene.pos({
+x:_this8.x,
+y:_this8.y,
+z:_this8.z,
 opacity:1},
 sp),300);
 });
@@ -5968,3 +5975,4 @@ time:300},
 
 
 BattleStatusAnims['focuspunch']={anim:BattleStatusAnims['flinch'].anim};
+//# sourceMappingURL=battle-animations.js.map

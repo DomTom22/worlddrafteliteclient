@@ -337,3 +337,4 @@ preact.h("label",{"class":"checkbox"},preact.h("input",{type:"checkbox",name:"da
 
 PS.roomTypes['options']={
 Component:OptionsPanel};
+//# sourceMappingURL=panel-topbar.js.map

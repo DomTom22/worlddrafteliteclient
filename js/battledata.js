@@ -1,4 +1,4 @@
-var _temp;function _readOnlyError(name){throw new TypeError("\""+name+"\" is read-only");}/**
+var _temp;/**
  * Pokemon Showdown Dex
  *
  * Roughly equivalent to sim/dex.js in a Pokemon Showdown server, but
@@ -465,14 +465,14 @@ return false;
 };_proto2.
 
 getSpriteMod=function getSpriteMod(mod,id,folder){var overrideStandard=arguments.length>3&&arguments[3]!==undefined?arguments[3]:false;
-if(!ModSprites[id])return null;
-if((!mod||!ModSprites[id][mod])&&!overrideStandard){
-for(var modName in ModSprites[id]){
-if(ModSprites[id][modName].includes(folder))return modName;
+if(!window.ModSprites[id])return'';
+if((!mod||!window.ModSprites[id][mod])&&!overrideStandard){
+for(var modName in window.ModSprites[id]){
+if(window.ModSprites[id][modName].includes(folder))return modName;
 }
 }
-if(mod&&ModSprites[id][mod]&&ModSprites[id][mod].includes(folder))return mod;
-return null;
+if(mod&&window.ModSprites[id][mod]&&window.ModSprites[id][mod].includes(folder))return mod;
+return'';
 };_proto2.
 
 loadSpriteData=function loadSpriteData(gen){
@@ -496,9 +496,9 @@ getSpriteData=function getSpriteData(pokemon,isFront)
 
 
 
-{var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{gen:6};
+{var options=arguments.length>2&&arguments[2]!==undefined?arguments[2]:{gen:6,mod:''};
 var mechanicsGen=options.gen||6;
-if(options.mod&&ModConfig[options.mod].spriteGen)mechanicsGen=(_readOnlyError("mechanicsGen"),modConfig[options.mod].spriteGen);
+if(options.mod&&window.ModConfig[options.mod].spriteGen)mechanicsGen=window.ModConfig[options.mod].spriteGen;
 var isDynamax=!!options.dynamax;
 if(pokemon instanceof Pokemon){
 if(pokemon.volatiles.transform){
@@ -517,13 +517,12 @@ var spriteDir='sprites/';
 var fakeSprite=false;
 var name=species.spriteid;
 var id=toID(name);
-
 options.mod=this.getSpriteMod(options.mod,id,isFront?'front':'back',species.exists!==false);
 if(options.mod){
 resourcePrefix=Dex.modResourcePrefix;
 spriteDir=options.mod+"/sprites/";
 fakeSprite=true;
-if(!this.getSpriteMod(options.mod,id,(isFront?'front':'back')+'-shiny',species.exists!==false))options.shiny='';
+if(this.getSpriteMod(options.mod,id,(isFront?'front':'back')+'-shiny',species.exists!==false)==='')options.shiny=false;
 }
 
 
@@ -750,15 +749,17 @@ var species=Dex.getSpecies(pokemon.species);
 if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
-if(mod&&ModConfig[mod].spriteGen)gen=ModConfig[mod].spriteGen;
+if(mod&&window.ModConfig[mod].spriteGen)gen=window.ModConfig[mod].spriteGen;
 mod=this.getSpriteMod(mod,id,'front',species.exists!==false);
-if(mod)return{
+if(mod){
+return{
 spriteDir:mod+"/sprites/front",
 spriteid:spriteid,
 shiny:this.getSpriteMod(mod,id,'front-shiny',species.exists!==false)!==null&&pokemon.shiny,
 x:10,
 y:5};
 
+}
 if(species.exists===false)return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5};
 var spriteData={
 spriteid:spriteid,
@@ -825,10 +826,11 @@ if(!type)type='???';
 var sanitizedType=type.replace(/\?/g,'%3f');
 
 mod=this.getSpriteMod(mod,toID(type),'types');
-if(mod)
-return"<img src=\""+this.modResourcePrefix+mod+"/sprites/types/"+toID(type)+".png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";else
-
+if(mod){
+return"<img src=\""+this.modResourcePrefix+mod+"/sprites/types/"+toID(type)+".png\" alt=\""+type+"\" class=\"pixelated"+(b?' b':'')+"\" />";
+}else{
 return"<img src=\""+Dex.resourcePrefix+"sprites/types/"+sanitizedType+".png\" alt=\""+type+"\" height=\"14\" width=\"32\" class=\"pixelated"+(b?' b':'')+"\" />";
+}
 };_proto2.
 
 getCategoryIcon=function getCategoryIcon(category){
@@ -878,9 +880,6 @@ this.gen=8;
 this.gen=parseInt(modid.slice(3),10);
 }
 }var _proto3=ModdedDex.prototype;_proto3.
-setGen=function setGen(gen){
-this.gen=gen;
-};_proto3.
 getMove=function getMove(name){
 var id=toID(name);
 if(window.BattleAliases&&id in BattleAliases){
@@ -892,24 +891,9 @@ if(this.cache.Moves.hasOwnProperty(id))return this.cache.Moves[id];
 var data=Object.assign({},Dex.getMove(name));
 
 var table=window.BattleTeambuilderTable[this.modid];
-if(table.fullMoveName&&id in table.fullMoveName){
-data.name=table.fullMoveName[id];
-data.exists=true;
-name=table.fullMoveName[id];
-}
-if(id in table.overrideAcc)data.accuracy=table.overrideAcc[id];
-if(id in table.overrideBP)data.basePower=table.overrideBP[id];
-if(id in table.overridePP)data.pp=table.overridePP[id];
-if(id in table.overrideMoveType)data.type=table.overrideMoveType[id];
-if(table.overrideMoveCategory&&id in table.overrideMoveCategory)data.category=table.overrideMoveCategory[id];
-if(id in table.overrideMoveDesc){
-data.shortDesc=table.overrideMoveDesc[id];
-}else{
-for(var i=this.gen;i<8;i++){
-if(id in window.BattleTeambuilderTable['gen'+i].overrideMoveDesc){
-data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideMoveDesc[id];
-break;
-}
+if(table.overrideMoveInfo[id]){
+for(var key in table.overrideMoveInfo[id]){
+data=Object.assign({},Dex.getMove(name),table.overrideMoveInfo[id]);
 }
 }
 if(this.gen<=3&&data.category!=='Status'){
@@ -980,28 +964,8 @@ id=toID(name);
 if(this.cache.Species.hasOwnProperty(id))return this.cache.Species[id];
 var table=window.BattleTeambuilderTable[this.modid];
 var data=Object.assign({},Dex.getSpecies(name));
-if(table.overrideDexInfo){
 for(var key in table.overrideDexInfo[id]){
-data[key]=table.overrideDexInfo[id][key];
-}
-}else{
-var abilities=Object.assign({},data.abilities);
-if(id in table.overrideAbility){
-abilities['0']=table.overrideAbility[id];
-}
-if(id in table.removeSecondAbility){
-delete abilities['1'];
-}
-if(id in table.overrideHiddenAbility){
-abilities['H']=table.overrideHiddenAbility[id];
-}
-if(this.gen<5)delete abilities['H'];
-if(this.gen<7)delete abilities['S'];
-if(id in table.overrideStats){
-data.baseStats=Object.assign({},data.baseStats,table.overrideStats[id]);
-}
-if(id in table.overrideType)data.types=table.overrideType[id].split('/');
-data.abilities=abilities;
+data=Object.assign({},Dex.getSpecies(name),table.overrideDexInfo[id]);
 }
 if(this.gen<3){
 data.abilities={0:"None"};
@@ -1059,6 +1023,7 @@ if(typeof require==='function'){
 global.Dex=Dex;
 global.toID=toID;
 }
+//# sourceMappingURL=battle-dex.js.map
 
 /**
  * Pokemon Showdown Dex Data
@@ -1573,7 +1538,8 @@ smoguana:1344+27,
 swirlpool:1344+28,
 coribalis:1344+29,
 justyke:1344+30,
-solotl:1344+31};
+solotl:1344+31,
+miasmite:1344+32};
 
 
 var BattlePokemonIconIndexesLeft={
@@ -2501,6 +2467,7 @@ global.Ability=Ability;
 global.Item=Item;
 global.Move=Move;
 }
+//# sourceMappingURL=battle-dex-data.js.map
 
 /**
  * Battle log
@@ -3487,7 +3454,7 @@ replayid=Config.server.id+'-'+replayid;
 
 replayid=room.fragment;
 }
-battle.fastForwardTo(-1);
+battle.seekTurn(Infinity);
 var buf='<!DOCTYPE html>\n';
 buf+='<meta charset="utf-8" />\n';
 buf+='<!-- version 1 -->\n';
@@ -3499,7 +3466,7 @@ buf+='<div class="wrapper replay-wrapper" style="max-width:1180px;margin:0 auto"
 buf+='<input type="hidden" name="replayid" value="'+replayid+'" />\n';
 buf+='<div class="battle"></div><div class="battle-log"></div><div class="replay-controls"></div><div class="replay-controls-2"></div>\n';
 buf+="<h1 style=\"font-weight:normal;text-align:center\"><strong>"+BattleLog.escapeHTML(battle.tier)+"</strong><br /><a href=\"http://"+Config.routes.users+"/"+toID(battle.p1.name)+"\" class=\"subtle\" target=\"_blank\">"+BattleLog.escapeHTML(battle.p1.name)+"</a> vs. <a href=\"http://"+Config.routes.users+"/"+toID(battle.p2.name)+"\" class=\"subtle\" target=\"_blank\">"+BattleLog.escapeHTML(battle.p2.name)+"</a></h1>\n";
-buf+='<script type="text/plain" class="battle-log-data">'+battle.activityQueue.join('\n').replace(/\//g,'\\/')+'</script>\n';
+buf+='<script type="text/plain" class="battle-log-data">'+battle.stepQueue.join('\n').replace(/\//g,'\\/')+'</script>\n';
 buf+='</div>\n';
 buf+='<div class="battle-log battle-log-inline"><div class="inner">'+battle.scene.log.elem.innerHTML+'</div></div>\n';
 buf+='</div>\n';
@@ -3514,6 +3481,7 @@ createReplayFileHref=function createReplayFileHref(room){
 
 return'data:text/plain;base64,'+encodeURIComponent(btoa(unescape(encodeURIComponent(BattleLog.createReplayFile(room)))));
 };return BattleLog;}();BattleLog.colorCache={};BattleLog.interstice=function(){var whitelist=Config.whitelist;var patterns=whitelist.map(function(entry){return new RegExp("^(https?:)?//([A-Za-z0-9-]*\\.)?"+entry.replace(/\./g,'\\.')+"(/.*)?",'i');});return{isWhitelisted:function(uri){if(uri[0]==='/'&&uri[1]!=='/'){return true;}for(var _i11=0;_i11<patterns.length;_i11++){var pattern=patterns[_i11];if(pattern.test(uri))return true;}return false;},getURI:function(uri){return"http://"+Config.routes.psmain+"/interstice?uri="+encodeURIComponent(uri);}};}();BattleLog.tagPolicy=null;
+//# sourceMappingURL=battle-log.js.map
 
 /**
  * Pokemon Showdown Log Misc
@@ -4664,3 +4632,4 @@ if(typeof require==='function'){
 
 global.BattleTextParser=BattleTextParser;
 }
+//# sourceMappingURL=battle-text-parser.js.map

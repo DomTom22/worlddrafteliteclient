@@ -265,3 +265,4 @@ PS.roomTypes['teambuilder']={
 Model:TeambuilderRoom,
 Component:TeambuilderPanel,
 title:"Teambuilder"};
+//# sourceMappingURL=panel-teambuilder.js.map

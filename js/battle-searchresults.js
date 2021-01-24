@@ -282,7 +282,6 @@ var search=this.props.search;
 
 var tierTable={
 uber:"Uber",
-lcuber:"LC Uber",
 caplc:"CAP LC",
 capnfe:"CAP NFE"};
 
@@ -371,3 +370,4 @@ _this2.renderRow(result));}));
 
 
 };return PSSearchResults;}(preact.Component);
+//# sourceMappingURL=battle-searchresults.js.map

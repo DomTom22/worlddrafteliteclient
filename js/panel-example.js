@@ -43,3 +43,4 @@ preact.h("div",{"class":"mainmessage"},preact.h("p",null,"Loading...")));
 
 PS.roomTypes['exampleview']={
 Component:ExampleViewPanel};
+//# sourceMappingURL=panel-example.js.map

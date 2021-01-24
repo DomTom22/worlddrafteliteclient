@@ -430,3 +430,4 @@ document.head.appendChild(buttonStyleElem);
 buttonStyleElem.textContent=cssBuf;
 }
 });
+//# sourceMappingURL=client-core.js.map

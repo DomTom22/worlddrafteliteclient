@@ -832,3 +832,4 @@ Component:TeamDropdownPanel};
 
 PS.roomTypes['formatdropdown']={
 Component:FormatDropdownPanel};
+//# sourceMappingURL=panel-teamdropdown.js.map

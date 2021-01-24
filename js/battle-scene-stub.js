@@ -76,3 +76,4 @@ if(typeof require==='function'){
 
 global.BattleSceneStub=BattleSceneStub;
 }
+//# sourceMappingURL=battle-scene-stub.js.map

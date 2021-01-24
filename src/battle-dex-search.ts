@@ -42,7 +42,7 @@ class DexSearch {
 
 	results: SearchRow[] | null = null;
 	exactMatch = false;
-	
+
 	static typeTable = {
 		pokemon: 1,
 		type: 2,
@@ -302,6 +302,7 @@ class DexSearch {
 		let instafilter: [SearchType, ID, number] | null = null;
 		let instafilterSort = [0, 1, 2, 5, 4, 3, 6, 7, 8];
 		let illegal = this.typedSearch?.illegalReasons;
+
 		// We aren't actually looping through the entirety of the searchIndex
 		for (i = 0; i < BattleSearchIndex.length; i++) {
 			if (!passType) {
@@ -396,7 +397,7 @@ class DexSearch {
 				topbufIndex = 2;
 			}
 
-			// Determine if the element comes from the current mod
+			// determine if the element comes from the current mod
 			const table = BattleTeambuilderTable[window.room.curTeam.mod];
 			if (
 				typeIndex === 1 && (!BattlePokedex[id] || BattlePokedex[id].exists === false) &&
@@ -408,14 +409,14 @@ class DexSearch {
 			) continue;
 			else if (
 				typeIndex === 4 && (!BattleMovedex[id] || BattleMovedex[id].exists === false) &&
-				(!table || !table.overrideMoveDesc || id in table.overrideMoveDesc === false)
-			) continue;	
+				(!table || !table.overrideMoveInfo || id in table.overrideMoveInfo === false)
+			) continue;
 			else if (
 				typeIndex === 6 && (!BattleAbilities[id] || BattleAbilities[id].exists === false) &&
 				(!table || !table.overrideAbilityDesc || id in table.overrideAbilityDesc === false)
 			) continue;
 			else if (
-				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in BattleTypeChart === false &&
+				typeIndex === 2 && id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in window.BattleTypeChart === false &&
 				(!table || id.replace(id.charAt(0), id.charAt(0).toUpperCase()) in table.overrideTypeChart === false)
 			) continue;
 
@@ -473,16 +474,22 @@ class DexSearch {
 		// Change object to look in if using a mod
 		let pokedex = BattlePokedex;
 		let moveDex = BattleMovedex;
-		if (window.room.curTeam.mod){
+		if (window.room.curTeam.mod) {
 			pokedex = {};
 			moveDex = {};
 			const table = BattleTeambuilderTable[window.room.curTeam.mod];
-			for(const id in table.overrideDexInfo) {
-				pokedex[id] = { types: table.overrideDexInfo[id].types, abilities: table.overrideDexInfo[id].abilities};
+			for (const id in table.overrideDexInfo) {
+				pokedex[id] = {
+					types: table.overrideDexInfo[id].types,
+					abilities: table.overrideDexInfo[id].abilities,
+				};
 			}
-			for(const id in {...table.fullMoveName, ...table.overrideMoveType, ...table.overrideMoveCategory}) moveDex[id] = {};
-			for(const id in table.overrideMoveType) moveDex[id].type = table.overrideMoveType[id];
-			for(const id in table.overrideMoveCategory) moveDex[id].category = table.overrideMoveCategory[id];
+			for (const id in table.overrideMoveInfo) {
+				moveDex[id] = {
+					type: table.overrideMoveInfo.type,
+					category: table.overrideMoveInfo.category,
+				};
+			}
 			pokedex = {...pokedex, ...BattlePokedex};
 			moveDex = {...moveDex, ...BattleMovedex};
 		}
@@ -609,7 +616,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		this.baseIllegalResults = null;
 		this.modFormat = format;
 		let gen = 8;
-		const ClientMods = ModConfig;
+		const ClientMods = window.ModConfig;
 		if (format.slice(0, 3) === 'gen') {
 			gen = (Number(format.charAt(3)) || 6);
 			let mod = '';
@@ -619,7 +626,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 				for (const formatid in ClientMods[modid].formats) {
 					if (formatid === format) {
 						mod = modid;
-						const formatTable = ClientMods[modid].formats[formatid]
+						const formatTable = ClientMods[modid].formats[formatid];
 						if (mod && formatTable.teambuilderFormat) overrideFormat = toID(formatTable.teambuilderFormat);
 						if (mod && formatTable.formatType) modFormatType = toID(formatTable.formatType);
 						break;
@@ -628,14 +635,14 @@ abstract class BattleTypedSearch<T extends SearchType> {
 			}
 			if (mod) {
 				this.dex = Dex.mod(mod as ID);
-				this.dex.setGen(gen);
+				this.dex.gen = gen;
 				this.mod = mod;
 			} else {
 				this.dex = Dex.forGen(gen);
 			}
-			if (overrideFormat) format = overrideFormat;
+			if (overrideFormat) format = overrideFormat as ID;
 			else format = (format.slice(4) || 'customgame') as ID;
-			if (modFormatType) this.formatType = modFormatType;
+			if (modFormatType) this.formatType = modFormatType as 'doubles' | 'letsgo' | 'metronome' | 'natdex' | 'nfe' | 'dlc1' | 'dlc1doubles' | null;
 		} else if (!format) {
 			this.dex = Dex;
 		}
@@ -797,7 +804,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		let learnsetid = this.firstLearnsetid(speciesid);
 		while (learnsetid) {
 			let learnset = BattleTeambuilderTable.learnsets[learnsetid];
-			if (this.mod){
+			if (this.mod) {
 				const overrideLearnsets = BattleTeambuilderTable[this.mod].overrideLearnsets;
 				if (overrideLearnsets[learnsetid] && overrideLearnsets[learnsetid][moveid]) learnset = overrideLearnsets[learnsetid];
 			}
@@ -812,7 +819,7 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		if (this.formatType === 'metronome' || this.formatType === 'natdex') {
 			return pokemon.num >= 0 ? String(pokemon.num) : pokemon.tier;
 		}
-		const modFormatTable = this.mod ? ModConfig[this.mod].formats[this.modFormat] : {};
+		const modFormatTable = this.mod ? window.ModConfig[this.mod].formats[this.modFormat] : {};
 		let table = window.BattleTeambuilderTable;
 		if (this.mod) table = modFormatTable.gameType !== 'doubles' ? BattleTeambuilderTable[this.mod] : BattleTeambuilderTable[this.mod].doubles;
 		const tableKey = this.formatType === 'doubles' ? `gen${this.dex.gen}doubles` :
@@ -898,7 +905,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		const requirePentagon = format === 'battlespotsingles' || format === 'battledoubles' || format.startsWith('vgc');
 		let isDoublesOrBS = this.formatType === 'doubles';
 		const dex = this.dex;
-		const modFormatTable = this.mod ? ModConfig[this.mod].formats[this.modFormat] : {};
+		const modFormatTable = this.mod ? window.ModConfig[this.mod].formats[this.modFormat] : {};
 		let table = BattleTeambuilderTable;
 		if (this.mod) {
 			table = modFormatTable.gameType !== 'doubles' ? BattleTeambuilderTable[this.mod] : BattleTeambuilderTable[this.mod].doubles;
@@ -955,12 +962,11 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		else if (format === 'nu') tierSet = tierSet.slice(slices.NU || slices.UU);
 		else if (format === 'pu') tierSet = tierSet.slice(slices.PU || slices.NU);
 		else if (format === 'zu') tierSet = tierSet.slice(slices.ZU || slices.PU || slices.NU);
-		else if (format === 'lc' || format === 'lcuu') tierSet = tierSet.slice(slices.LC);
+		else if (format === 'lc' || format === 'lcuu' || format.startsWith('lc') || (format !== 'caplc' && format.endsWith('lc'))) tierSet = tierSet.slice(slices.LC);
 		else if (format === 'cap') tierSet = tierSet.slice(0, slices.Uber).concat(tierSet.slice(slices.OU));
 		else if (format === 'caplc') tierSet = tierSet.slice(slices['CAP LC'], slices.Uber).concat(tierSet.slice(slices.LC));
-		else if (format.startsWith('lc') || format.endsWith('lc')) tierSet = tierSet.slice(slices["LC Uber"]);
-		else if (format === 'anythinggoes' || format.endsWith('ag')) tierSet = tierSet.slice(dex.gen === 8 ? slices.Uber : slices.AG || slices.Uber);
-		else if (format === 'balancedhackmons' || format.endsWith('bh')) tierSet = tierSet.slice(dex.gen === 8 ? slices.Uber : slices.AG || slices.Uber);
+		else if (format === 'anythinggoes' || format.endsWith('ag')) tierSet = tierSet.slice(slices.AG);
+		else if (format === 'balancedhackmons' || format.endsWith('bh')) tierSet = tierSet.slice(slices.AG);
 		else if (format === 'doublesubers') tierSet = tierSet.slice(slices.DUber);
 		else if (format === 'doublesou' && dex.gen > 4) tierSet = tierSet.slice(slices.DOU);
 		else if (format === 'doublesuu') tierSet = tierSet.slice(slices.DUU);
@@ -970,7 +976,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		else if (!isDoublesOrBS) {
 			tierSet = [
 				...tierSet.slice(slices.OU, slices.UU),
-				...(dex.gen === 8 ? [] : tierSet.slice(slices.AG, slices.Uber)),
+				...tierSet.slice(slices.AG, slices.Uber),
 				...tierSet.slice(slices.Uber, slices.OU),
 				...tierSet.slice(slices.UU),
 			];
@@ -983,8 +989,8 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		}
 
 		if (format === 'zu' && dex.gen >= 7) {
-			tierSet = tierSet.filter(function (r) {
-				if (r[1] in table.zuBans) return false;
+			tierSet = tierSet.filter(([type, id]) => {
+				if (id in table.zuBans) return false;
 				return true;
 			});
 		}
@@ -996,6 +1002,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 				return !(banned.includes(id) || id.startsWith('arceus'));
 			});
 		}
+
 		if (this.mod && !table.customTierSet) {
 			table.customTierSet = table.customTiers.map((r: any) => {
 				if (typeof r === 'string') return ['pokemon', r];
@@ -1006,7 +1013,6 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		let customTierSet: SearchRow[] = table.customTierSet;
 		if (customTierSet) {
 			tierSet = customTierSet.concat(tierSet);
-			const modFormatTable = ModConfig[this.mod].formats[this.modFormat];
 			if (modFormatTable.bans.length > 0 && !modFormatTable.bans.includes("All Pokemon")) {
 				tierSet = tierSet.filter(([type, id]) => {
 					let banned = modFormatTable.bans;
@@ -1020,7 +1026,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 			}
 			let headerCount = 0;
 			let lastHeader = '';
-			const emptyHeaders = [];
+			const emptyHeaders: string[] = [];
 			for (const i in tierSet) {
 				headerCount = tierSet[i][0] === 'header' ? headerCount + 1 : 0;
 				if (headerCount > 1) emptyHeaders.push(lastHeader);
@@ -1030,6 +1036,15 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 				return (type !== 'header' || !emptyHeaders.includes(id));
 			});
 		}
+
+		// Filter out Gmax Pokemon from standard tier selection
+		if (!/^(battlestadium|vgc|doublesubers)/g.test(format)) {
+			tierSet = tierSet.filter(([type, id]) => {
+				if (type === 'pokemon') return !id.endsWith('gmax');
+				return true;
+			});
+		}
+
 		return tierSet;
 	}
 	filter(row: SearchRow, filters: string[][]) {
@@ -1252,7 +1267,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 	sortRow: SearchRow = ['sortmove', ''];
 	getTable() {
 		if (!this.mod) return BattleMovedex;
-		else return {...BattleTeambuilderTable[this.mod].fullMoveName, ...BattleMovedex};
+		else return {...BattleTeambuilderTable[this.mod].overrideMoveInfo, ...BattleMovedex};
 	}
 	getDefaultResults(): SearchRow[] {
 		let results: SearchRow[] = [];
@@ -1428,7 +1443,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			return true;
 		}
 		// Custom move added by a mod
-		if (this.mod && id in BattleTeambuilderTable[this.mod].fullMoveName) return true;
+		if (this.mod && id in BattleTeambuilderTable[this.mod].overrideMoveInfo) return true;
 		const moveData = BattleMovedex[id];
 		if (!moveData) return true;
 		if (moveData.category === 'Status') {

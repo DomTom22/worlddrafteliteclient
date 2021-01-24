@@ -475,3 +475,4 @@ rooms,
 PS.popups.map(function(roomid){return _this5.renderPopup(PS.rooms[roomid]);}));
 
 };return PSMain;}(preact.Component);
+//# sourceMappingURL=panels.js.map

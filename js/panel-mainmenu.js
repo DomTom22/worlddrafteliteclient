@@ -30,8 +30,8 @@ case'challstr':{var
 challstr=args[1];
 PSLoginServer.query({
 act:'upkeep',
-challstr:challstr},
-function(res){
+challstr:challstr}).
+then(function(res){
 if(!res)return;
 if(!res.loggedin)return;
 _this2.send("/trn "+res.username+",0,"+res.assertion);
@@ -476,3 +476,4 @@ Component:NewsPanel};
 PS.roomTypes['mainmenu']={
 Model:MainMenuRoom,
 Component:MainMenuPanel};
+//# sourceMappingURL=panel-mainmenu.js.map

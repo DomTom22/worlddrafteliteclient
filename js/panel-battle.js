@@ -123,7 +123,7 @@ if(isNaN(turnNum)){
 this.receiveLine(["error","/ffto - Invalid turn number: "+target]);
 return true;
 }
-this.battle.fastForwardTo(turnNum);
+this.battle.seekTurn(turnNum);
 this.update(null);
 return true;
 }case'switchsides':{
@@ -257,18 +257,20 @@ _this5.props.room.update(null);
 };return _this5;}var _proto5=BattlePanel.prototype;_proto5.focus=function focus(){this.base.querySelector('textarea').focus();};_proto5.
 componentDidMount=function componentDidMount(){var _this6=this;
 var $elem=$(this.base);
-var battle=new Battle($elem.find('.battle'),$elem.find('.battle-log'));
+var battle=new Battle({
+$frame:$elem.find('.battle'),
+$logFrame:$elem.find('.battle-log')});
+
 this.props.room.battle=battle;
-battle.endCallback=function(){return _this6.forceUpdate();};
-battle.play();
 battle.scene.tooltips.listen($elem.find('.battle-controls'));
 _PSRoomPanel2.prototype.componentDidMount.call(this);
+battle.subscribe(function(){return _this6.forceUpdate();});
 };_proto5.
 receiveLine=function receiveLine(args){
 var room=this.props.room;
 switch(args[0]){
 case'initdone':
-room.battle.fastForwardTo(-1);
+room.battle.seekTurn(Infinity);
 return;
 case'request':
 this.receiveRequest(args[1]?JSON.parse(args[1]):null);
@@ -316,7 +318,7 @@ if(!room.battle)return null;
 if(room.side){
 return this.renderPlayerControls();
 }
-var atEnd=room.battle.playbackState===Playback.Finished;
+var atEnd=room.battle.atQueueEnd;
 return preact.h("div",{"class":"controls"},
 preact.h("p",null,
 atEnd?
@@ -675,3 +677,4 @@ Model:BattlesRoom,
 Component:BattlesPanel};
 
 PS.updateRoomTypes();
+//# sourceMappingURL=panel-battle.js.map

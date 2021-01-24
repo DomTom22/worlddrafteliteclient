@@ -1102,3 +1102,4 @@ if(typeof require==='function'){
 
 global.BattleTextParser=BattleTextParser;
 }
+//# sourceMappingURL=battle-text-parser.js.map

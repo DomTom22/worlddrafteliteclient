@@ -1123,3 +1123,4 @@ leave=function leave(roomid){
 var room=PS.rooms[roomid];
 if(room)this.removeRoom(room);
 };return _temp;}(PSModel),_temp)();
+//# sourceMappingURL=client-main.js.map

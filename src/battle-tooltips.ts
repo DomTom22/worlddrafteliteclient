@@ -256,7 +256,6 @@ class BattleTooltips {
 	}
 
 	showTooltip(elem: HTMLElement) {
-		console.log('showTooltip');
 		const args = (elem.dataset.tooltip || '').split('|');
 		const [type] = args;
 		/**
@@ -727,7 +726,6 @@ class BattleTooltips {
 	showPokemonTooltip(
 		clientPokemon: Pokemon | null, serverPokemon?: ServerPokemon | null, isActive?: boolean, illusionIndex?: number
 	) {
-		console.log('showPokemonTooltip');
 		const pokemon = clientPokemon || serverPokemon!;
 		let text = '';
 		let genderBuf = '';

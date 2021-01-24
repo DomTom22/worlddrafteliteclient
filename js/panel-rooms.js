@@ -191,3 +191,4 @@ Model:RoomsRoom,
 Component:RoomsPanel};
 
 PS.updateRoomTypes();
+//# sourceMappingURL=panel-rooms.js.map

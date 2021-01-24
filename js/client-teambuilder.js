@@ -130,7 +130,7 @@
 			teams = Storage.teams;
 			if (this.curTeam) {
 				this.ignoreEVLimits = (
-					this.curTeam.gen < 3 || this.curTeam.format.includes('hackmons') || this.curTeam.format === 'gen8metronomebattle' || 
+					this.curTeam.gen < 3 || this.curTeam.format.includes('hackmons') || this.curTeam.format === 'gen8metronomebattle' ||
 					(this.curTeam.mod && ModConfig[this.curTeam.mod].ignoreEVLimits)
 				);
 				if (this.curSet) {
@@ -3197,7 +3197,7 @@
 			if (this.curTeam.gen <= 2) iv &= 30;
 			var ev = set.evs[stat];
 			if (evOverride !== undefined) ev = evOverride;
-			if (ev === undefined) ev = ((this.curTeam.gen > 2) ? 0 : 252);
+			if (ev === undefined) ev = (this.curTeam.gen > 2 ? 0 : 252);
 
 			if (stat === 'hp') {
 				if (baseStat === 1) return 1;

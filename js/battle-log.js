@@ -983,7 +983,7 @@ replayid=Config.server.id+'-'+replayid;
 
 replayid=room.fragment;
 }
-battle.fastForwardTo(-1);
+battle.seekTurn(Infinity);
 var buf='<!DOCTYPE html>\n';
 buf+='<meta charset="utf-8" />\n';
 buf+='<!-- version 1 -->\n';
@@ -995,7 +995,7 @@ buf+='<div class="wrapper replay-wrapper" style="max-width:1180px;margin:0 auto"
 buf+='<input type="hidden" name="replayid" value="'+replayid+'" />\n';
 buf+='<div class="battle"></div><div class="battle-log"></div><div class="replay-controls"></div><div class="replay-controls-2"></div>\n';
 buf+="<h1 style=\"font-weight:normal;text-align:center\"><strong>"+BattleLog.escapeHTML(battle.tier)+"</strong><br /><a href=\"http://"+Config.routes.users+"/"+toID(battle.p1.name)+"\" class=\"subtle\" target=\"_blank\">"+BattleLog.escapeHTML(battle.p1.name)+"</a> vs. <a href=\"http://"+Config.routes.users+"/"+toID(battle.p2.name)+"\" class=\"subtle\" target=\"_blank\">"+BattleLog.escapeHTML(battle.p2.name)+"</a></h1>\n";
-buf+='<script type="text/plain" class="battle-log-data">'+battle.activityQueue.join('\n').replace(/\//g,'\\/')+'</script>\n';
+buf+='<script type="text/plain" class="battle-log-data">'+battle.stepQueue.join('\n').replace(/\//g,'\\/')+'</script>\n';
 buf+='</div>\n';
 buf+='<div class="battle-log battle-log-inline"><div class="inner">'+battle.scene.log.elem.innerHTML+'</div></div>\n';
 buf+='</div>\n';
@@ -1010,3 +1010,4 @@ createReplayFileHref=function createReplayFileHref(room){
 
 return'data:text/plain;base64,'+encodeURIComponent(btoa(unescape(encodeURIComponent(BattleLog.createReplayFile(room)))));
 };return BattleLog;}();BattleLog.colorCache={};BattleLog.interstice=function(){var whitelist=Config.whitelist;var patterns=whitelist.map(function(entry){return new RegExp("^(https?:)?//([A-Za-z0-9-]*\\.)?"+entry.replace(/\./g,'\\.')+"(/.*)?",'i');});return{isWhitelisted:function(uri){if(uri[0]==='/'&&uri[1]!=='/'){return true;}for(var _i11=0;_i11<patterns.length;_i11++){var pattern=patterns[_i11];if(pattern.test(uri))return true;}return false;},getURI:function(uri){return"http://"+Config.routes.psmain+"/interstice?uri="+encodeURIComponent(uri);}};}();BattleLog.tagPolicy=null;
+//# sourceMappingURL=battle-log.js.map
