@@ -915,8 +915,8 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		for (const id in genData.Pokedex) {
 			const modEntry = genData.Pokedex[id];
 			const baseEntry = Dex.data.Pokedex[id];
-			overrideDexInfo[id] = {};
 			if (typeof baseEntry === 'undefined') {
+				overrideDexInfo[id] = {};
 				overrideDexInfo[id] = modEntry;
 				overrideDexInfo[id].exists = true;
 				continue;
@@ -925,6 +925,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				const modString = JSON.stringify(modEntry[key]);
 				const baseString = JSON.stringify(baseEntry[key]);
 				if (modString !== baseString) {
+					if (!overrideDexInfo[id]) overrideDexInfo[id] = {};
 					overrideDexInfo[id][key] = JSON.parse(modString);
 				}
 			}
@@ -1138,8 +1139,8 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			for (const id in modData.Pokedex) {
 				const modEntry = modData.Pokedex[id];
 				const baseEntry = Dex.data.Pokedex[id];
-				overrideDexInfo[id] = {};
 				if (typeof baseEntry === 'undefined') {
+					overrideDexInfo[id] = {};
 					overrideDexInfo[id] = modEntry;
 					overrideDexInfo[id].exists = true;
 					continue;
@@ -1148,6 +1149,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 					const modString = JSON.stringify(modEntry[key]);
 					const baseString = JSON.stringify(baseEntry[key]);
 					if (modString !== baseString) {
+						if (!overrideDexInfo[id]) overrideDexInfo[id] = {};
 						overrideDexInfo[id][key] = JSON.parse(modString);
 					}
 				}
