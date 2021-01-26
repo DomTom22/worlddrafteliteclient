@@ -1032,6 +1032,7 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 				if (headerCount > 1) emptyHeaders.push(lastHeader);
 				if (headerCount > 0) lastHeader = tierSet[i][1];
 			}
+			if (headerCount === 1) emptyHeaders.push(lastHeader);
 			tierSet = tierSet.filter(([type, id]) => {
 				return (type !== 'header' || !emptyHeaders.includes(id));
 			});
@@ -1040,7 +1041,9 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 		// Filter out Gmax Pokemon from standard tier selection
 		if (!/^(battlestadium|vgc|doublesubers)/g.test(format)) {
 			tierSet = tierSet.filter(([type, id]) => {
-				if (type === 'pokemon') return !id.endsWith('gmax');
+				if (type === 'pokemon' && !this.mod) {
+					return !id.endsWith('gmax');
+				}
 				return true;
 			});
 		}

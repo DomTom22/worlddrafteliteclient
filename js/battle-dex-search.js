@@ -899,7 +899,7 @@ results.push(['pokemon',_id9]);
 }
 return results;
 };_proto3.
-getBaseResults=function getBaseResults(){var _this$formatType;
+getBaseResults=function getBaseResults(){var _this$formatType,_this3=this;
 var format=this.format;
 if(!format)return this.getDefaultResults();
 var requirePentagon=format==='battlespotsingles'||format==='battledoubles'||format.startsWith('vgc');
@@ -1032,6 +1032,7 @@ headerCount=tierSet[i][0]==='header'?headerCount+1:0;
 if(headerCount>1)emptyHeaders.push(lastHeader);
 if(headerCount>0)lastHeader=tierSet[i][1];
 }
+if(headerCount===1)emptyHeaders.push(lastHeader);
 tierSet=tierSet.filter(function(_ref8){var type=_ref8[0],id=_ref8[1];
 return type!=='header'||!emptyHeaders.includes(id);
 });
@@ -1040,7 +1041,9 @@ return type!=='header'||!emptyHeaders.includes(id);
 
 if(!/^(battlestadium|vgc|doublesubers)/g.test(format)){
 tierSet=tierSet.filter(function(_ref9){var type=_ref9[0],id=_ref9[1];
-if(type==='pokemon')return!id.endsWith('gmax');
+if(type==='pokemon'&&!_this3.mod){
+return!id.endsWith('gmax');
+}
 return true;
 });
 }
@@ -1071,13 +1074,13 @@ if(!this.canLearn(species.id,value))return false;}
 }
 return true;
 };_proto3.
-sort=function sort(results,sortCol){var _this3=this;
+sort=function sort(results,sortCol){var _this4=this;
 var table=!this.mod?'':BattleTeambuilderTable[this.mod].overrideDexInfo;
 if(['hp','atk','def','spa','spd','spe'].includes(sortCol)){
 return results.sort(function(_ref11,_ref12){var rowType1=_ref11[0],id1=_ref11[1];var rowType2=_ref12[0],id2=_ref12[1];
 var pokedex1=BattlePokedex;
 var pokedex2=BattlePokedex;
-if(_this3.mod){
+if(_this4.mod){
 if(table[id1]&&table[id1].baseStats)pokedex1=table;
 if(table[id2]&&table[id2].baseStats)pokedex2=table;
 }
@@ -1089,7 +1092,7 @@ return stat2-stat1;
 return results.sort(function(_ref13,_ref14){var rowType1=_ref13[0],id1=_ref13[1];var rowType2=_ref14[0],id2=_ref14[1];
 var pokedex1=BattlePokedex;
 var pokedex2=BattlePokedex;
-if(_this3.mod){
+if(_this4.mod){
 if(table[id1]&&table[id1].baseStats)pokedex1=table;
 if(table[id2]&&table[id2].baseStats)pokedex2=table;
 }
@@ -1263,8 +1266,8 @@ throw new Error("invalid sortcol");
 };return BattleItemSearch;}(BattleTypedSearch);var
 
 
-BattleMoveSearch=function(_BattleTypedSearch4){_inheritsLoose(BattleMoveSearch,_BattleTypedSearch4);function BattleMoveSearch(){var _this4;for(var _len2=arguments.length,args=new Array(_len2),_key2=0;_key2<_len2;_key2++){args[_key2]=arguments[_key2];}_this4=_BattleTypedSearch4.call.apply(_BattleTypedSearch4,[this].concat(args))||this;_this4.
-sortRow=['sortmove',''];return _this4;}var _proto6=BattleMoveSearch.prototype;_proto6.
+BattleMoveSearch=function(_BattleTypedSearch4){_inheritsLoose(BattleMoveSearch,_BattleTypedSearch4);function BattleMoveSearch(){var _this5;for(var _len2=arguments.length,args=new Array(_len2),_key2=0;_key2<_len2;_key2++){args[_key2]=arguments[_key2];}_this5=_BattleTypedSearch4.call.apply(_BattleTypedSearch4,[this].concat(args))||this;_this5.
+sortRow=['sortmove',''];return _this5;}var _proto6=BattleMoveSearch.prototype;_proto6.
 getTable=function getTable(){
 if(!this.mod)return BattleMovedex;else
 return Object.assign({},BattleTeambuilderTable[this.mod].overrideMoveInfo,BattleMovedex);
@@ -1622,7 +1625,7 @@ break;}
 }
 return true;
 };_proto6.
-sort=function sort(results,sortCol){var _this5=this;
+sort=function sort(results,sortCol){var _this6=this;
 switch(sortCol){
 case'power':
 var powerTable={
@@ -1634,8 +1637,8 @@ dragonrage:1140,sonicboom:1120,superfang:1350,endeavor:1399,sheercold:1501,
 fissure:1500,horndrill:1500,guillotine:1500};
 
 return results.sort(function(_ref20,_ref21){var rowType1=_ref20[0],id1=_ref20[1];var rowType2=_ref21[0],id2=_ref21[1];
-var modPow1=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideBP[id1]:null;
-var modPow2=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideBP[id2]:null;
+var modPow1=_this6.mod?BattleTeambuilderTable[_this6.mod].overrideBP[id1]:null;
+var modPow2=_this6.mod?BattleTeambuilderTable[_this6.mod].overrideBP[id2]:null;
 var move1=BattleMovedex[id1];
 var move2=BattleMovedex[id2];
 var pow1=modPow1||move1.basePower||powerTable[id1]||(move1.category==='Status'?-1:1400);
@@ -1644,8 +1647,8 @@ return pow2-pow1;
 });
 case'accuracy':
 return results.sort(function(_ref22,_ref23){var rowType1=_ref22[0],id1=_ref22[1];var rowType2=_ref23[0],id2=_ref23[1];
-var modAcc1=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideAcc[id1]:null;
-var modAcc2=_this5.mod?BattleTeambuilderTable[_this5.mod].overrideAcc[id2]:null;
+var modAcc1=_this6.mod?BattleTeambuilderTable[_this6.mod].overrideAcc[id1]:null;
+var modAcc2=_this6.mod?BattleTeambuilderTable[_this6.mod].overrideAcc[id2]:null;
 var accuracy1=modAcc1||BattleMovedex[id1].accuracy||0;
 var accuracy2=modAcc2||BattleMovedex[id2].accuracy||0;
 if(accuracy1===true)accuracy1=101;
@@ -1654,8 +1657,8 @@ return accuracy2-accuracy1;
 });
 case'pp':
 return results.sort(function(_ref24,_ref25){var rowType1=_ref24[0],id1=_ref24[1];var rowType2=_ref25[0],id2=_ref25[1];
-var modPP1=_this5.mod?BattleTeambuilderTable[_this5.mod].overridePP[id1]:null;
-var modPP2=_this5.mod?BattleTeambuilderTable[_this5.mod].overridePP[id2]:null;
+var modPP1=_this6.mod?BattleTeambuilderTable[_this6.mod].overridePP[id1]:null;
+var modPP2=_this6.mod?BattleTeambuilderTable[_this6.mod].overridePP[id2]:null;
 var pp1=modPP1||BattleMovedex[id1].pp||0;
 var pp2=modPP2||BattleMovedex[id2].pp||0;
 return pp2-pp1;
