@@ -964,8 +964,10 @@ id=toID(name);
 if(this.cache.Species.hasOwnProperty(id))return this.cache.Species[id];
 var table=window.BattleTeambuilderTable[this.modid];
 var data=Object.assign({},Dex.getSpecies(name));
+if(table.overrideDexInfo[id]){
 for(var key in table.overrideDexInfo[id]){
 data=Object.assign({},Dex.getSpecies(name),table.overrideDexInfo[id]);
+}
 }
 if(this.gen<3){
 data.abilities={0:"None"};
