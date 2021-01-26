@@ -1223,7 +1223,7 @@
 			var itemicon = '<span class="itemicon"></span>';
 			if (set.item) {
 				var item = this.dex.getItem(set.item);
-				itemicon = '<span class="itemicon" style="' + this.dex.getItemIcon(item, this.curTeam.mod) + '"></span>';
+				itemicon = '<span class="itemicon" style="' + Dex.getItemIcon(item, this.curTeam.mod) + '"></span>';
 			}
 			buf += itemicon;
 			buf += '</div>';
