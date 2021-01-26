@@ -690,6 +690,7 @@ class BattleScene {
 			if (i % 3 === 2) pokemonhtml += `</div><div class="teamicons">`;
 		}
 		pokemonhtml = '<div class="teamicons">' + pokemonhtml + '</div>';
+		console.log(pokemonhtml);
 		const $sidebar = (side.isFar ? this.$rightbar : this.$leftbar);
 		if (side.name) {
 			const ratinghtml = side.rating ? ` title="Rating: ${BattleLog.escapeHTML(side.rating)}"` : ``;
