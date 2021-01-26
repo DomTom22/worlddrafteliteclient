@@ -1088,6 +1088,7 @@ Storage.getPackedTeam = function (team) {
 };
 
 Storage.importTeam = function (buffer, teams) {
+	console.log('importTeam');
 	var text = buffer.split("\n");
 	var team = teams ? null : [];
 	var curSet = null;

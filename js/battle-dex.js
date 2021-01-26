@@ -957,12 +957,12 @@ return ability;
 };_proto3.
 getSpecies=function getSpecies(name){
 var id=toID(name);
-if(window.BattleAliases&&id in BattleAliases){
-name=BattleAliases[id];
-id=toID(name);
-}
-if(this.cache.Species.hasOwnProperty(id))return this.cache.Species[id];
 var table=window.BattleTeambuilderTable[this.modid];
+
+
+
+
+if(this.cache.Species.hasOwnProperty(id))return this.cache.Species[id];
 var data=Object.assign({},Dex.getSpecies(name));
 if(table.overrideDexInfo[id]){
 for(var key in table.overrideDexInfo[id]){
