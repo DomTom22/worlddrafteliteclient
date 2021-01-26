@@ -690,6 +690,7 @@ pokemonhtml+="<span"+tooltipCode+" style=\""+Dex.getPokemonIcon(poke,!side.isFar
 if(_i5%3===2)pokemonhtml+="</div><div class=\"teamicons\">";
 }
 pokemonhtml='<div class="teamicons">'+pokemonhtml+'</div>';
+console.log(pokemonhtml);
 var $sidebar=side.isFar?this.$rightbar:this.$leftbar;
 if(side.name){
 var ratinghtml=side.rating?" title=\"Rating: "+BattleLog.escapeHTML(side.rating)+"\"":"";
