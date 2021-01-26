@@ -113,7 +113,8 @@
 		curTeamLoc: 0,
 		curSet: null,
 		curSetLoc: 0,
-
+		dex: Dex,
+		
 		// curFolder will have '/' at the end if it's a folder, but
 		// it will be alphanumeric (so guaranteed no '/') if it's a
 		// format
@@ -133,6 +134,7 @@
 					this.curTeam.gen < 3 || this.curTeam.format.includes('hackmons') || this.curTeam.format === 'gen8metronomebattle' ||
 					(this.curTeam.mod && ModConfig[this.curTeam.mod].ignoreEVLimits)
 				);
+				this.dex = this.curTeam.mod ? Dex.mod(this.curTeam.mod) : Dex;
 				if (this.curSet) {
 					return this.updateSetView();
 				}
@@ -1155,9 +1157,7 @@
 			if ($(window).width() < 640) this.show();
 		},
 		renderSet: function (set, i) {
-			var species = 0;
-			if (this.curTeam.mod) species = Dex.mod(this.curTeam.mod).getSpecies(set.species);
-			else species = Dex.getSpecies(set.species);
+			var species = this.dex.getSpecies(set.species);
 			var isLetsGo = this.curTeam.format.includes('letsgo');
 			var isNatDex = this.curTeam.format.includes('nationaldex');
 			var buf = '<li value="' + i + '">';
@@ -1222,15 +1222,18 @@
 			buf += '<div class="setcell">';
 			var itemicon = '<span class="itemicon"></span>';
 			if (set.item) {
-				var item = Dex.getItem(set.item);
-				itemicon = '<span class="itemicon" style="' + Dex.getItemIcon(item, this.curTeam.mod) + '"></span>';
+				var item = this.dex.getItem(set.item);
+				itemicon = '<span class="itemicon" style="' + this.dex.getItemIcon(item, this.curTeam.mod) + '"></span>';
 			}
 			buf += itemicon;
 			buf += '</div>';
 			buf += '<div class="setcell setcell-typeicons">';
 			var types = species.types;
 			var table = (this.curTeam.gen < 7 ? BattleTeambuilderTable['gen' + this.curTeam.gen] : null);
-			if (table && species.id in table.overrideType) types = table.overrideType[species.id].split('/');
+			if (
+				table && table.overrideDexInfo && species.id in table.overrideDexInfo &&
+				table.overrideDexInfo[species.id].types
+			) types = table.overrideType[species.id].types.split('/');
 			if (types) {
 				for (var i = 0; i < types.length; i++) buf += Dex.getTypeIcon(types[i], null, this.curTeam.mod);
 			}
@@ -1451,7 +1454,7 @@
 			var buf = '';
 			for (var i = 0; i < this.clipboardCount(); i++) {
 				var res = this.clipboard[i];
-				var species = Dex.getSpecies(res.species);
+				var species = this.dex.getSpecies(res.species);
 
 				buf += '<div class="result" data-id="' + i + '">';
 				buf += '<div class="section"><span class="icon" style="' + Dex.getPokemonIcon(species.name, false, this.curTeam.mod) + '"></span>';
@@ -1748,9 +1751,9 @@
 					buf += '<button disabled="disabled" class="addpokemon" aria-label="Add Pok&eacute;mon"><i class="fa fa-plus"></i></button> ';
 					isAdd = true;
 				} else if (i == this.curSetLoc) {
-					buf += '<button disabled="disabled" class="pokemon">' + pokemonicon + BattleLog.escapeHTML(set.name || Dex.getSpecies(set.species).baseSpecies || '<i class="fa fa-plus"></i>') + '</button> ';
+					buf += '<button disabled="disabled" class="pokemon">' + pokemonicon + BattleLog.escapeHTML(set.name || this.dex.getSpecies(set.species).baseSpecies || '<i class="fa fa-plus"></i>') + '</button> ';
 				} else {
-					buf += '<button name="selectPokemon" value="' + i + '" class="pokemon">' + pokemonicon + BattleLog.escapeHTML(set.name || Dex.getSpecies(set.species).baseSpecies) + '</button> ';
+					buf += '<button name="selectPokemon" value="' + i + '" class="pokemon">' + pokemonicon + BattleLog.escapeHTML(set.name || this.dex.getSpecies(set.species).baseSpecies) + '</button> ';
 				}
 			}
 			if (this.curSetList.length < this.curTeam.capacity && !isAdd) {
@@ -1765,7 +1768,7 @@
 
 			this.$('.pokemonicon-' + this.curSetLoc).css('background', Dex.getPokemonIcon(set, false, this.curTeam.mod).substr(11));
 
-			var item = Dex.getItem(set.item);
+			var item = this.dex.getItem(set.item);
 			if (item.id) {
 				this.$('.setcol-details .itemicon').css('background', Dex.getItemIcon(item, this.curTeam.mod).substr(11));
 			} else {
@@ -1935,6 +1938,7 @@
 		minus: '',
 		smogdexLink: function (s) {
 			var species = Dex.getSpecies(s);
+			if (!species) return `https://www.smogon.com/dex/gs/pokemon/unown/`;
 			var format = this.curTeam && this.curTeam.format;
 			var smogdexid = toID(species.baseSpecies);
 
@@ -1996,7 +2000,7 @@
 			var buf = '';
 			var set = this.curSet;
 			var species = Dex.forGen(this.curTeam.gen).getSpecies(this.curSet.species);
-			if (this.curTeam.mod) species = Dex.mod(this.curTeam.mod).getSpecies(this.curSet.species);
+			if (this.curTeam.mod) species = this.dex.getSpecies(this.curSet.species);
 			var baseStats = species.baseStats;
 
 			buf += '<div class="resultheader"><h3>EVs</h3></div>';
@@ -2518,7 +2522,7 @@
 			var set = this.curSet;
 			var isLetsGo = this.curTeam.format.includes('letsgo');
 			var isNatDex = this.curTeam.gen === 8 && this.curTeam.format.includes('nationaldex');
-			var species = Dex.getSpecies(set.species);
+			var species = this.dex.getSpecies(set.species);
 			if (!set) return;
 			buf += '<div class="resultheader"><h3>Details</h3></div>';
 			buf += '<form class="detailsform">';
@@ -2599,7 +2603,7 @@
 			e.stopPropagation();
 			var set = this.curSet;
 			if (!set) return;
-			var species = Dex.getSpecies(set.species);
+			var species = this.dex.getSpecies(set.species);
 			var isLetsGo = this.curTeam.format.includes('letsgo');
 			var isNatDex = this.curTeam.format.includes('nationaldex');
 
@@ -2840,7 +2844,6 @@
 			this.updateChart(false, wasIncomplete);
 		},
 		chartChange: function (e, selectNext) {
-			var thisDex = this.curTeam.mod ? Dex.mod(this.curTeam.mod) : Dex;
 			var name = e.currentTarget.name;
 			if (this.curChartName !== name) return;
 			var id = toID(e.currentTarget.value);
@@ -2848,26 +2851,26 @@
 			var val = '';
 			switch (name) {
 			case 'pokemon':
-				val = (thisDex.getSpecies(id).exists ? thisDex.getSpecies(e.currentTarget.value).name : '');
+				val = (this.dex.getSpecies(id).exists ? this.dex.getSpecies(e.currentTarget.value).name : '');
 				break;
 			case 'ability':
-				if (thisDex.getItem(id).exists && this.curTeam.format == "gen8dualwielding") {
-					val = thisDex.getItem(id).name;
-				} else if (thisDex.getMove(id).exists && this.curTeam.format == "gen8trademarked") {
-					val = thisDex.getMove(id).name;
+				if (this.dex.getItem(id).exists && this.curTeam.format == "gen8dualwielding") {
+					val = this.dex.getItem(id).name;
+				} else if (this.dex.getMove(id).exists && this.curTeam.format == "gen8trademarked") {
+					val = this.dex.getMove(id).name;
 				} else {
-					val = (thisDex.getAbility(id).exists ? thisDex.getAbility(id).name : '');
+					val = (this.dex.getAbility(id).exists ? this.dex.getAbility(id).name : '');
 				}
 				break;
 			case 'item':
-				if (thisDex.getMove(id).exists && this.curTeam.format == "gen8fortemons") {
-					val = thisDex.getMove(id).name;
+				if (this.dex.getMove(id).exists && this.curTeam.format == "gen8fortemons") {
+					val = this.dex.getMove(id).name;
 				} else {
-					val = (thisDex.getItem(id).exists ? thisDex.getItem(id).name : '');
+					val = (this.dex.getItem(id).exists ? this.dex.getItem(id).name : '');
 				}
 				break;
 			case 'move1': case 'move2': case 'move3': case 'move4':
-				val = (thisDex.getMove(id).exists ? thisDex.getMove(id).name : '');
+				val = (this.dex.getMove(id).exists ? this.dex.getMove(id).name : '');
 				break;
 			}
 			if (!val) {
@@ -3290,7 +3293,8 @@
 			this.room = data.room;
 			this.curSet = data.curSet;
 			this.chartIndex = data.index;
-			var species = Dex.getSpecies(this.curSet.species);
+			// console.log(room);
+			var species = room.dex.getSpecies(this.curSet.species);
 			var baseid = toID(species.baseSpecies);
 			var forms = [baseid].concat(species.cosmeticFormes.map(toID));
 			var spriteDir = Dex.resourcePrefix + 'sprites/';
@@ -3326,9 +3330,9 @@
 			this.$el.html(buf).css({'max-width': (4 + spriteSize) * width, 'height': 42 + (4 + spriteSize) * height});
 		},
 		setForm: function (form) {
-			var species = Dex.getSpecies(this.curSet.species);
+			var species = room.dex.getSpecies(this.curSet.species);
 			if (form && form !== species.form) {
-				this.curSet.species = Dex.getSpecies(species.baseSpecies + form).name;
+				this.curSet.species = room.dex.getSpecies(species.baseSpecies + form).name;
 			} else if (!form) {
 				this.curSet.species = species.baseSpecies;
 			}
