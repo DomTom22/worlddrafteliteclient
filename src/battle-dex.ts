@@ -964,8 +964,10 @@ class ModdedDex {
 		if (this.cache.Species.hasOwnProperty(id)) return this.cache.Species[id];
 		const table = window.BattleTeambuilderTable[this.modid];
 		let data = {...Dex.getSpecies(name)};
-		for (const key in table.overrideDexInfo[id]) {
-			data = {...Dex.getSpecies(name), ...table.overrideDexInfo[id]};
+		if (table.overrideDexInfo[id]) {
+			for (const key in table.overrideDexInfo[id]) {
+				data = {...Dex.getSpecies(name), ...table.overrideDexInfo[id]};
+			}
 		}
 		if (this.gen < 3) {
 			data.abilities = {0: "None"};
