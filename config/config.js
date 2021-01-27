@@ -33,13 +33,13 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (695b2396/55fadf43)";
+Config.version = "0.11.2 (18567b52/55fadf43)";
 
 Config.routes = {
 	root: 'dragonheavenserver.herokuapp.com',
 	client: 'dragonheaven.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
-	replays: 'replay.pokemonshowdown.com',
+	replays: 'dragonheaven.herokuapp.com/replays/storage',
 	users: 'pokemonshowdown.com/users',
 	psmain: 'pokemonshowdown.com',
 };
