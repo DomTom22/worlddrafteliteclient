@@ -1046,7 +1046,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 						formats[formatid].gameType = 'doubles';
 						hasDoublesFormats = true;
 					} else hasSinglesFormats = true;
-					for (const name of format.banlist) {
+					for (const name of formats[formatid].banlist) {
 						const id = toID(name);
 						if (id in Dex.data.Pokedex || id in modData.Pokedex) formats[formatid].bans.push(id);
 					}
