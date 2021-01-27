@@ -2,7 +2,7 @@
     "root": "dragonheavenserver.herokuapp.com",
     "client": "dragonheaven.herokuapp.com",
     "dex": "dex.pokemonshowdown.com",
-    "replays": "dragonheaven.herokuapp.com/replays/storage",
+    "replays": "replay.pokemonshowdown.com",
     "users": "pokemonshowdown.com/users",
 	"psmain": "pokemonshowdown.com"
 }
