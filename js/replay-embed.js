@@ -36,6 +36,7 @@ requireScript('https://dragonheaven.herokuapp.com/data/mod-sprites.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/data/mod-config.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/js/battle-tooltips.js?a7');
 requireScript('https://dragonheaven.herokuapp.com/js/battle.js?a7');
+requireScript('https://dragonheaven.herokuapp.com/js/battle-scene-stub.js?a7');
 
 var Replays = {
 	init: function (log) {

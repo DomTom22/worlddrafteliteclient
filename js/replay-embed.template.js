@@ -36,6 +36,7 @@ requireScript('https://play.pokemonshowdown.com/data/mod-sprites.js?a7');
 requireScript('https://play.pokemonshowdown.com/data/mod-config.js?a7');
 requireScript('https://play.pokemonshowdown.com/js/battle-tooltips.js?a7');
 requireScript('https://play.pokemonshowdown.com/js/battle.js?a7');
+requireScript('https://play.pokemonshowdown.com/js/battle-scene-stub.js?a7');
 
 var Replays = {
 	init: function (log) {
