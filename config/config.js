@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'dragonheaven',
-	host: 'scoopapa-dh.glitch.me',
+	host: 'dragonheavenserver.herokuapp.com',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -33,7 +33,7 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (b896c07f/55fadf43)";
+Config.version = "0.11.2 (2d795212/55fadf43)";
 
 Config.routes = {
 	root: 'dragonheavenserver.herokuapp.com',
