@@ -1233,7 +1233,7 @@
 			if (
 				table && table.overrideDexInfo && species.id in table.overrideDexInfo &&
 				table.overrideDexInfo[species.id].types
-			) types = table.overrideType[species.id].types.split('/');
+			) types = table.overrideDexInfo[species.id].types.split('/');
 			if (types) {
 				for (var i = 0; i < types.length; i++) buf += Dex.getTypeIcon(types[i], null, this.curTeam.mod);
 			}
