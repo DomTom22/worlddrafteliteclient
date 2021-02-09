@@ -1516,7 +1516,7 @@ continue;
 }else if(!learnsetEntry.includes(gen)){
 continue;
 }
-if(this.dex.gen>=8&&BattleMovedex[_moveid]&&BattleMovedex[_moveid].isNonstandard==="Past"&&this.formatType!=='natdex')continue;
+if(this.dex.gen>=8&&this.dex.getMove(_moveid)&&this.dex.getMove(_moveid).isNonstandard==='Past'&&this.formatType!=='natdex')continue;
 if((_this$formatType3=this.formatType)!=null&&_this$formatType3.startsWith('dlc1')&&(_BattleTeambuilderTab=BattleTeambuilderTable['gen8dlc1'])!=null&&_BattleTeambuilderTab.nonstandardMoves.includes(_moveid))continue;
 if(moves.includes(_moveid))continue;
 moves.push(_moveid);
