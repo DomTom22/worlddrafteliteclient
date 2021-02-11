@@ -1097,6 +1097,15 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 				const species = modDex.getSpecies(id);
 				const tier = species.tier;
 				overrideTier[species.id] = tier;
+				if (species.forme && JSON.stringify(modData.Pokedex[species.id]) === JSON.stringify(Dex.data.Pokedex[species.id]) && !ModConfig.showAllFormes) { // hardcode from main
+				if (
+						[
+							'Aegislash', 'Castform', 'Cherrim', 'Cramorant', 'Eiscue', 'Meloetta', 'Mimikyu', 'Minior', 'Morpeko', 'Wishiwashi',
+						].includes(species.baseSpecies) || species.forme.includes('Totem') || species.forme.includes('Zen')
+					) {
+						continue;
+					}
+				}
 				if (!tierTable[tier]) tierTable[tier] = [];
 				tierTable[tier].push(id);
 				if (hasDoublesFormats) {
