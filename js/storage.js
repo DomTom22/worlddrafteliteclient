@@ -806,6 +806,7 @@ Storage.fastUnpackTeam = function (buf) {
 		// ability
 		j = buf.indexOf('|', i);
 		var ability = buf.substring(i, j);
+		console.log("fast unpack team");
 		var species = Dex.getSpecies(set.species);
 		if (species.baseSpecies === 'Zygarde' && ability === 'H') ability = 'Power Construct';
 		set.ability = (species.abilities && ['', '0', '1', 'H', 'S'].includes(ability) ? species.abilities[ability] || '!!!ERROR!!!' : ability);
@@ -1089,6 +1090,8 @@ Storage.getPackedTeam = function (team) {
 
 Storage.importTeam = function (buffer, teams) {
 	console.log('importTeam');
+	console.log(buffer);
+	console.log(teams);
 	var text = buffer.split("\n");
 	var team = teams ? null : [];
 	var curSet = null;
@@ -1098,6 +1101,7 @@ Storage.importTeam = function (buffer, teams) {
 	} else if (text.length === 1 || (text.length === 2 && !text[1])) {
 		return Storage.unpackTeam(text[0]);
 	}
+	var thisDex = team.mod ? Dex.mod(team.mod) : Dex;
 	for (var i = 0; i < text.length; i++) {
 		var line = $.trim(text[i]);
 		if (line === '' || line === '---') {
@@ -1158,11 +1162,13 @@ Storage.importTeam = function (buffer, teams) {
 			var parenIndex = line.lastIndexOf(' (');
 			if (line.substr(line.length - 1) === ')' && parenIndex !== -1) {
 				line = line.substr(0, line.length - 1);
-				curSet.species = Dex.getSpecies(line.substr(parenIndex + 2)).name;
+				console.log('importTeam A');
+				curSet.species = thisDex.getSpecies(line.substr(parenIndex + 2)).name;
 				line = line.substr(0, parenIndex);
 				curSet.name = line;
 			} else {
-				curSet.species = Dex.getSpecies(line).name;
+				console.log('importTeam B ' + line);
+				curSet.species = thisDex.getSpecies(line).name;
 				curSet.name = '';
 			}
 		} else if (line.substr(0, 7) === 'Trait: ') {

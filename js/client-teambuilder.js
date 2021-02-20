@@ -128,6 +128,7 @@
 
 		exportMode: false,
 		update: function () {
+			console.log('update');
 			teams = Storage.teams;
 			if (this.curTeam) {
 				this.ignoreEVLimits = (
@@ -150,6 +151,7 @@
 		deletedTeam: null,
 		deletedTeamLoc: -1,
 		updateTeamInterface: function () {
+			console.log("updateTeamInterface");
 			this.deletedSet = null;
 			this.deletedSetLoc = -1;
 
@@ -1096,6 +1098,7 @@
 		 *********************************************************/
 
 		updateTeamView: function () {
+			console.log("updateTeamView");
 			this.curChartName = '';
 			this.curChartType = '';
 
@@ -1157,7 +1160,9 @@
 			if ($(window).width() < 640) this.show();
 		},
 		renderSet: function (set, i) {
+			console.log('renderSet');
 			var species = this.dex.getSpecies(set.species);
+			console.log(species);
 			var isLetsGo = this.curTeam.format.includes('letsgo');
 			var isNatDex = this.curTeam.format.includes('nationaldex');
 			var buf = '<li value="' + i + '">';
@@ -1282,6 +1287,7 @@
 		},
 
 		saveImport: function () {
+			console.log('saveImport');
 			var text = this.$('.teamedit textarea').val();
 			var url = this.importableUrl(text);
 
@@ -1550,6 +1556,7 @@
 		},
 		wasViewingPokemon: false,
 		importSet: function (i, button) {
+			console.log("import set");
 			i = +($(button).closest('li').attr('value'));
 
 			this.wasViewingPokemon = true;
@@ -1566,8 +1573,8 @@
 				.val(Storage.exportTeam([this.curSet]).trim())
 				.focus()
 				.select();
-
-			this.getSmogonSets();
+			
+			// this.getSmogonSets();
 		},
 		getSmogonSets: function () {
 			this.$('.teambuilder-pokemon-import .teambuilder-import-smogon-sets').empty();
@@ -1687,6 +1694,7 @@
 		 *********************************************************/
 
 		updateSetView: function () {
+			console.log("updateSetView");
 			// pokemon
 			var buf = '<div class="pad">';
 			buf += '<button name="back"><i class="fa fa-chevron-left"></i> Team</button></div>';
@@ -1729,6 +1737,7 @@
 			this.$('.teamchart').first().html(this.renderSet(this.curSet, this.curSetLoc));
 		},
 		renderTeambar: function () {
+			console.log('renderTeambar');
 			var buf = '';
 			var isAdd = false;
 			if (this.curSetList.length && !this.curSetList[this.curSetList.length - 1].species && this.curSetLoc !== this.curSetList.length - 1) {
@@ -1748,6 +1757,7 @@
 				var set = this.curSetList[i];
 				var pokemonicon = '<span class="picon pokemonicon-' + i + '" style="' + Dex.getPokemonIcon(set, false, this.curTeam.mod) + '"></span>';
 				if (!set.species) {
+					console.log("no species");
 					buf += '<button disabled="disabled" class="addpokemon" aria-label="Add Pok&eacute;mon"><i class="fa fa-plus"></i></button> ';
 					isAdd = true;
 				} else if (i == this.curSetLoc) {
@@ -2716,6 +2726,7 @@
 			details: 'details'
 		},
 		chartClick: function (e) {
+			console.log("chartClick");
 			if (this.search.addFilter(e.currentTarget)) {
 				this.$('input[name=' + this.curChartName + ']').val('').select();
 				this.search.find('');
