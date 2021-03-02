@@ -18,8 +18,8 @@ Config.whitelist = [
 // `defaultserver` specifies the server to use when the domain name in the
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
-	id: 'dragonheaven',
-	host: 'dragonheavenserver.herokuapp.com',
+	id: 'adv',
+	host: 'adv-server.herokuapp.com',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -33,11 +33,11 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (259ab8d1/55fadf43)";
+Config.version = "0.11.2 (c4b73a5e/55fadf43)";
 
 Config.routes = {
-	root: 'dragonheavenserver.herokuapp.com',
-	client: 'dragonheaven.herokuapp.com',
+	root: 'adv-server.herokuapp.com',
+	client: 'adv.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
 	users: 'pokemonshowdown.com/users',
