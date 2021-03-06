@@ -3549,3 +3549,4 @@ if(typeof require==='function'){
 global.Battle=Battle;
 global.Pokemon=Pokemon;
 }
+//# sourceMappingURL=battle.js.map
