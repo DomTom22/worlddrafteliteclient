@@ -37,7 +37,7 @@ Config.version = "0.11.2 (b64ca258/55fadf43)";
 
 Config.routes = {
 	root: 'worlddraftelite.glitch.me',
-	client: 'worlddraftelite.herokuapp.com',
+	client: 'wdeclient.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
 	users: 'pokemonshowdown.com/users',
