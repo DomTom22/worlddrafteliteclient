@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'worlddraftelite',
-	host: 'worlddraftelite.herokuapp.com',
+	host: 'worlddraftelite.glitch.me',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -36,7 +36,7 @@ Config.customcolors = {
 Config.version = "0.11.2 (b64ca258/55fadf43)";
 
 Config.routes = {
-	root: 'dragonheavenserver.herokuapp.com',
+	root: 'worlddraftelite.glitch.me',
 	client: 'worlddraftelite.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
