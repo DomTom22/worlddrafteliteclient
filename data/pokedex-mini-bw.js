@@ -1308,6 +1308,7 @@ exports.BattlePokemonSpritesBW = {
 	equilibra:{num:-55},
 	solotl:{num:-56},
 	astrolotl:{num:-57},
+	miasmite:{num:-58},
 	miasmaw:{num:-59},
 	pokestarsmeargle:{num:-5000},
 	pokestarufo:{num:-5001},
