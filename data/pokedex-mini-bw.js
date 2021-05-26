@@ -119,6 +119,7 @@ exports.BattlePokemonSpritesBW = {
 	bellsprout:{num:69},
 	weepinbell:{num:70},
 	victreebel:{num:71},
+	victreebelhf:{num:71},
 	tentacool:{num:72},
 	tentacruel:{num:73},
 	geodude:{num:74},
