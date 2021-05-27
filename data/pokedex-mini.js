@@ -1273,7 +1273,7 @@ exports.BattlePokemonSprites = {
 	calyrex:{num:898},
 	calyrexice:{num:898},
 	calyrexshadow:{num:898},
-	glaliehf:{num:-1},
+	glaliehf:{num:899},
 	glaliehfmega:{num:899},
 	altariahf:{num:900},
 	altariahfmega:{num:900},
