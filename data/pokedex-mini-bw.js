@@ -103,7 +103,6 @@ exports.BattlePokemonSpritesBW = {
 	mankey:{num:56},
 	primeape:{num:57},
 	growlithe:{num:58},
-	growlithehf:{num:58},
 	arcanine:{num:59},
 	arcaninehf:{num:59},
 	poliwag:{num:60},
