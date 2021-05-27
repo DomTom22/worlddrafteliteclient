@@ -104,7 +104,7 @@ exports.BattlePokemonSpritesBW = {
 	primeape:{num:57},
 	growlithe:{num:58},
 	arcanine:{num:59},
-	arcaninehf:{num:59},
+	arcaninehf:{num:-59},
 	poliwag:{num:60},
 	poliwhirl:{num:61},
 	poliwrath:{num:62},
