@@ -961,6 +961,7 @@ exports.BattlePokemonSpritesBW = {
 	binacle:{num:688},
 	barbaracle:{num:689},
 	skrelp:{num:690},
+	skrelphf:{num:690},
 	dragalge:{num:691},
 	dragalge:{num:691},
 	clauncher:{num:692},
