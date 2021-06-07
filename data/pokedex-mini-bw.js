@@ -1277,7 +1277,7 @@ exports.BattlePokemonSpritesBW = {
 	altariahf:{num:900},
 	altariahfmega:{num:900},
 	sharpedohf:{num:901},
-	sharpedohfmega:{num:319},
+	sharpedohfmega:{num:901},
 	missingno:{num:0},
 	syclar:{num:-1},
 	syclant:{num:-2},
