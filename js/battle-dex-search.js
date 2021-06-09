@@ -956,6 +956,7 @@ if(format==='vgc2018')tierSet=tierSet.slice(slices.Regular);else
 if(format.startsWith('vgc2019'))tierSet=tierSet.slice(slices["Restricted Legendary"]);else
 if(format==='battlespotsingles')tierSet=tierSet.slice(slices.Regular);else
 if(format==='battlespotdoubles')tierSet=tierSet.slice(slices.Regular);else
+if(format==='oubl')tierSet=tierSet.slice(slices.OUBL);else
 if(format==='ou')tierSet=tierSet.slice(slices.OU);else
 if(format==='uu')tierSet=tierSet.slice(slices.UU);else
 if(format==='ru')tierSet=tierSet.slice(slices.RU||slices.UU);else
