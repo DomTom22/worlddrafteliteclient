@@ -532,7 +532,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 
 		const tierOrder = (() => {
 			if (isNatDex) {
-				return ["CAP", "CAP NFE", "CAP LC", "AG", "Uber", "OU", "UUBL", "(OU)", "UU", "(UU)", "RUBL", "RU", "NFE", "LC"];
+				return ["CAP", "CAP NFE", "CAP LC", "AG", "Uber", "OU", "UUBL", "(OU)", "UU", "(UU)", "NFE", "LC"];
 			}
 			if (isLetsGo) {
 				return ["Uber", "OU", "UU", "NFE", "LC"];
