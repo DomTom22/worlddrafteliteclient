@@ -33,7 +33,7 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (e9894d69/55fadf43)";
+Config.version = "0.11.2 (fc3e5310/55fadf43)";
 
 Config.routes = {
 	root: 'worlddraftelite.glitch.me',
