@@ -183,7 +183,7 @@ modResourcePrefix='https://raw.githubusercontent.com/scoopapa/dh/master/data/mod
 resourcePrefix=function(){var _window$document,_window$document$loca;
 var prefix='';
 if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
-return prefix+"//"+'play.pokemonshowdown.com'+"/";
+return"";
 }();this.
 
 fxPrefix=function(){var _window$document2,_window$document2$loc;
