@@ -18,8 +18,8 @@ Config.whitelist = [
 // `defaultserver` specifies the server to use when the domain name in the
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
-	id: 'worlddraftelite',
-	host: 'worlddraftelite.glitch.me',
+	id: 'fantasy',
+	host: 'fantasyserver.glitch.me',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -33,11 +33,11 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (96865b82/55fadf43)";
+Config.version = "0.11.2 (9f37656b/55fadf43)";
 
 Config.routes = {
-	root: 'worlddraftelite.glitch.me',
-	client: 'wdeclient.herokuapp.com',
+	root: 'fantasyserver.glitch.me',
+	client: 'fantasyclient.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
 	users: 'pokemonshowdown.com/users',

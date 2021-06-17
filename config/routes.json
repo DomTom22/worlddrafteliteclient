@@ -1,6 +1,6 @@
 {
-    "root": "worlddraftelite.glitch.me",
-    "client": "wdeclient.herokuapp.com",
+    "root": "fantasyserver.glitch.me",
+    "client": "fantasyclient.herokuapp.com",
     "dex": "dex.pokemonshowdown.com",
     "replays": "replay.pokemonshowdown.com",
     "users": "pokemonshowdown.com/users",
