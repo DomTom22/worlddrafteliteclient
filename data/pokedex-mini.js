@@ -1319,7 +1319,7 @@ exports.BattlePokemonSprites = {
 	sharpedohf:{num:901},
 	sharpedohfmega:{num:901},
 	sceptilehf:{num:254},
-	sceptilemega:{num:254},
+	sceptilehfmega:{num:254},
 	missingno:{num:0},
 	syclar:{num:-1},
 	syclant:{num:-2},
