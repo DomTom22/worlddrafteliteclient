@@ -24,12 +24,12 @@ function ThemeHeaderTemplate() {
 <?php } ?>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
-	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/font-awesome.css?0.19977944902682587" />
-	<link rel="stylesheet" href="//fantasyserver.glitch.me/theme/panels.css?0.07733794684625628" />
-	<link rel="stylesheet" href="//fantasyserver.glitch.me/theme/main.css?0.07443239721537198" />
-	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/battle.css?0.7540408083200059" />
-	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/replay.css?0.975771447546439" />
-	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/utilichart.css?0.25403457591265144" />
+	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/font-awesome.css?0.3231274947351239" />
+	<link rel="stylesheet" href="//fantasyserver.glitch.me/theme/panels.css?0.8060702174436396" />
+	<link rel="stylesheet" href="//fantasyserver.glitch.me/theme/main.css?0.9071574755249918" />
+	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/battle.css?0.22214712144221926" />
+	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/replay.css?0.9797406393153876" />
+	<link rel="stylesheet" href="//fantasyclient.herokuapp.com/style/utilichart.css?0.4434735418943787" />
 
 	<!-- Workarounds for IE bugs to display trees correctly. -->
 	<!--[if lte IE 6]><style> li.tree { height: 1px; } </style><![endif]-->
@@ -53,11 +53,11 @@ function ThemeHeaderTemplate() {
 	<div class="pfx-topbar">
 		<div class="header">
 			<ul class="nav">
-				<li><a class="button nav-first<?php if ($panels->tab === 'home') echo ' cur'; ?>" href="//fantasyserver.glitch.me/?0.41188774337460243"><img src="//fantasyserver.glitch.me/images/pokemonshowdownbeta.png?0.7955112326300955" alt="Pok&eacute;mon Showdown! (beta)" /> Home</a></li>
-				<li><a class="button<?php if ($panels->tab === 'pokedex') echo ' cur'; ?>" href="//dex.pokemonshowdown.com/?0.6210186761684557">Pok&eacute;dex</a></li>
-				<li><a class="button<?php if ($panels->tab === 'replay') echo ' cur'; ?>" href="/?0.635009284979495">Replays</a></li>
-				<li><a class="button<?php if ($panels->tab === 'ladder') echo ' cur'; ?>" href="//fantasyserver.glitch.me/ladder/?0.9152426525136701">Ladder</a></li>
-				<li><a class="button nav-last" href="//fantasyserver.glitch.me/forums/?0.2770588464042021">Forum</a></li>
+				<li><a class="button nav-first<?php if ($panels->tab === 'home') echo ' cur'; ?>" href="//fantasyserver.glitch.me/?0.5584975507495396"><img src="//fantasyserver.glitch.me/images/pokemonshowdownbeta.png?0.9334302030256283" alt="Pok&eacute;mon Showdown! (beta)" /> Home</a></li>
+				<li><a class="button<?php if ($panels->tab === 'pokedex') echo ' cur'; ?>" href="//dex.pokemonshowdown.com/?0.45533538824399655">Pok&eacute;dex</a></li>
+				<li><a class="button<?php if ($panels->tab === 'replay') echo ' cur'; ?>" href="/?0.005373192496293644">Replays</a></li>
+				<li><a class="button<?php if ($panels->tab === 'ladder') echo ' cur'; ?>" href="//fantasyserver.glitch.me/ladder/?0.2639744535027939">Ladder</a></li>
+				<li><a class="button nav-last" href="//fantasyserver.glitch.me/forums/?0.6622321510146625">Forum</a></li>
 			</ul>
 			<ul class="nav nav-play">
 				<li><a class="button greenbutton nav-first nav-last" href="http://play.pokemonshowdown.com/">Play</a></li>
@@ -74,10 +74,10 @@ function ThemeHeaderTemplate() {
 
 function ThemeScriptsTemplate() {
 ?>
-	<script src="//fantasyclient.herokuapp.com/js/lib/jquery-1.11.0.min.js?0.20540578300492562"></script>
-	<script src="//fantasyclient.herokuapp.com/js/lib/lodash.core.js?0.18117908951868333"></script>
-	<script src="//fantasyclient.herokuapp.com/js/lib/backbone.js?0.42472522999467843"></script>
-	<script src="//dex.pokemonshowdown.com/js/panels.js?0.4043131048569777"></script>
+	<script src="//fantasyclient.herokuapp.com/js/lib/jquery-1.11.0.min.js?0.6174355093606496"></script>
+	<script src="//fantasyclient.herokuapp.com/js/lib/lodash.core.js?0.1970192221770819"></script>
+	<script src="//fantasyclient.herokuapp.com/js/lib/backbone.js?0.13161296295345282"></script>
+	<script src="//dex.pokemonshowdown.com/js/panels.js?0.23371531443709603"></script>
 <?php
 }
 
@@ -86,21 +86,21 @@ function ThemeFooterTemplate() {
 ?>
 <?php $panels->scripts(); ?>
 
-	<script src="//fantasyclient.herokuapp.com/js/lib/jquery-cookie.js?0.3934851211973862"></script>
-	<script src="//fantasyclient.herokuapp.com/js/lib/html-sanitizer-minified.js?0.9753932927437665"></script>
-	<script src="//fantasyclient.herokuapp.com/js/battle-sound.js?0.1849212284989714"></script>
-	<script src="//fantasyclient.herokuapp.com/config/config.js?0.8091629863493341"></script>
-	<script src="//fantasyclient.herokuapp.com/js/battledata.js?0.5959227648520884"></script>
-	<script src="//fantasyclient.herokuapp.com/data/pokedex-mini.js?0.5020810175399262"></script>
-	<script src="//fantasyclient.herokuapp.com/data/pokedex-mini-bw.js?0.7126903154218533"></script>
-	<script src="//fantasyclient.herokuapp.com/data/graphics.js?0.007131602225440625"></script>
-	<script src="//fantasyclient.herokuapp.com/data/pokedex.js?0.4449979990213777"></script>
-	<script src="//fantasyclient.herokuapp.com/data/items.js?0.7376965046307082"></script>
-	<script src="//fantasyclient.herokuapp.com/data/moves.js?0.6614096632120863"></script>
-	<script src="//fantasyclient.herokuapp.com/data/abilities.js?0.36297145922470375"></script>
-	<script src="//fantasyclient.herokuapp.com/data/teambuilder-tables.js?0.055080650200006964"></script>
-	<script src="//fantasyclient.herokuapp.com/js/battle-tooltips.js?0.6336437392822203"></script>
-	<script src="//fantasyclient.herokuapp.com/js/battle.js?0.3615059781082819"></script>
+	<script src="//fantasyclient.herokuapp.com/js/lib/jquery-cookie.js?0.15483024612943574"></script>
+	<script src="//fantasyclient.herokuapp.com/js/lib/html-sanitizer-minified.js?0.18552091113896885"></script>
+	<script src="//fantasyclient.herokuapp.com/js/battle-sound.js?0.784691304079814"></script>
+	<script src="//fantasyclient.herokuapp.com/config/config.js?0.12519500012330953"></script>
+	<script src="//fantasyclient.herokuapp.com/js/battledata.js?0.6491005787506829"></script>
+	<script src="//fantasyclient.herokuapp.com/data/pokedex-mini.js?0.48811602351426475"></script>
+	<script src="//fantasyclient.herokuapp.com/data/pokedex-mini-bw.js?0.9402891594963327"></script>
+	<script src="//fantasyclient.herokuapp.com/data/graphics.js?0.6830779475232445"></script>
+	<script src="//fantasyclient.herokuapp.com/data/pokedex.js?0.8800811465555998"></script>
+	<script src="//fantasyclient.herokuapp.com/data/items.js?0.3246952428268126"></script>
+	<script src="//fantasyclient.herokuapp.com/data/moves.js?0.14928228612689987"></script>
+	<script src="//fantasyclient.herokuapp.com/data/abilities.js?0.24738339078039284"></script>
+	<script src="//fantasyclient.herokuapp.com/data/teambuilder-tables.js?0.7102678626393437"></script>
+	<script src="//fantasyclient.herokuapp.com/js/battle-tooltips.js?0.746252442496788"></script>
+	<script src="//fantasyclient.herokuapp.com/js/battle.js?0.30359056936574524"></script>
 	<script src="/js/replay.js?c81925c8"></script>
 
 </body></html>
