@@ -683,6 +683,7 @@ exports.BattlePokemonSpritesBW = {
 	palkia:{num:484},
 	heatran:{num:485},
 	regigigas:{num:486},
+	regigigas:{num:486},
 	giratina:{num:487},
 	giratinaorigin:{num:487},
 	cresselia:{num:488},
