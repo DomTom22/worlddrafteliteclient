@@ -1357,6 +1357,8 @@ exports.BattlePokemonSpritesBW = {
 	isycleon:{num:-1018},
 	staticeon:{num:-1019},
 	sootheon:{num:-1020},
+	metalynx:{num:-1200},
+	metalynxmega:{num:-1200},
 	missingno:{num:0},
 	syclar:{num:-1},
 	syclant:{num:-2},
