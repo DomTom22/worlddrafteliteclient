@@ -67,7 +67,7 @@ exports.BattlePokemonSprites = {
 	sandshrewalola:{num:27},
 	sandslash:{num:28},
 	sandslashalola:{num:28},
-	sandriger:{num:902},
+	sandridger:{num:902},
 	nidoranf:{num:29},
 	nidorina:{num:30},
 	nidoqueen:{num:31},
