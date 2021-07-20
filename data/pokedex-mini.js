@@ -211,6 +211,7 @@ exports.BattlePokemonSprites = {
 	gyarados:{num:130},
 	gyaradosmega:{num:130},
 	lapras:{num:131},
+	laprasmega:{num:131},
 	laprasgmax:{num:131},
 	ditto:{num:132},
 	eevee:{num:133},
