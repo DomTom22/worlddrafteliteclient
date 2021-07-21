@@ -781,7 +781,7 @@ exports.BattlePokemonSpritesBW = {
 	scolipede:{num:545},
 	cottonee:{num:546},
 	whimsicott:{num:547},
-	whimsicottmega:{num:24},
+	whimsicottmega:{num:547},
 	petilil:{num:548},
 	lilligant:{num:549},
 	basculin:{num:550},
