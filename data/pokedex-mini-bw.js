@@ -880,6 +880,7 @@ exports.BattlePokemonSpritesBW = {
 	golurk:{num:623},
 	pawniard:{num:624},
 	bisharp:{num:625},
+	bisharp:{num:625},
 	bouffalant:{num:626},
 	rufflet:{num:627},
 	braviary:{num:628},
