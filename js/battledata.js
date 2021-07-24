@@ -180,9 +180,9 @@ statNamesExceptHP=['atk','def','spa','spd','spe'];this.
 pokeballs=null;this.
 
 modResourcePrefix='https://raw.githubusercontent.com/scoopapa/dh/master/data/mods/';this.
-resourcePrefix="https://raw.githubusercontent.com/domtom22/insurgencesprites/master/";this.
+resourcePrefix="https://raw.githubusercontent.com/domtom22/fantasysprites/master/";this.
 
-fxPrefix = "https://raw.githubusercontent.com/domtom22/insurgencesprites/master/fx/";this.
+fxPrefix = "https://raw.githubusercontent.com/domtom22/fantasysprites/master/fx/";this.
 
 loadedSpriteData={xy:1,bw:0};this.
 moddedDexes={};}var _proto2=_temp.prototype;_proto2.
