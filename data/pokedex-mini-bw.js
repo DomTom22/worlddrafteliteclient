@@ -1602,6 +1602,7 @@ exports.BattlePokemonSpritesBW = {
 	neopunk:{num:-1276},
 	praseopunk:{num:-1277},
 	floressum:{num:-1500},
+	flairees:{num:-1501},
 	missingno:{num:0},
 	syclar:{num:-1},
 	syclant:{num:-2},
