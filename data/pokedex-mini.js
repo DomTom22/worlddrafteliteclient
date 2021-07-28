@@ -1607,6 +1607,7 @@ exports.BattlePokemonSprites = {
 	floressum:{num:-1500},
 	flairees:{num:-1501},
 	aguanaut:{num:-1502},
+	warquila:{num:-1503},
 	missingno:{num:0},
 	syclar:{num:-1},
 	syclant:{num:-2},
