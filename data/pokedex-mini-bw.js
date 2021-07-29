@@ -1552,7 +1552,7 @@ exports.BattlePokemonSpritesBW = {
 	gellin:{num:-1230},
 	glavinug:{num:-1231},
 	s51:{num:-1232},
-	ufoitemega:{num:-1232},
+	s51mega:{num:-1232},
 	paraboom:{num:-1233},
 	inflagetah:{num:-1234},
 	inflagetahmega:{num:-1234},
