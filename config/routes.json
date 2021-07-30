@@ -1,5 +1,5 @@
 {
-    "root": "fantasyshowdown.herokuapp.com",
+    "root": "fantasy-showdown.herokuapp.com",
     "client": "fantasyclient.herokuapp.com",
     "dex": "dex.pokemonshowdown.com",
     "replays": "replay.pokemonshowdown.com",
