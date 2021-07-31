@@ -1817,11 +1817,16 @@ electruxo:1644+15,
 kinetmunk:1644+16,
 splendifowl:1644+17,
 nimflora:1644+18,
-garerewl:1644+19,
+gararewl:1644+19,
 terlard:1644+20,
 tofurang:1644+21,
 dunseraph:1644+22,
-blubelrog:1644+23};
+blubelrog:1644+23,
+feliger:1644+24,
+empirilla:1644+25,
+eshouten:1644+26,
+firoke:1644+27,
+brainoar:1644+28};
 
 
 
