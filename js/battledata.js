@@ -1811,7 +1811,17 @@ giratinaprimal:1644+9,
 arceusprimal:1644+10,
 leavannyarmored:1644+11,
 zekromarmored:1644+12,
-metalynx:1644+13};
+metalynx:1644+13,
+archilles:1644+14,
+electruxo:1644+15,
+kinetmunk:1644+16,
+splendifowl:1644+17,
+nimflora:1644+18,
+garerewl:1644+19,
+terlard:1644+20,
+tofurang:1644+21,
+dunseraph:1644+22,
+blubelrog:1644+23};
 
 
 
