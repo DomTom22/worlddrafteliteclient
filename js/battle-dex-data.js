@@ -806,7 +806,26 @@ feliger:1644+24,
 empirilla:1644+25,
 eshouten:1644+26,
 firoke:1644+27,
-brainoar:1644+28};
+brainoar:1644+28,
+tanscure:1644+29,
+sponaree:1644+30,
+pajay:1644+31,
+jerbolta:1644+32,
+astronite:1644+33,
+baariette:1644+34,
+harylect:1644+35,
+trawpint:1644+36,
+herolune:1644+37,
+vilucard:1644+38,
+drilgann:1644+39,
+cocancer:1644+40,
+corsoreef:1644+41,
+tubareel:1644+42,
+escartress:1644+43,
+gellin:1644+44,
+glavinug:1644+45,
+s51:1644+46,
+paraboom:1644+47};
 
 
 var BattlePokemonIconIndexesLeft={
