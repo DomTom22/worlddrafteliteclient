@@ -826,6 +826,11 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   glavinug: 1644 + 45,
   s51: 1644 + 46,
   paraboom: 1644 + 47,
+  inflagetah: 1644 + 48,
+  chimaconda: 1644 + 49,
+  frikitiki: 1644 + 50,
+  harptera: 1644 + 51,
+  coatlith: 1644 + 52,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
