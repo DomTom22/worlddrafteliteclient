@@ -1850,7 +1850,17 @@ inflagetah:1644+48,
 chimaconda:1644+49,
 frikitiki:1644+50,
 harptera:1644+51,
-coatlith:1644+52};
+coatlith:1644+52,
+tracton:1644+53,
+dermafrost:1644+54,
+theriamp:1644+55,
+titanice:1644+56,
+daikatuna:1644+57,
+syrentide:1644+58,
+misasmedic:1644+59,
+winotinger:1644+60,
+duplicat:1644+61,
+raffiti:1644+62};
 
 
 
