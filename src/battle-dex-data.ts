@@ -791,6 +791,8 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	arceusprimal: 1644 + 10,
 	leavannyarmored: 1644 + 11,
 	zekromarmored: 1644 + 12,
+
+  metalynx: 1674,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
