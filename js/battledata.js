@@ -1860,7 +1860,17 @@ syrentide:1644+58,
 misasmedic:1644+59,
 winotinger:1644+60,
 duplicat:1644+61,
-raffiti:1644+62};
+raffiti:1644+62,
+garagryph:1644+63,
+dramsama:1644+64,
+antarki:1644+65,
+luchabra:1644+66,
+chainite:1644+67,
+alpico:1644+68,
+anderind:1644+69,
+frosthra:1644+70,
+fafninter:1644+71,
+krilvolver:1644+72};
 
 
 
