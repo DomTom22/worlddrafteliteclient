@@ -790,7 +790,8 @@ regigigasprimal:1644+8,
 giratinaprimal:1644+9,
 arceusprimal:1644+10,
 leavannyarmored:1644+11,
-zekromarmored:1644+12};
+zekromarmored:1644+12,
+metalynx:1644+13};
 
 
 var BattlePokemonIconIndexesLeft={
