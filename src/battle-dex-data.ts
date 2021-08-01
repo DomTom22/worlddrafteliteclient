@@ -885,6 +885,18 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   dragalgehf: 1644 + 94,
   zebstrikahf: 1644 + 95,
   tentacruelhf: 1644 + 96,
+  musharnahf: 1644 + 97,
+  dustoxhf: 1644 + 98,
+  glaliehf: 1644 + 99,
+  glaliehfmega: 1644 + 100,
+  altariahf: 1644 + 101,
+  altariahfmega: 1644 + 102,
+  sharpedohf: 1644 + 103,
+  sharpedohfmega: 1644 + 104,
+  sceptilehf: 1644 + 105,
+  sceptilehfmega: 1644 + 106,
+  goodrahf: 1644 + 107,
+  golemhf: 1644 + 108,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
