@@ -913,6 +913,23 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   jolteonhf: 1644 + 122,
   jolteonhfcorrupt: 1644 + 123,
   kabutopshf: 1644 + 124,
+  phospheon: 1644 + 125,
+  blaneon: 1644 + 126,
+  aromeon: 1644 + 127,
+  fureon: 1644 + 128,
+  dynameon: 1644 + 129,
+  radeon: 1644 + 130,
+  obsideon: 1644 + 131,
+  frosteon: 1644 + 132,
+  blizzeon: 1644 + 133,
+  eclipseon: 1644 + 134,
+  cindereon: 1644 + 135,
+  zereon: 1644 + 136,
+  pulseon: 1644 + 137,
+  pineon: 1644 + 138,
+  mooreon: 1644 + 139,
+  noctiveon: 1644 + 140,
+  devileon: 1644 + 141,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
