@@ -1916,7 +1916,23 @@ sharpedohfmega:1644+104,
 sceptilehf:1644+105,
 sceptilehfmega:1644+106,
 goodrahf:1644+107,
-golemhf:1644+108};
+golemhf:1644+108,
+vespiquenhf:1644+109,
+victreebelhf:1644+110,
+trevenanthf:1644+111,
+dusclopshf:1644+112,
+dusknoirhf:1644+113,
+ponytahf:1644+114,
+rapidashf:1644+115,
+gigalithhf:1644+116,
+qwilfishhf:1644+117,
+sawsbuckhf:1644+118,
+zoroarkhf:1644+119,
+slakinghf:1644+120,
+arcaninehf:1644+121,
+jolteonhf:1644+122,
+jolteonhfcorrupt:1644+123,
+kabutopshf:1644+124};
 
 
 var BattlePokemonIconIndexesLeft={
