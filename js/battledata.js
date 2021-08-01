@@ -1949,7 +1949,10 @@ pulseon:1644+137,
 pineon:1644+138,
 mooreon:1644+139,
 noctiveon:1644+140,
-devileon:1644+141};
+devileon:1644+141,
+murkeon:1644+142,
+isycleon:1644+143,
+staticeon:1644+144};
 
 
 var BattlePokemonIconIndexesLeft={
