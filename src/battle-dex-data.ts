@@ -878,6 +878,13 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   garlikid: 1644 + 87,
   lanthan: 1644 + 88,
   actan: 1644 + 89,
+  registeelhf: 1644 + 90,
+  regicehf: 1644 + 91,
+  regirockhf: 1644 + 92,
+  accelgorhf: 1644 + 93,
+  dragalgehf: 1644 + 94,
+  zebstrikahf: 1644 + 95,
+  tentacruelhf: 1644 + 96,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
