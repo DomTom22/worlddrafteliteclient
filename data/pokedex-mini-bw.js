@@ -1593,7 +1593,7 @@ exports.BattlePokemonSpritesBW = {
 	luxelong:{num:-1266},
 	laissure:{num:-1267},
 	yatagaryu:{num:-1268},
-	belladon:{num:-1269},
+	beliadon:{num:-1269},
 	seikamater:{num:-1270},
 	garlikid:{num:-1271},
 	baitatao:{num:-1271},
