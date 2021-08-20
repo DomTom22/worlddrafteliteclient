@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'fantasy',
-	host: 'fantasy-showdown.herokuapp.com',
+	host: 'fantasyshowdown.herokuapp.com',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -36,7 +36,7 @@ Config.customcolors = {
 Config.version = "0.11.2 (6126583f/55fadf43)";
 
 Config.routes = {
-	root: 'fantasy-showdown.herokuapp.com',
+	root: 'fantasyshowdown.herokuapp.com',
 	client: 'fantasyclient.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
