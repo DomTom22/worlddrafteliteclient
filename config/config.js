@@ -21,7 +21,7 @@ Config.defaultserver = {
 	id: 'fantasy',
 	host: 'fantasyshowdown.herokuapp.com',
 	port: 443,
-	httpport: 80,
+	httpport: 8000,
 	altport: 80,
 	registered: true
 };
@@ -33,7 +33,7 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (05fcf99c/55fadf43)";
+Config.version = "0.11.2 (cec94a66/55fadf43)";
 
 Config.routes = {
 	root: 'fantasyshowdown.herokuapp.com',
