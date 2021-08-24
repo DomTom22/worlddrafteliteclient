@@ -21,7 +21,7 @@ Config.defaultserver = {
 	id: 'fantasy',
 	host: 'fantasyshowdown.herokuapp.com',
 	port: 443,
-	httpport: 8000,
+	httpport: 80,
 	altport: 80,
 	registered: true
 };
