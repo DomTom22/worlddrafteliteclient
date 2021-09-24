@@ -956,7 +956,6 @@ if(format==='vgc2018')tierSet=tierSet.slice(slices.Regular);else
 if(format.startsWith('vgc2019'))tierSet=tierSet.slice(slices["Restricted Legendary"]);else
 if(format==='battlespotsingles')tierSet=tierSet.slice(slices.Regular);else
 if(format==='battlespotdoubles')tierSet=tierSet.slice(slices.Regular);else
-if(format==='oubl')tierSet=tierSet.slice(slices.OUBL);else
 if(format==='ou')tierSet=tierSet.slice(slices.OU);else
 if(format==='uu')tierSet=tierSet.slice(slices.UU);else
 if(format==='ru')tierSet=tierSet.slice(slices.RU||slices.UU);else
@@ -964,7 +963,6 @@ if(format==='nu')tierSet=tierSet.slice(slices.NU||slices.UU);else
 if(format==='pu')tierSet=tierSet.slice(slices.PU||slices.NU);else
 if(format==='zu')tierSet=tierSet.slice(slices.ZU||slices.PU||slices.NU);else
 if(format==='lc'||format==='lcuu'||format.startsWith('lc')||format!=='caplc'&&format.endsWith('lc'))tierSet=tierSet.slice(slices.LC);else
-if(format==='lcuu')tierSet=tierSet.slice(slices.LCUU);else
 if(format==='cap')tierSet=tierSet.slice(0,slices.Uber).concat(tierSet.slice(slices.OU));else
 if(format==='caplc')tierSet=tierSet.slice(slices['CAP LC'],slices.Uber).concat(tierSet.slice(slices.LC));else
 if(format==='anythinggoes'||format.endsWith('ag'))tierSet=tierSet.slice(slices.AG);else
