@@ -1017,6 +1017,7 @@ global.toID=toID;
 }
 //# sourceMappingURL=battle-dex.js.map
 
+
 /**
  * Pokemon Showdown Dex Data
  *
