@@ -180,19 +180,9 @@ statNamesExceptHP=['atk','def','spa','spd','spe'];this.
 pokeballs=null;this.
 
 modResourcePrefix='https://raw.githubusercontent.com/scoopapa/dh/master/data/mods/';this.
-resourcePrefix=function(){var _window$document,_window$document$loca;
-var prefix='';
-if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
-return prefix+"//"+'play.pokemonshowdown.com'+"/";
-}();this.
+resourcePrefix="https://raw.githubusercontent.com/domtom22/fantasysprites/master/";this.
 
-fxPrefix=function(){var _window$document2,_window$document2$loc;
-if(((_window$document2=window.document)==null?void 0:(_window$document2$loc=_window$document2.location)==null?void 0:_window$document2$loc.protocol)==='file:'){
-if(window.Replays)return"https://"+'play.pokemonshowdown.com'+"/fx/";
-return"fx/";
-}
-return"//"+'play.pokemonshowdown.com'+"/fx/";
-}();this.
+fxPrefix = "https://raw.githubusercontent.com/domtom22/fantasysprites/master/fx/";this.
 
 loadedSpriteData={xy:1,bw:0};this.
 moddedDexes={};}var _proto2=_temp.prototype;_proto2.
