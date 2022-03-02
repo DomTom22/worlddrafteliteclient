@@ -932,8 +932,9 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   devileon: 1644 + 141,
   murkeon: 1644 + 142,
   isycleon: 1644 + 143,
-  staticeon: 1644 + 144,
-};
+  staticeon:1644+144,
+  sandridger:1644+145};
+
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	pikachubelle: 1200 + 0,

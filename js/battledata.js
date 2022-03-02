@@ -1952,7 +1952,8 @@ noctiveon:1644+140,
 devileon:1644+141,
 murkeon:1644+142,
 isycleon:1644+143,
-staticeon:1644+144};
+staticeon:1644+144,
+sandridger:1644+145};
 
 
 var BattlePokemonIconIndexesLeft={
