@@ -936,7 +936,6 @@ staticeon:1644+144,
 sandridger:1644+145};
 
 
-
 var BattlePokemonIconIndexesLeft={
 pikachubelle:1200+0,
 pikachupopstar:1200+1,
