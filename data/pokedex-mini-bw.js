@@ -1697,7 +1697,7 @@ exports.BattlePokemonSpritesBW = {
 	cheshade:{num:-1571},
 	artifish:{num:-1572},
 	thoraxe:{num:-1573},
-	hyekuza:{num:-1575},
+	hyekuza:{num:-1574},
 	leukoon:{num:-1577},
 	sanguito:{num:-1578},
 	magroplex:{num:-1579},
