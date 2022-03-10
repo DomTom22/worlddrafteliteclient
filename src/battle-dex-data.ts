@@ -935,7 +935,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   staticeon:1644+144,
   sandridger:1644+145,
   floressum:1644 + 146,
-  flairees:1644 + 145};
+  flairees:1644 + 147};
 
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {

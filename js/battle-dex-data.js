@@ -935,7 +935,7 @@ isycleon:1644+143,
 staticeon:1644+144,
 sandridger:1644+145,
 floressum:1644+146,
-flairees:1644+145};
+flairees:1644+147};
 
 
 var BattlePokemonIconIndexesLeft={
