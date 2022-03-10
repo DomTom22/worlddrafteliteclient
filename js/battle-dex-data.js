@@ -933,7 +933,9 @@ devileon:1644+141,
 murkeon:1644+142,
 isycleon:1644+143,
 staticeon:1644+144,
-sandridger:1644+145};
+sandridger:1644+145,
+floressum:1644+146,
+flairees:1644+145};
 
 
 var BattlePokemonIconIndexesLeft={
