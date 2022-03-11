@@ -2048,7 +2048,7 @@ jawgodon:1644+236,
 sunduke:1644+237,
 phantern:1644+238,
 lavoon:1644+239,
-akillosore:1644+240,
+ankillosore:1644+240,
 dilophlora:1644+241,
 baboom:1644+242,
 chillnobyl:1644+243,
@@ -2070,7 +2070,6 @@ quetzar:1644+258,
 quetzarspace:1644+259,
 xochi:1644+260,
 xotec:1644+261};
-
 
 var BattlePokemonIconIndexesLeft={
 pikachubelle:1200+0,
@@ -2998,6 +2997,7 @@ global.Item=Item;
 global.Move=Move;
 }
 //# sourceMappingURL=battle-dex-data.js.map
+
 
 /**
  * Battle log

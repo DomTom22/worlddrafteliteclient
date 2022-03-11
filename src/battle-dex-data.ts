@@ -1028,7 +1028,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   sunduke:1644+237,
   phantern:1644+238,
   lavoon:1644+239,
-  akillosore:1644+240,
+  ankillosore:1644+240,
   dilophlora:1644+241,
   baboom:1644+242,
   chillnobyl:1644+243,
