@@ -1049,7 +1049,10 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   quetzar:1644+258,
   quetzarspace:1644+259,
   xochi:1644+260,
-  xotec:1644+261};
+  xotec:1644+261,
+  syleafid:1644+262,
+  astignite:1644+263,
+  correncid:1644+264};
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	pikachubelle: 1200 + 0,

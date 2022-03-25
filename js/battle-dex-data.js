@@ -1049,7 +1049,10 @@ yacuma:1644+257,
 quetzar:1644+258,
 quetzarspace:1644+259,
 xochi:1644+260,
-xotec:1644+261};
+xotec:1644+261,
+syleafid:1644+262,
+astignite:1644+263,
+correncid:1644+264};
 
 var BattlePokemonIconIndexesLeft={
 pikachubelle:1200+0,
