@@ -1149,17 +1149,17 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
   galavagos:1644+358,
   auldsparce:1644+359,
   rduckulus:1644+360,
-  roytsar:1644+351,
-  gatanoia:1644+352,
-  aldina:1644+353,
-  almaria:1644+354,
-  aspherevega:1644+355,
-  aspherealtair:1644+356,
-  aspheresirius:1644+357,
-  valentide:1644+358,
-  billserk:1644+359,
-  rubball:1644+360,
-  rumpet:1644+361};
+  roytsar:1644+361,
+  gatanoia:1644+362,
+  aldina:1644+363,
+  almaria:1644+364,
+  aspherevega:1644+365,
+  aspherealtair:1644+366,
+  aspheresirius:1644+367,
+  valentide:1644+368,
+  billserk:1644+369,
+  rubball:1644+370,
+  rumpet:1644+371};
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	pikachubelle: 1200 + 0,
