@@ -1064,7 +1064,7 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			}
 			// Find any nonstandard tiers used by this mod
 			const standardTiers = ['uber', 'oubl', 'ou', 'uubl', 'uu', 'rubl', 'ru', 'nubl', 'nu', 'publ',
-				'pu', 'zu', 'nfe', 'lcuber', 'lc', 'lcuu', 'cap', 'caplc', 'capnfe', 'ag', 'duber', 'dou',
+				'pu', 'zubl', 'zu', 'xu', 'nfe', 'lcuber', 'lc', 'lcuu', 'cap', 'caplc', 'capnfe', 'ag', 'duber', 'dou',
 				'dbl', 'duu', 'dnu', 'illegal', 'unreleased'];
 			if (!ModConfig[modid].customTiers) ModConfig[modid].customTiers = [];
 			if (!ModConfig[modid].customDoublesTiers) ModConfig[modid].customDoublesTiers = [];
