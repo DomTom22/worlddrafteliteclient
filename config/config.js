@@ -18,8 +18,8 @@ Config.whitelist = [
 // `defaultserver` specifies the server to use when the domain name in the
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
-	id: 'fantasy',
-	host: 'fantasyshowdown.herokuapp.com',
+	id: 'showdown',
+	host: '162.24.128.159',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -33,7 +33,7 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (a7f6a285/55fadf43)";
+Config.version = "0.11.2 (2dfa8361/55fadf43)";
 
 Config.routes = {
 	root: 'fantasyshowdown.herokuapp.com',
