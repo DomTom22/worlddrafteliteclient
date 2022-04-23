@@ -1876,7 +1876,7 @@ exports.BattlePokemonSpritesBW = {
 	ceregal:{num:-2510},
 	dragoyle:{num:-2511},
 	oculeus:{num:-2512},
-	oculeus:{num:-2513},
+	arkhaos:{num:-2513},
 	oozma:{num:-2514},
 	grimfowl:{num:-2515},
 	nidorook:{num:-2517},
