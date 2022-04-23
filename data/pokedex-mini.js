@@ -1887,7 +1887,7 @@ exports.BattlePokemonSprites = {
 	champeon:{num:-2521},
 	lepideon:{num:-2522},
 	guardeon:{num:-2523},
-	obsideon:{num:-2524},
+	obsideoni:{num:-2524},
 	scorpeon:{num:-2525},
 	sphynxeon:{num:-2526},
 	nimbeon:{num:-2527},
