@@ -3270,7 +3270,6 @@ global.Move=Move;
 }
 //# sourceMappingURL=battle-dex-data.js.map
 
-
 /**
  * Battle log
  *
