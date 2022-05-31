@@ -1647,7 +1647,7 @@ exports.BattlePokemonSprites = {
 	splendifowl:{num:-1204},
 	nimflora:{num:-1205},
 	gararewl:{num:-1206},
-	grozard:{num:-1207},
+	terlard:{num:-1207},
 	tofurang:{num:-1208},
 	dunseraph:{num:-1209},
 	blubelrog:{num:-1210},
