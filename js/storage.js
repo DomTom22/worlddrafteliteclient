@@ -49,11 +49,12 @@ Storage.bg = {
 	 */
 	load: function (bgUrl, bgid, hues) {
 		this.id = bgid;
+		const bgs = ['horizon', 'ocean', 'waterfall', 'shaymin', 'charizards', 'psday', 'necrozma'];
 		if (!bgid) {
 			if (location.host === 'smogtours.psim.us') {
 				bgid = 'shaymin';
 			} else if (location.host === Config.routes.client) {
-				bgid = ['horizon', 'ocean', 'waterfall', 'shaymin', 'charizards', 'psday', 'necrozma'][Math.floor(Math.random() * 6)];
+				bgid = bgs[Math.floor(Math.random() * bgs.length)];
 			} else {
 				$(document.body).css({
 					background: '',
@@ -105,6 +106,10 @@ Storage.bg = {
 			case 'charizards':
 				hues = ["37.159090909090914,74.57627118644066%", "10.874999999999998,70.79646017699115%", "179.51612903225808,52.10084033613446%", "20.833333333333336,36.73469387755102%", "192.3076923076923,80.41237113402063%", "210,29.629629629629633%"];
 				attrib = '<a href="https://seiryuuden.deviantart.com/art/The-Ultimate-Mega-Showdown-Charizards-414587079" target="_blank" class="subtle">"Charizards" <small>background by Jessica Valencia</small></a>';
+				break;
+			case 'necrozma':
+				hues = ["37.159090909090914,74.57627118644066%", "10.874999999999998,70.79646017699115%", "179.51612903225808,52.10084033613446%", "20.833333333333336,36.73469387755102%", "192.3076923076923,80.41237113402063%", "210,29.629629629629633%"];
+				attrib = '<a href="https://cdn.discordapp.com/attachments/864227687651606578/983140965453795378/client-bg-necrozma.jpg" target="_blank" class="subtle">"Charizards" <small>background by Jessica Valencia</small></a>';
 				break;
 			case 'psday':
 				hues = ["24.705882352941174,25.37313432835821%", "260.4651162790697,59.44700460829492%", "165.3191489361702,46.07843137254901%", "16.363636363636367,42.63565891472869%", "259.04761904761904,34.05405405405405%", "24.705882352941174,25.37313432835821%"];
