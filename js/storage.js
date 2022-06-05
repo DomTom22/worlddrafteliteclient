@@ -108,7 +108,7 @@ Storage.bg = {
 				attrib = '<a href="https://seiryuuden.deviantart.com/art/The-Ultimate-Mega-Showdown-Charizards-414587079" target="_blank" class="subtle">"Charizards" <small>background by Jessica Valencia</small></a>';
 				break;
 			case 'necrozma':
-				hues = ["37.159090909090914,74.57627118644066%", "10.874999999999998,70.79646017699115%", "179.51612903225808,52.10084033613446%", "20.833333333333336,36.73469387755102%", "192.3076923076923,80.41237113402063%", "210,29.629629629629633%"];
+				hues = ["179.51612903225808,72.10084033613446%", "179.51612903225808,0.10084033613446%", "179.51612903225808,52.10084033613446%", "179.51612903225808,0.10084033613446%", "192.3076923076923,80.41237113402063%", "210,29.629629629629633%"];
 				attrib = '<a href="https://cdn.discordapp.com/attachments/864227687651606578/983140965453795378/client-bg-necrozma.jpg" target="_blank" class="subtle">"Charizards" <small>background by Jessica Valencia</small></a>';
 				break;
 			case 'psday':
