@@ -213,7 +213,7 @@ if(!bgid){
 if(location.host==='smogtours.psim.us'){
 bgid='shaymin';
 }else if(location.host===Config.routes.client){
-var bgs=['horizon','ocean','waterfall','shaymin','charizards', 'necrozma'];
+var bgs=['necrozma'];
 bgid=bgs[Math.floor(Math.random()*5)];
 if(bgid===this.curId)bgid=bgs[Math.floor(Math.random()*5)];
 }
