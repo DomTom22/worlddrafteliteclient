@@ -211,11 +211,11 @@ this.id=bgid;
 
 if(!bgid){
 if(location.host==='smogtours.psim.us'){
-bgid='shaymin';
+bgid='necrozma';
 }else if(location.host===Config.routes.client){
 var bgs=['necrozma'];
-bgid=bgs[Math.floor(Math.random()*5)];
-if(bgid===this.curId)bgid=bgs[Math.floor(Math.random()*5)];
+bgid=bgs[Math.floor(Math.random()*1)];
+if(bgid===this.curId)bgid=bgs[Math.floor(Math.random()*1)];
 }
 }
 this.curId=bgid;
