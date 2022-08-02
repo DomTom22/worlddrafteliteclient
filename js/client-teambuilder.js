@@ -114,7 +114,7 @@
 		curSet: null,
 		curSetLoc: 0,
 		dex: Dex,
-		
+
 		// curFolder will have '/' at the end if it's a folder, but
 		// it will be alphanumeric (so guaranteed no '/') if it's a
 		// format
@@ -1573,7 +1573,7 @@
 				.val(Storage.exportTeam([this.curSet]).trim())
 				.focus()
 				.select();
-			
+
 			// this.getSmogonSets();
 		},
 		getSmogonSets: function () {
@@ -2615,6 +2615,7 @@
 			if (!set) return;
 			var species = this.dex.getSpecies(set.species);
 			var isLetsGo = this.curTeam.format.includes('letsgo');
+			var isFoolsGold = this.curTeam.format.includes('foolsgold');
 			var isNatDex = this.curTeam.format.includes('nationaldex');
 
 			// level

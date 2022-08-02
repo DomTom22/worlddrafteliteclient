@@ -847,6 +847,12 @@ raindance:'Rain',
 primordialsea:'Heavy Rain',
 sandstorm:'Sandstorm',
 hail:'Hail',
+acidrain:'Acid Rain',
+newmoon:'New Moon',
+sporestorm:'Spore Storm',
+wind:'Wind',
+thunderstorm:'Thunderstorm',
+fallout:'Fallout',
 deltastream:'Strong Winds'};
 
 weatherhtml=""+(weatherNameTable[this.battle.weather]||this.battle.weather);
@@ -887,6 +893,8 @@ this.battle.pseudoWeather;_i10<_this$battle$pseudoWe2.length;_i10++){var pseudoW
 var pwid=toID(pseudoWeatherData[0]);
 switch(pwid){
 case'electricterrain':
+case'snowyterrain':
+case'stickyterrain':
 case'grassyterrain':
 case'mistyterrain':
 case'psychicterrain':
@@ -1083,7 +1091,6 @@ anim({
 opacity:0.3,
 time:instant?0:300});
 
-break;
 case'mist':
 var mist=new Sprite(BattleEffects.mist,{
 display:'block',
@@ -1260,6 +1267,30 @@ scale:0.7},
 this);
 this.$spritesFront[spriteIndex].append(web.$el);
 this.sideConditions[siden][id]=[web];
+break;
+case'velvetscales':
+var greenmetal1=new Sprite(BattleEffects.greenmetal1,{
+display:'block',
+x:side.x+15,
+y:side.y-35,
+z:side.z,
+opacity:0.4,
+scale:0.7},
+this);
+this.$spritesFront[spriteIndex].append(greenmetal1.$el);
+this.sideConditions[siden][id]=[web];
+break;
+case'scorchedashes':
+var scorchedashes=new Sprite(BattleEffects.scorchedashes,{
+display:'block',
+x:side.x+15,
+y:side.y-35,
+z:side.z,
+opacity:0.4,
+scale:0.7},
+this);
+this.$spritesFront[spriteIndex].append(scorchedashes.$el);
+this.sideConditions[siden][id]=[scorchedashes];
 break;}
 
 };_proto.
@@ -1671,6 +1702,9 @@ return this;
 
 
 PokemonSprite=function(_Sprite){_inheritsLoose(PokemonSprite,_Sprite);
+
+
+
 
 
 
@@ -2694,7 +2728,7 @@ $hptext.html(pokemon.hpWidth(100)+'%');
 $hptext.show();
 $hptextborder.show();
 }
-};return PokemonSprite;}(Sprite);PokemonSprite.statusTable={formechange:null,typechange:null,typeadd:null,dynamax:['Dynamaxed','good'],trapped:null,throatchop:['Throat Chop','bad'],confusion:['Confused','bad'],healblock:['Heal Block','bad'],yawn:['Drowsy','bad'],flashfire:['Flash Fire','good'],imprison:['Imprisoning foe','good'],autotomize:['Lightened','neutral'],miracleeye:['Miracle Eye','bad'],foresight:['Foresight','bad'],telekinesis:['Telekinesis','neutral'],transform:['Transformed','neutral'],powertrick:['Power Trick','neutral'],curse:['Curse','bad'],nightmare:['Nightmare','bad'],attract:['Infatuation','bad'],torment:['Torment','bad'],taunt:['Taunt','bad'],disable:['Disable','bad'],embargo:['Embargo','bad'],ingrain:['Ingrain','good'],aquaring:['Aqua Ring','good'],stockpile1:['Stockpile','good'],stockpile2:['Stockpile&times;2','good'],stockpile3:['Stockpile&times;3','good'],perish0:['Perish now','bad'],perish1:['Perish next turn','bad'],perish2:['Perish in 2','bad'],perish3:['Perish in 3','bad'],airballoon:['Balloon','good'],leechseed:['Leech Seed','bad'],encore:['Encore','bad'],mustrecharge:['Must recharge','bad'],bide:['Bide','good'],magnetrise:['Magnet Rise','good'],smackdown:['Smack Down','bad'],focusenergy:['Critical Hit Boost','good'],slowstart:['Slow Start','bad'],noretreat:['No Retreat','bad'],octolock:['Octolock','bad'],tarshot:['Tar Shot','bad'],doomdesire:null,futuresight:null,mimic:['Mimic','good'],watersport:['Water Sport','good'],mudsport:['Mud Sport','good'],substitute:null,uproar:['Uproar','neutral'],rage:['Rage','neutral'],roost:['Landed','neutral'],protect:['Protect','good'],quickguard:['Quick Guard','good'],wideguard:['Wide Guard','good'],craftyshield:['Crafty Shield','good'],matblock:['Mat Block','good'],maxguard:['Max Guard','good'],helpinghand:['Helping Hand','good'],magiccoat:['Magic Coat','good'],destinybond:['Destiny Bond','good'],snatch:['Snatch','good'],grudge:['Grudge','good'],charge:['Charge','good'],endure:['Endure','good'],focuspunch:['Focusing','neutral'],shelltrap:['Trap set','neutral'],powder:['Powder','bad'],electrify:['Electrify','bad'],ragepowder:['Rage Powder','good'],followme:['Follow Me','good'],instruct:['Instruct','neutral'],beakblast:['Beak Blast','neutral'],laserfocus:['Laser Focus','good'],spotlight:['Spotlight','neutral'],itemremoved:null,bind:['Bind','bad'],clamp:['Clamp','bad'],firespin:['Fire Spin','bad'],infestation:['Infestation','bad'],magmastorm:['Magma Storm','bad'],sandtomb:['Sand Tomb','bad'],snaptrap:['Snap Trap','bad'],thundercage:['Thunder Cage','bad'],whirlpool:['Whirlpool','bad'],wrap:['Wrap','bad'],lightscreen:['Light Screen','good'],reflect:['Reflect','good']};
+};return PokemonSprite;}(Sprite);PokemonSprite.statusTable={formechange:null,typechange:null,typeadd:null,dynamax:['Dynamaxed','good'],trapped:null,throatchop:['Throat Chop','bad'],confusion:['Confused','bad'],healblock:['Heal Block','bad'],yawn:['Drowsy','bad'],flashfire:['Flash Fire','good'],imprison:['Imprisoning foe','good'],autotomize:['Lightened','neutral'],miracleeye:['Miracle Eye','bad'],foresight:['Foresight','bad'],telekinesis:['Telekinesis','neutral'],transform:['Transformed','neutral'],powertrick:['Power Trick','neutral'],curse:['Curse','bad'],nightmare:['Nightmare','bad'],attract:['Infatuation','bad'],torment:['Torment','bad'],taunt:['Taunt','bad'],disable:['Disable','bad'],embargo:['Embargo','bad'],ingrain:['Ingrain','good'],aquaring:['Aqua Ring','good'],stockpile1:['Stockpile','good'],stockpile2:['Stockpile&times;2','good'],stockpile3:['Stockpile&times;3','good'],perish0:['Perish now','bad'],perish1:['Perish next turn','bad'],perish2:['Perish in 2','bad'],perish3:['Perish in 3','bad'],airballoon:['Balloon','good'],leechseed:['Leech Seed','bad'],encore:['Encore','bad'],mustrecharge:['Must recharge','bad'],bide:['Bide','good'],magnetrise:['Magnet Rise','good'],smackdown:['Smack Down','bad'],focusenergy:['Critical Hit Boost','good'],slowstart:['Slow Start','bad'],noretreat:['No Retreat','bad'],octolock:['Octolock','bad'],tarshot:['Tar Shot','bad'],doomdesire:null,futuresight:null,mimic:['Mimic','good'],watersport:['Water Sport','good'],mudsport:['Mud Sport','good'],substitute:null,uproar:['Uproar','neutral'],rage:['Rage','neutral'],roost:['Landed','neutral'],protect:['Protect','good'],quickguard:['Quick Guard','good'],wideguard:['Wide Guard','good'],craftyshield:['Crafty Shield','good'],matblock:['Mat Block','good'],maxguard:['Max Guard','good'],helpinghand:['Helping Hand','good'],magiccoat:['Magic Coat','good'],destinybond:['Destiny Bond','good'],snatch:['Snatch','good'],grudge:['Grudge','good'],charge:['Charge','good'],endure:['Endure','good'],focuspunch:['Focusing','neutral'],shelltrap:['Trap set','neutral'],powder:['Powder','bad'],electrify:['Electrify','bad'],ragepowder:['Rage Powder','good'],followme:['Follow Me','good'],instruct:['Instruct','neutral'],beakblast:['Beak Blast','neutral'],laserfocus:['Laser Focus','good'],spotlight:['Spotlight','neutral'],itemremoved:null,bind:['Bind','bad'],clamp:['Clamp','bad'],firespin:['Fire Spin','bad'],infestation:['Infestation','bad'],magmastorm:['Magma Storm','bad'],sandtomb:['Sand Tomb','bad'],snaptrap:['Snap Trap','bad'],thundercage:['Thunder Cage','bad'],bearhug:['Bear Hug','bad'],whirlpool:['Whirlpool','bad'],wrap:['Wrap','bad'],lightscreen:['Light Screen','good'],reflect:['Reflect','good'],powerscreen:['Power Screen','good'],refract:['Refract','good']};
 
 
 
@@ -2805,6 +2839,10 @@ w:80,h:80},
 greenmetal1:{
 url:'greenmetal1.png',
 w:45,h:45},
+
+scorchedashes:{
+url:'scorchedashes.png',
+w:100,h:100},
 
 greenmetal2:{
 url:'greenmetal2.png',
@@ -2976,6 +3014,14 @@ w:100,h:50},
 
 lightscreen:{
 rawHTML:'<div class="sidecondition-lightscreen" style="display:none;position:absolute" />',
+w:100,h:50},
+
+refract:{
+rawHTML:'<div class="sidecondition-lightscreen" style="display:none;position:absolute" />',
+w:100,h:50},
+
+powerscreen:{
+rawHTML:'<div class="sidecondition-reflect" style="display:none;position:absolute" />',
 w:100,h:50},
 
 mist:{

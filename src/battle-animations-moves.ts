@@ -17653,6 +17653,40 @@ const BattleMoveAnims: AnimTable = {
 			}, 'ballistic');
 		},
 	},
+  velvetscales: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('greenmetal1', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.1,
+				opacity: 0.5,
+			}, {
+				x: 0,
+				y: defender.y,
+				z: defender.z,
+				scale: 0.5,
+				opacity: 1,
+			}, 'ballistic');
+		},
+	},
+  scorchedashes: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('scorchedashes', {
+				x: attacker.x,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.1,
+				opacity: 0.5,
+			}, {
+				x: 0,
+				y: defender.y,
+				z: defender.z,
+				scale: 0.5,
+				opacity: 1,
+			}, 'ballistic');
+		},
+	},
 	leechseed: {
 		anim(scene, [attacker, defender]) {
 			scene.showEffect('energyball', {

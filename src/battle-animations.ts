@@ -847,6 +847,12 @@ class BattleScene {
 				primordialsea: 'Heavy Rain',
 				sandstorm: 'Sandstorm',
 				hail: 'Hail',
+        acidrain: 'Acid Rain',
+        newmoon: 'New Moon',
+        sporestorm: 'Spore Storm',
+        wind: 'Wind',
+        thunderstorm: 'Thunderstorm',
+        fallout: 'Fallout',
 				deltastream: 'Strong Winds',
 			};
 			weatherhtml = `${weatherNameTable[this.battle.weather] || this.battle.weather}`;
@@ -887,6 +893,8 @@ class BattleScene {
 			let pwid = toID(pseudoWeatherData[0]);
 			switch (pwid) {
 			case 'electricterrain':
+      case 'snowyterrain':
+      case 'stickyterrain':
 			case 'grassyterrain':
 			case 'mistyterrain':
 			case 'psychicterrain':
@@ -1083,7 +1091,6 @@ class BattleScene {
 				opacity: 0.3,
 				time: instant ? 0 : 300,
 			});
-			break;
 		case 'mist':
 			const mist = new Sprite(BattleEffects.mist, {
 				display: 'block',
@@ -1261,6 +1268,30 @@ class BattleScene {
 			this.$spritesFront[spriteIndex].append(web.$el!);
 			this.sideConditions[siden][id] = [web];
 			break;
+    case 'velvetscales':
+      const greenmetal1 = new Sprite(BattleEffects.greenmetal1, {
+        display: 'block',
+        x: side.x + 15,
+        y: side.y - 35,
+        z: side.z,
+        opacity: 0.4,
+        scale: 0.7,
+      }, this);
+      this.$spritesFront[spriteIndex].append(greenmetal1.$el!);
+      this.sideConditions[siden][id] = [web];
+      break;
+    case 'scorchedashes':
+      const scorchedashes = new Sprite(BattleEffects.scorchedashes, {
+        display: 'block',
+        x: side.x + 15,
+        y: side.y - 35,
+        z: side.z,
+        opacity: 0.4,
+        scale: 0.7,
+      }, this);
+      this.$spritesFront[spriteIndex].append(scorchedashes.$el!);
+      this.sideConditions[siden][id] = [scorchedashes];
+      break;
 		}
 	}
 	removeSideCondition(siden: number, id: ID) {
@@ -1538,7 +1569,7 @@ class BattleScene {
 		case 15:
 		default:
 			this.bgm = BattleSound.loadBgm('audio/sm-rival.mp3', 11389, 62158, this.bgm);
-			break;
+      break;
 		}
 	}
 	updateBgm() {
@@ -1761,11 +1792,14 @@ class PokemonSprite extends Sprite {
 		sandtomb: ['Sand Tomb', 'bad'],
 		snaptrap: ['Snap Trap', 'bad'],
 		thundercage: ['Thunder Cage', 'bad'],
+    bearhug: ['Bear Hug', 'bad'],
 		whirlpool: ['Whirlpool', 'bad'],
 		wrap: ['Wrap', 'bad'],
 		// Gen 1
 		lightscreen: ['Light Screen', 'good'],
 		reflect: ['Reflect', 'good'],
+    powerscreen: ['Power Screen', 'good'],
+    refract: ['Refract', 'good'],
 	};
 	forme = '';
 	cryurl: string | undefined = undefined;
@@ -2806,6 +2840,10 @@ const BattleEffects: {[k: string]: SpriteData} = {
 		url: 'greenmetal1.png', // by Pokemon Showdown user Kalalokki
 		w: 45, h: 45,
 	},
+  scorchedashes: {
+		url: 'scorchedashes.png', // by Pokemon Showdown user Kalalokki
+		w: 100, h: 100,
+	},
 	greenmetal2: {
 		url: 'greenmetal2.png', // by Pokemon Showdown user Kalalokki
 		w: 45, h: 45,
@@ -2976,6 +3014,14 @@ const BattleEffects: {[k: string]: SpriteData} = {
 	},
 	lightscreen: {
 		rawHTML: '<div class="sidecondition-lightscreen" style="display:none;position:absolute" />',
+		w: 100, h: 50,
+	},
+  refract: {
+		rawHTML: '<div class="sidecondition-lightscreen" style="display:none;position:absolute" />',
+		w: 100, h: 50,
+	},
+  powerscreen: {
+		rawHTML: '<div class="sidecondition-reflect" style="display:none;position:absolute" />',
 		w: 100, h: 50,
 	},
 	mist: {

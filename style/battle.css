@@ -429,13 +429,29 @@ License: GPLv2
 	background: #AADDEE url(../fx/weather-hail.png) no-repeat scroll left top;
 	color: #114455;
 }
+.acidrainweather {
+	background: #AADDEE url(../fx/weather-acidrain.png) no-repeat scroll left top;
+	color: #114455;
+}
+.newmoonweather {
+	background: #AADDEE url(../fx/weather-newmoon.png) no-repeat scroll left top;
+	color: #000000;
+}
 .deltastreamweather {
+	background: #AAAAAA url(../fx/weather-strongwind.png) no-repeat scroll left top;
+	color: #666666;
+}
+.windweather {
 	background: #AAAAAA url(../fx/weather-strongwind.png) no-repeat scroll left top;
 	color: #666666;
 }
 .mistyterrainweather {
 	background: #EEAACC url(../fx/weather-mistyterrain.png) no-repeat scroll left top;
 	color: #551144;
+}
+.snowyterrainweather {
+	background: #EEAACC url(../fx/weather-snowyterrain.png) no-repeat scroll left top;
+	color: #114455;
 }
 .electricterrainweather {
 	background: #EEEEAA url(../fx/weather-electricterrain.png) no-repeat scroll left top;
