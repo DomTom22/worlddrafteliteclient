@@ -705,6 +705,9 @@ class BattleTooltips {
 			if (move.flags.bullet) {
 				text += `<p class="movetag">&#x2713; Bullet-like <small>(doesn't affect Bulletproof pokemon)</small></p>`;
 			}
+      if (move.flags.slash) {
+				text += `<p class="movetag">&#x2713; Blasde <small>(doesn't affect Bulletproof pokemon)</small></p>`;
+			}
 		}
 		return text;
 	}
@@ -954,6 +957,9 @@ class BattleTooltips {
 			} else if (this.battle.gen < 2 && pokemon.status === 'brn') {
 				stats.atk = Math.floor(stats.atk * 0.5);
 			}
+      if (this.battle.gen > 2 && ability === 'audacity') {
+				stats.spa = Math.floor(stats.spa * 1.5);
+      }
 
 			if (this.battle.gen > 2 && ability === 'quickfeet') {
 				stats.spe = Math.floor(stats.spe * 1.5);
@@ -1031,8 +1037,14 @@ class BattleTooltips {
 		if (ability === 'purepower' || ability === 'hugepower') {
 			stats.atk *= 2;
 		}
+    if (ability === 'purefocus' || ability === 'athenian') {
+      stats.atk *= 2;
+    }
 		if (ability === 'hustle' || (ability === 'gorillatactics' && !clientPokemon?.volatiles['dynamax'])) {
 			stats.atk = Math.floor(stats.atk * 1.5);
+		}
+    if (ability === 'eccentric' || (ability === 'sagepower' && !clientPokemon?.volatiles['dynamax'])) {
+			stats.atk = Math.floor(stats.spa * 1.5);
 		}
 		if (weather) {
 			if (this.battle.gen >= 4 && this.pokemonHasType(serverPokemon, 'Rock') && weather === 'sandstorm') {
@@ -1067,6 +1079,21 @@ class BattleTooltips {
 				if (ability === 'swiftswim' && (weather === 'raindance' || weather === 'primordialsea')) {
 					stats.spe *= 2;
 				}
+        if (ability === 'noxious' && (weather === 'acidrain')) {
+					stats.spe *= 2;
+				}
+        if (ability === 'windrider' && (weather === 'wind')) {
+          stats.spe *= 2;
+        }
+        if (ability === 'psychedelic' && (weather === 'sporestorm')) {
+          stats.spe *= 2;
+        }
+        if (ability === 'shadowdance' && (weather === 'newmoon')) {
+          stats.spe *= 2;
+        }
+        if (ability === 'iceslick' && (weather === 'hail')) {
+          stats.spe *= 2;
+        }
 			}
 		}
 		if (ability === 'defeatist' && serverPokemon.hp <= serverPokemon.maxhp / 2) {
@@ -1294,6 +1321,24 @@ class BattleTooltips {
 			case 'hail':
 				moveType = 'Ice';
 				break;
+			case 'newmoon':
+				moveType = 'Dark';
+        break;
+			case 'acidrain':
+				moveType = 'Poison';
+        break;
+			case 'fallout':
+				moveType = 'Nuclear';
+        break;
+			case 'thunderstorm':
+				moveType = 'Electric';
+        break;
+			case 'wind':
+				moveType = 'Flying';
+        break;
+			case 'sporestorm':
+				moveType = 'Grass';
+        break;
 			}
 		}
 		if (move.id === 'terrainpulse') {
@@ -1322,6 +1367,9 @@ class BattleTooltips {
 		if (allowTypeOverride && category !== 'Status' && !move.isZ) {
 			if (moveType === 'Normal') {
 				if (value.abilityModify(0, 'Aerilate')) moveType = 'Flying';
+        if (value.abilityModify(0, 'Coleoptero')) moveType = 'Bug';
+        if (value.abilityModify(0, 'Evilize')) moveType = 'Dark';
+        if (value.abilityModify(0, 'Chlorize')) moveType = 'Grass';
 				if (value.abilityModify(0, 'Galvanize')) moveType = 'Electric';
 				if (value.abilityModify(0, 'Pixilate')) moveType = 'Fairy';
 				if (value.abilityModify(0, 'Refrigerate')) moveType = 'Ice';
@@ -1333,6 +1381,9 @@ class BattleTooltips {
 		if (allowTypeOverride && isSound && value.abilityModify(0, 'Liquid Voice')) {
 			moveType = 'Water';
 		}
+    if (allowTypeOverride && isSound && value.abilityModify(0, 'Frost Song')) {
+      moveType = 'Ice';
+    }
 		if (this.battle.gen <= 3 && category !== 'Status') {
 			category = Dex.getGen3Category(moveType);
 		}
@@ -1637,6 +1688,9 @@ class BattleTooltips {
 		if (move.category !== 'Status' && !noTypeOverride.includes(move.id) && !move.isZ && !move.isMax) {
 			if (move.type === 'Normal') {
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Aerilate");
+        value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Evilize");
+        value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Chlorize");
+        value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Coleoptero");
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Galvanize");
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Pixilate");
 				value.abilityModify(this.battle.gen > 6 ? 1.2 : 1.3, "Refrigerate");
@@ -1648,6 +1702,12 @@ class BattleTooltips {
 		if (move.flags['punch']) {
 			value.abilityModify(1.2, 'Iron Fist');
 		}
+    if (move.flags['bullet']) {
+      value.abilityModify(1.2, 'Artillery');
+    }
+    if (move.priority > 0) {
+        value.abilityModify(1.5, "Acceleration");
+    }
 		if (move.recoil || move.hasCrashDamage) {
 			value.abilityModify(1.2, 'Reckless');
 		}
