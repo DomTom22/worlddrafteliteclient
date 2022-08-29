@@ -586,6 +586,7 @@ exports.BattlePokemonSpritesBW = {
 	donphan:{num:232},
 	donphanmega:{num:232},
 	donphanfoolish:{num:232},
+	porygon2:{num:233},
 	porygonfoolish:{num:233},
 	stantler:{num:234},
 	stantlerchromatic:{num:234},
