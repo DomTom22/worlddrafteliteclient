@@ -36,7 +36,7 @@ Config.customcolors = {
 Config.version = "0.11.2 (4360df3b/55fadf43)";
 
 Config.routes = {
-	root: '159.223.130.100',
+	root: 'pokemonshowdown.com',
 	client: 'prismaticshowdown.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
