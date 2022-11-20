@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: 'fantasyshowdown.herokuapp.com',
+	host: '159.223.130.100',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
