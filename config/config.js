@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: '159.223.130.100',
+	host: 'sim3.psim.us',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -36,7 +36,7 @@ Config.customcolors = {
 Config.version = "0.11.2 (6149555d/55fadf43)";
 
 Config.routes = {
-	root: '159.223.130.100',
+	root: 'pokemonshowdown.com',
 	client: 'prismaticshowdown.herokuapp.com',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'replay.pokemonshowdown.com',
