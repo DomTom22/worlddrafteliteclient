@@ -630,8 +630,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			case 'choicespecs':
 			case 'eviolite':
 			case 'assaultvest':
-			case 'strikevest':
-			case 'iveolite':
 			case 'focussash':
 			case 'powerherb':
 			case 'rockyhelmet':
